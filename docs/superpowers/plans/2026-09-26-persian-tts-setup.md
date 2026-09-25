@@ -115,13 +115,13 @@ Get-ChildItem model/onnx | Select-Object Name, Length
 - Consumes: `scripts/tts_onnx.py`, `model/onnx/`, `voices/male_hello.wav`
 - Produces: فایل صوتی `output/cli_test.wav`
 
-- [ ] **Step 1: اجرای تولید گفتار از طریق خط فرمان**
+- [x] **Step 1: اجرای تولید گفتار از طریق خط فرمان**
 ```powershell
 New-Item -ItemType Directory -Force -Path output
 ./env/Scripts/python.exe scripts/tts_onnx.py "سلام و درود، سیستم تبدیل متن فارسی به گفتار با موفقیت روی لپ‌تاپ راه‌اندازی شد." voices/male_hello.wav output/cli_test.wav --pack
 ```
 
-- [ ] **Step 2: اعتبارسنجی فایل صوتی خروجی**
+- [x] **Step 2: اعتبارسنجی فایل صوتی خروجی**
 بررسی اینکه فایل ایجاد شده، حجم دارد و مشخصات صوتی آن صحیح است:
 ```powershell
 ./env/Scripts/python.exe -c "import soundfile as sf; info = sf.info('output/cli_test.wav'); print(f'Samplerate: {info.samplerate}, Channels: {info.channels}, Duration: {info.duration:.2f}s'); assert info.samplerate == 24000; assert info.duration > 1.0"
@@ -140,7 +140,7 @@ New-Item -ItemType Directory -Force -Path output
 - Consumes: ورودی متن یا مسیر فایل `.txt` و فایل صدای مرجع
 - Produces: فایل WAV یکپارچه تولیدشده با رعایت مکث‌های طبیعی
 
-- [ ] **Step 1: نوشتن تست اعتبارسنجی ماژول تبدیل متن**
+- [x] **Step 1: نوشتن تست اعتبارسنجی ماژول تبدیل متن**
 ایجاد فایل `tests/test_convert_text.py`:
 ```python
 import os
@@ -157,13 +157,13 @@ def test_short_sentence():
     assert info.duration > 0.5
 ```
 
-- [ ] **Step 2: اجرای اولیه تست برای مشاهده Fail (TDD)**
+- [x] **Step 2: اجرای اولیه تست برای مشاهده Fail (TDD)**
 ```powershell
 ./env/Scripts/python.exe -m pytest tests/test_convert_text.py
 ```
 انتظار: خطا به دلیل عدم وجود ماژول `convert_text`.
 
-- [ ] **Step 3: پیاده‌سازی `convert_text.py`**
+- [x] **Step 3: پیاده‌سازی `convert_text.py`**
 ایجاد ماژول کامل با پشتیبانی از آرگومان‌های CLI و فراخوانی تابعی:
 ```python
 """
@@ -224,14 +224,14 @@ if __name__ == "__main__":
     main()
 ```
 
-- [ ] **Step 4: اجرای تست و اطمینان از پاس شدن آن**
+- [x] **Step 4: اجرای تست و اطمینان از پاس شدن آن**
 ```powershell
 ./env/Scripts/python.exe -m pip install pytest
 ./env/Scripts/python.exe -m pytest tests/test_convert_text.py
 ```
 انتظار: `1 passed`.
 
-- [ ] **Step 5: تست کاربردی با فایل متنی**
+- [x] **Step 5: تست کاربردی با فایل متنی**
 ایجاد یک فایل متنی نمونه و تبدیل آن:
 ```powershell
 Set-Content -Path "sample.txt" -Value "هوش مصنوعی تبدیل متن به گفتار، کلمات را با صدای طبیعی بازخوانی می‌کند." -Encoding UTF8
@@ -239,7 +239,7 @@ Set-Content -Path "sample.txt" -Value "هوش مصنوعی تبدیل متن ب�
 ```
 انتظار: تولید موفق `output/sample_speech.wav`.
 
-- [ ] **Step 6: ثبت کامیت**
+- [x] **Step 6: ثبت کامیت**
 ```bash
 git add convert_text.py tests/test_convert_text.py sample.txt
 git commit -m "feat: add convert_text.py module and CLI wrapper for batch text processing"

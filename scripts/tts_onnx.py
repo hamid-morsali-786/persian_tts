@@ -13,8 +13,14 @@ import argparse
 import json
 import os
 import re
+import sys
 import time
 from pathlib import Path
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
 
 import numpy as np
 import onnxruntime as ort
@@ -22,6 +28,7 @@ import sentencepiece as spm
 
 BASE = Path(__file__).resolve().parent.parent
 PKG = BASE / "model" / "onnx"
+ONNX_DIR = PKG
 
 _SENTENCE_SPLIT = re.compile(r"(?<=[.!?؟])\s+")
 # phrase joints: after punctuation, and around parentheticals — "(...)" is a
@@ -1007,6 +1014,27 @@ class OnnxTts:
                 break
             latents.append(lat)
         return latents, cache, off
+
+
+_default_engine = None
+
+
+def get_engine(model_dir=PKG, seed=None):
+    global _default_engine
+    if _default_engine is None or (model_dir is not None and Path(model_dir) != PKG):
+        _default_engine = OnnxTts(pkg_dir=model_dir, seed=seed)
+    return _default_engine
+
+
+def synthesize_text(text, ref_wav, pack=True, model_dir=PKG, seed=None):
+    engine = get_engine(model_dir=model_dir, seed=seed)
+    mode = "pack" if pack else "split"
+    audio = engine.synthesize_text(text, ref_wav, seed=seed, mode=mode)
+    return audio, engine.sample_rate
+
+
+def load_voice_reference(voice_wav):
+    return str(voice_wav)
 
 
 def main():
