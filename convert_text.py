@@ -80,6 +80,12 @@ def main():
         action="store_true",
         help="غیرفعالسازی pack (ادغام عبارات)",
     )
+    parser.add_argument(
+        "--play",
+        "-p",
+        action="store_true",
+        help="پخش خودکار فایل صوتی پس از تولید",
+    )
 
     args = parser.parse_args()
 
@@ -104,6 +110,17 @@ def main():
     pack = not args.no_pack
     out = text_to_speech(content, voice=args.voice, output_file=args.output, pack=pack)
     print(f"فایل صوتی با موفقیت ذخیره شد: {out}")
+
+    if args.play:
+        print("در حال پخش صدا...")
+        try:
+            if sys.platform == "win32":
+                os.startfile(os.path.abspath(out))
+            else:
+                import subprocess
+                subprocess.Popen(["xdg-open", os.path.abspath(out)])
+        except Exception as e:
+            print(f"خطا در پخش خودکار: {e}", file=sys.stderr)
 
 
 if __name__ == "__main__":
