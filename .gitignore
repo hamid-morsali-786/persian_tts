@@ -1,20 +1,104 @@
-# Python
+# ==============================================================================
+# Python & Bytecode
+# ==============================================================================
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+*.so
+
+# ==============================================================================
+# Virtual Environments
+# ==============================================================================
 env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
 
-# Model weights — large binaries, regenerable:
-#   model/onnx/  -> scripts/export_unified.py (needs model/v2 + model/g2p)
-#   model/v2, model/g2p -> downloaded from HuggingFace (see README)
+# ==============================================================================
+# Security & Sensitive Keys (Crucial for GitHub)
+# ==============================================================================
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+credentials.json
+
+# ==============================================================================
+# Testing & Code Analysis
+# ==============================================================================
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.hypothesis/
+gui-test-screenshots/
+
+# ==============================================================================
+# Distribution & Packaging
+# ==============================================================================
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ==============================================================================
+# Model Weights & Large Binaries (Regenerable / Downloaded from HuggingFace)
+# ==============================================================================
+# model/onnx/ -> exported via scripts/export_unified.py
+# model/v2, model/g2p -> downloaded from HuggingFace (see README)
 model/
+*.onnx
 
-# Runtime artifacts
+# ==============================================================================
+# Runtime & Generated Audio Artifacts
+# ==============================================================================
 output/
 uploads/
 tmp/
 temp_test/
 *.log
 
-# OS / editors
+# Audio files (preserve reference voices in voices/)
+*.wav
+*.mp3
+*.ogg
+*.flac
+*.zip
+!voices/*.wav
+
+# ==============================================================================
+# Local Test Books & Personal Documents
+# ==============================================================================
+*.pdf
+*.epub
+*.mobi
+leadership-*
+
+# ==============================================================================
+# IDEs, Editors & OS Files
+# ==============================================================================
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
 .DS_Store
 Thumbs.db
+desktop.ini

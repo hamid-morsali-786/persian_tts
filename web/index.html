@@ -13,38 +13,64 @@
       url("fonts/Vazirmatn.woff2") format("woff2");
   font-weight:100 900; font-display:swap;
 }
+/* ---------- Modern Light Theme (Default) ---------- */
 :root{
-  --bg:#0c0e13; --surface:#141824; --surface-2:#1a1f2e; --border:#252b3d;
-  --text:#edeef2; --muted:#8f96a8; --faint:#5c6275;
-  --accent:#ff7a59; --accent-2:#ffb454; --on-accent:#231303;
-  --grad:linear-gradient(90deg,var(--accent),var(--accent-2));
+  --bg:#f8fafc; --surface:#ffffff; --surface-2:#f1f5f9; --surface-hover:#e2e8f0;
+  --border:#e2e8f0; --text:#0f172a; --muted:#475569; --faint:#94a3b8;
+  --accent:#e8590c; --accent-2:#d97706; --on-accent:#ffffff;
+  --grad:linear-gradient(135deg,#e8590c 0%,#f59e0b 100%);
   --radius:14px; --radius-s:10px;
-  --shadow:0 12px 40px rgba(0,0,0,.35);
+  --shadow:0 10px 30px -4px rgba(15,23,42,.08),0 4px 12px -2px rgba(15,23,42,.03);
+  --shadow-sm:0 2px 8px rgba(15,23,42,.05);
+  --orb-a:.07; --orb-b:.05;
 }
+
+/* ---------- Modern Dark Theme ---------- */
+html[data-theme="dark"]{
+  --bg:#0c0e13; --surface:#141824; --surface-2:#1a1f2e; --surface-hover:#23293d;
+  --border:#252b3d; --text:#edeef2; --muted:#8f96a8; --faint:#5c6275;
+  --accent:#ff7a59; --accent-2:#ffb454; --on-accent:#231303;
+  --grad:linear-gradient(90deg,#ff7a59,#ffb454);
+  --shadow:0 12px 40px rgba(0,0,0,.35);
+  --shadow-sm:0 4px 14px rgba(0,0,0,.25);
+  --orb-a:.16; --orb-b:.10;
+}
+
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 body{
   background:var(--bg); color:var(--text);
   font-family:"Vazirmatn","Segoe UI",Tahoma,sans-serif;
   line-height:1.8; -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
+  overflow-x:hidden; transition:background .25s ease,color .25s ease;
 }
-.orb{position:fixed;border-radius:50%;filter:blur(110px);opacity:.16;pointer-events:none;z-index:0}
-.orb.a{width:420px;height:420px;background:var(--accent);top:-160px;left:-120px}
-.orb.b{width:380px;height:380px;background:var(--accent-2);bottom:-180px;right:-100px;opacity:.10}
+.orb{position:fixed;border-radius:50%;filter:blur(110px);pointer-events:none;z-index:0;transition:opacity .3s}
+.orb.a{width:420px;height:420px;background:var(--accent);top:-160px;left:-120px;opacity:var(--orb-a)}
+.orb.b{width:380px;height:380px;background:var(--accent-2);bottom:-180px;right:-100px;opacity:var(--orb-b)}
 
 .wrap{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:28px 22px 60px}
 
 /* ---------- header ---------- */
 header{display:flex;align-items:center;gap:14px;margin-bottom:30px}
 .logo{width:44px;height:44px;border-radius:12px;background:var(--grad);
-  display:grid;place-items:center;flex-shrink:0;box-shadow:0 6px 20px rgba(255,122,89,.35)}
+  display:grid;place-items:center;flex-shrink:0;box-shadow:0 6px 20px rgba(232,89,12,.35)}
 .logo svg{width:24px;height:24px;stroke:var(--on-accent)}
 h1{font-size:22px;font-weight:800;letter-spacing:-.3px}
 .sub{font-size:12.5px;color:var(--muted);margin-top:-4px}
-.badge{margin-inline-start:auto;font-size:11.5px;color:var(--accent-2);
-  border:1px solid rgba(255,180,84,.28);background:rgba(255,180,84,.07);
+.badge{font-size:11.5px;color:var(--accent);
+  border:1px solid rgba(232,89,12,.22);background:rgba(232,89,12,.06);
   padding:5px 12px;border-radius:99px;white-space:nowrap}
+html[data-theme="dark"] .badge{color:var(--accent-2);
+  border-color:rgba(255,180,84,.28);background:rgba(255,180,84,.07)}
+
+.theme-btn{width:36px;height:36px;border-radius:10px;background:var(--surface-2);
+  border:1px solid var(--border);display:grid;place-items:center;cursor:pointer;
+  color:var(--muted);transition:all .2s;flex-shrink:0}
+.theme-btn:hover{color:var(--text);border-color:var(--accent);transform:scale(1.05)}
+.theme-btn .sun{display:none}
+.theme-btn .moon{display:block}
+html[data-theme="dark"] .theme-btn .sun{display:block}
+html[data-theme="dark"] .theme-btn .moon{display:none}
 
 /* ---------- layout ---------- */
 .grid{display:grid;grid-template-columns:1fr 316px;gap:18px;align-items:start}
@@ -176,9 +202,229 @@ footer{margin-top:46px;text-align:center;font-size:11.5px;color:var(--faint)}
 footer b{color:var(--muted);font-weight:600}
 
 .toast{position:fixed;bottom:24px;right:50%;transform:translateX(50%);
-  background:var(--surface-2);border:1px solid var(--border);border-radius:99px;
-  padding:10px 20px;font-size:13px;box-shadow:var(--shadow);display:none;z-index:9}
-.toast.show{display:block;animation:rise .3s ease}
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:14px 18px;font-size:13px;line-height:1.6;box-shadow:var(--shadow);display:none;z-index:999;
+  max-width:min(92vw, 620px);width:max-content;color:var(--text);animation:rise .25s ease}
+.toast.show{display:flex;align-items:flex-start;gap:12px}
+
+.toast.is-error{
+  background:var(--surface);border:1.5px solid #ef4444;
+  box-shadow:0 14px 38px -4px rgba(239,68,68,0.22), var(--shadow);
+}
+html[data-theme="dark"] .toast.is-error{
+  background:#1a1318;border-color:#f87171;
+  box-shadow:0 14px 38px -4px rgba(248,113,113,0.25), var(--shadow);
+}
+
+.toast-icon{flex-shrink:0;width:22px;height:22px;margin-top:2px;display:flex;align-items:center;justify-content:center}
+.toast-body{flex:1;text-align:start;user-select:text}
+.toast-title{font-weight:800;font-size:13px;margin-bottom:4px;color:#ef4444;display:flex;align-items:center;gap:6px}
+html[data-theme="dark"] .toast-title{color:#f87171}
+.toast-msg{font-size:12.5px;color:var(--text);line-height:1.65;word-break:break-word}
+.toast-actions{margin-top:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.toast-btn{background:var(--surface-2);border:1px solid var(--border);border-radius:6px;
+  color:var(--text);font:inherit;font-size:11.5px;font-weight:700;padding:5px 12px;cursor:pointer;transition:all .18s}
+.toast-btn:hover{background:var(--surface-hover);border-color:var(--muted)}
+.toast-btn.primary{background:var(--grad);color:#fff;border-color:transparent}
+
+.toast-close{flex-shrink:0;background:transparent;border:none;color:var(--muted);
+  font-size:16px;line-height:1;padding:4px 6px;cursor:pointer;border-radius:6px;
+  margin-inline-start:4px;transition:all .15s}
+.toast-close:hover{background:var(--surface-2);color:var(--text)}
+
+/* ---------- engine switcher ---------- */
+.engine-switcher{display:flex;background:var(--surface-2);border:1px solid var(--border);
+  border-radius:var(--radius-s);padding:4px;gap:6px;margin-bottom:20px}
+.engine-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
+  background:transparent;border:none;border-radius:8px;padding:10px 14px;
+  color:var(--muted);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer;
+  transition:all .2s cubic-bezier(0.2,0,0,1)}
+.engine-btn:hover{color:var(--text)}
+.engine-btn:active{transform:scale(0.96)}
+.engine-btn.sel{background:var(--grad);color:var(--on-accent);box-shadow:0 4px 14px rgba(255,122,89,.3)}
+.engine-btn svg{width:18px;height:18px;stroke:currentColor;flex-shrink:0}
+
+/* ---------- text file upload & toolbar ---------- */
+.file-info-badge{display:none;align-items:center;gap:8px;background:rgba(255,180,84,.08);
+  border:1px solid rgba(255,180,84,.25);border-radius:var(--radius-s);padding:8px 12px;
+  font-size:12px;color:var(--accent-2);margin-bottom:12px}
+.file-info-badge.show{display:flex}
+.file-info-badge .clear-file{margin-inline-start:auto;background:transparent;border:none;
+  color:var(--muted);cursor:pointer;padding:2px 6px;font-size:13px;border-radius:4px}
+.file-info-badge .clear-file:hover{color:var(--text);background:var(--surface-2)}
+.txt-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;flex-wrap:wrap}
+.upload-txt-btn{display:inline-flex;align-items:center;gap:6px;background:var(--surface-2);
+  border:1px solid var(--border);border-radius:99px;color:var(--muted);font:inherit;
+  font-size:12px;font-weight:600;padding:6px 14px;cursor:pointer;transition:all .18s}
+.upload-txt-btn:hover{color:var(--text);border-color:var(--accent)}
+.upload-txt-btn svg{width:14px;height:14px}
+textarea.dragover{border-color:var(--accent);background:rgba(255,122,89,.04)}
+
+/* ---------- api key box ---------- */
+.api-key-box{display:none;background:var(--surface-2);border:1px solid var(--border);
+  border-radius:var(--radius-s);padding:14px;margin-top:14px}
+.api-key-box.show{display:block}
+.api-key-box input{width:100%;background:var(--surface);border:1px solid var(--border);
+  border-radius:6px;padding:9px 12px;color:var(--text);font-family:monospace;font-size:12px;
+  direction:ltr;outline:none;transition:border-color .2s}
+.api-key-box input:focus{border-color:var(--accent)}
+.api-key-box .hint{font-size:11px;color:var(--faint);margin-top:7px;line-height:1.6}
+
+/* ---------- multi-stage progress card ---------- */
+.progress-card{display:none;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-s);padding:14px 16px;margin-top:14px;
+  box-shadow:var(--shadow-sm);transition:all .2s ease}
+.progress-card.show{display:block;animation:rise .25s ease}
+.pcard-top{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  font-size:12.5px;font-weight:700;margin-bottom:10px;flex-wrap:wrap}
+.pcard-stage{display:inline-flex;align-items:center;gap:8px;color:var(--text)}
+.pcard-pulse{width:8px;height:8px;border-radius:50%;background:var(--accent);
+  display:inline-block;animation:pPulse 1.2s infinite ease-in-out;flex-shrink:0}
+@keyframes pPulse{0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 0 rgba(232,89,12,.6)}
+  50%{opacity:.6;transform:scale(1.15);box-shadow:0 0 0 6px rgba(232,89,12,0)}}
+.pcard-time{font-size:11.5px;font-weight:500;color:var(--muted);
+  font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:6px}
+.pcard-dot{opacity:.5}
+.pcard-bar-track{position:relative;width:100%;height:10px;background:var(--surface-2);
+  border:1px solid var(--border);border-radius:99px;overflow:hidden;margin-bottom:10px}
+.pcard-bar-fill{height:100%;border-radius:99px;background:var(--grad);position:relative;
+  transition:width .35s cubic-bezier(0.2,0,0,1);box-shadow:0 0 10px rgba(232,89,12,.35)}
+.pcard-shimmer{position:absolute;top:0;left:0;right:0;bottom:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
+  animation:pShimmer 1.8s infinite}
+@keyframes pShimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.pcard-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px}
+.pcard-chunk-status{display:flex;align-items:center;gap:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pcard-percent{font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums;font-size:13.5px}
+.pcard-chunk-badge{background:rgba(232,89,12,.08);color:var(--accent);border-radius:6px;
+  padding:2px 8px;font-weight:700;font-size:11px;white-space:nowrap}
+html[data-theme="dark"] .pcard-chunk-badge{background:rgba(255,122,89,.12);color:var(--accent-2)}
+.pcard-snippet{color:var(--faint);font-size:11.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:240px}
+.pcard-cancel-btn{display:inline-flex;align-items:center;gap:4px;background:transparent;
+  border:1px solid var(--border);border-radius:6px;padding:3px 9px;color:var(--muted);
+  font:inherit;font-size:11.5px;cursor:pointer;transition:all .15s;flex-shrink:0}
+.pcard-cancel-btn:hover{color:#ef4444;border-color:#ef4444;background:rgba(239,68,68,.06)}
+
+/* ---------- Main Tab Switcher ---------- */
+.main-tabs{display:flex;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:5px;gap:8px;margin-bottom:22px;box-shadow:var(--shadow-sm)}
+.main-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;
+  background:transparent;border:none;border-radius:var(--radius-s);padding:11px 16px;
+  color:var(--muted);font:inherit;font-size:14px;font-weight:700;cursor:pointer;
+  transition:all .2s cubic-bezier(0.2,0,0,1);position:relative}
+.main-tab:hover{color:var(--text);background:var(--surface-2)}
+.main-tab.sel{background:var(--grad);color:var(--on-accent);box-shadow:0 4px 16px rgba(232,89,12,.3)}
+.main-tab svg{width:19px;height:19px;stroke:currentColor;flex-shrink:0}
+.tab-badge{font-size:10px;padding:2px 7px;border-radius:99px;background:rgba(255,255,255,.25);
+  color:var(--on-accent);font-weight:800}
+html[data-theme="dark"] .main-tab.sel .tab-badge{background:rgba(0,0,0,.25)}
+
+/* ---------- Audiobook Studio Layout ---------- */
+.audiobook-view{display:none;animation:rise .3s ease}
+.audiobook-view.show{display:block}
+.source-switch{display:flex;background:var(--surface-2);border:1px solid var(--border);
+  border-radius:var(--radius-s);padding:4px;gap:6px;margin-bottom:16px}
+.source-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
+  background:transparent;border:none;border-radius:8px;padding:9px 12px;
+  color:var(--muted);font:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s}
+.source-btn:hover{color:var(--text)}
+.source-btn.sel{background:var(--surface);color:var(--text);box-shadow:var(--shadow-sm);border:1px solid var(--border)}
+
+.multi-drop{border:2px dashed var(--border);border-radius:var(--radius-s);
+  padding:32px 20px;text-align:center;color:var(--muted);cursor:pointer;transition:all .2s;background:var(--surface-2)}
+.multi-drop:hover,.multi-drop.dragover{border-color:var(--accent);background:rgba(232,89,12,.04);color:var(--text)}
+.multi-drop svg{width:40px;height:40px;stroke:var(--accent);margin-bottom:8px}
+
+.dropped-file-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.dropped-file-chip{display:inline-flex;align-items:center;gap:6px;background:var(--surface);
+  border:1px solid var(--border);border-radius:99px;padding:4px 12px;font-size:12px}
+.dropped-file-chip .remove-chip{cursor:pointer;color:var(--muted);font-weight:bold;margin-inline-start:4px}
+.dropped-file-chip .remove-chip:hover{color:#ef4444}
+
+/* Metadata Bar */
+.meta-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:14px;margin-top:18px;margin-bottom:18px}
+@media(max-width:800px){.meta-grid{grid-template-columns:1fr}}
+.field-group{display:flex;flex-direction:column;gap:6px}
+.field-label{font-size:12.5px;font-weight:700;color:var(--muted)}
+.input-text{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-s);
+  color:var(--text);font:inherit;font-size:14px;padding:10px 14px;outline:none;transition:border-color .2s}
+.input-text:focus{border-color:var(--accent)}
+
+.fmt-pills{display:flex;gap:6px}
+.fmt-pill{flex:1;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-s);
+  color:var(--muted);font:inherit;font-size:12.5px;font-weight:700;padding:9px 8px;cursor:pointer;
+  text-align:center;transition:all .18s}
+.fmt-pill.sel{background:var(--grad);color:var(--on-accent);border-color:transparent}
+
+/* Chapter Grid & Cards */
+.chapters-container{margin-top:24px;display:none}
+.chapters-container.show{display:block}
+.chapters-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.summary-badges{display:flex;gap:8px;flex-wrap:wrap}
+.summary-badge{background:rgba(232,89,12,.08);color:var(--accent);border:1px solid rgba(232,89,12,.2);
+  padding:5px 12px;border-radius:99px;font-size:12px;font-weight:700}
+html[data-theme="dark"] .summary-badge{background:rgba(255,122,89,.12);color:var(--accent-2);border-color:rgba(255,122,89,.25)}
+
+.chapter-cards-list{display:flex;flex-direction:column;gap:10px;max-height:480px;overflow-y:auto;padding-inline-end:4px}
+.chapter-card{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-s);
+  padding:12px 16px;transition:all .2s ease}
+.chapter-card:hover{border-color:var(--accent);box-shadow:var(--shadow-sm)}
+.card-header-row{display:flex;align-items:center;gap:10px}
+.chapter-idx-badge{background:var(--surface);border:1px solid var(--border);border-radius:8px;
+  padding:4px 10px;font-weight:800;font-size:12px;color:var(--accent);flex-shrink:0}
+.chapter-title-input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:6px;
+  padding:6px 10px;color:var(--text);font:inherit;font-size:13.5px;font-weight:700;outline:none}
+.chapter-title-input:focus{border-color:var(--accent)}
+.chapter-meta-tag{font-size:11.5px;color:var(--muted);white-space:nowrap}
+.chapter-del-btn{background:transparent;border:none;color:var(--muted);cursor:pointer;padding:4px 8px;
+  font-size:14px;border-radius:6px;transition:all .15s}
+.chapter-del-btn:hover{color:#ef4444;background:rgba(239,68,68,.08)}
+.chapter-snippet{margin-top:8px;font-size:12px;color:var(--faint);line-height:1.6;max-height:38px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chapter-text-input{width:100%;margin-top:8px;background:var(--surface);border:1px solid var(--border);
+  border-radius:6px;padding:8px 10px;color:var(--text);font:inherit;font-size:12.5px;line-height:1.6;
+  resize:vertical;min-height:54px;outline:none;transition:border-color .2s}
+.chapter-text-input:focus{border-color:var(--accent)}
+
+/* Batch Monitor Card */
+.batch-monitor{display:none;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:22px;margin-top:24px;box-shadow:var(--shadow)}
+.batch-monitor.show{display:block;animation:rise .3s ease}
+.batch-monitor-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.batch-status-badge{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:800}
+.batch-pulse-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);animation:pPulse 1.2s infinite ease-in-out}
+.batch-progress-bar{position:relative;width:100%;height:12px;background:var(--surface-2);border:1px solid var(--border);
+  border-radius:99px;overflow:hidden;margin-bottom:16px}
+.batch-progress-fill{height:100%;border-radius:99px;background:var(--grad);position:relative;
+  transition:width .35s ease;box-shadow:0 0 12px rgba(232,89,12,.4)}
+
+.batch-chapters-list{display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto;margin-top:14px;margin-bottom:18px}
+.batch-chapter-row{display:flex;align-items:center;justify-content:space-between;background:var(--surface-2);
+  border:1px solid var(--border);border-radius:var(--radius-s);padding:10px 14px;font-size:12.5px;gap:10px}
+.batch-chapter-info{display:flex;align-items:center;gap:10px;flex:1;overflow:hidden}
+.batch-row-title{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.batch-row-status{font-size:11.5px;padding:2px 8px;border-radius:6px;white-space:nowrap}
+.batch-row-status.pending{color:var(--faint);background:rgba(148,163,184,.1)}
+.batch-row-status.processing{color:var(--accent);background:rgba(232,89,12,.1);font-weight:700}
+.batch-row-status.completed{color:#10b981;background:rgba(16,185,129,.1);font-weight:700}
+.batch-row-status.failed{color:#ef4444;background:rgba(239,68,68,.1)}
+.batch-row-status.cancelled{color:var(--muted);background:rgba(148,163,184,.1)}
+.chapter-play-btn{background:var(--surface);border:1px solid var(--border);border-radius:6px;
+  padding:3px 9px;cursor:pointer;color:var(--muted);display:inline-flex;align-items:center;gap:4px;font-size:11px}
+.chapter-play-btn:hover{color:var(--text);border-color:var(--accent)}
+
+/* Download Hero Buttons */
+.batch-downloads{display:none;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px;padding-top:18px;border-top:1px solid var(--border)}
+.batch-downloads.show{display:grid}
+@media(max-width:680px){.batch-downloads{grid-template-columns:1fr}}
+.download-hero-btn{display:flex;align-items:center;justify-content:center;gap:12px;border-radius:var(--radius-s);
+  padding:14px 18px;font:inherit;font-size:13.5px;font-weight:800;cursor:pointer;
+  transition:all .2s cubic-bezier(0.2,0,0,1);text-decoration:none}
+.download-hero-btn.zip{background:var(--grad);color:var(--on-accent);border:none;box-shadow:0 6px 20px rgba(232,89,12,.35)}
+.download-hero-btn.zip:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(232,89,12,.45)}
+.download-hero-btn.merged{background:var(--surface-2);color:var(--text);border:1px solid var(--border)}
+.download-hero-btn.merged:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.download-hero-btn svg{width:18px;height:18px;stroke:currentColor;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -195,15 +441,64 @@ footer b{color:var(--muted);font-weight:600}
       <h1>پارسی‌گو</h1>
       <div class="sub">تبدیل متن فارسی به گفتار، با کلونینگ صدای مرجع</div>
     </div>
-    <div class="badge">موتور ONNX · آفلاین · بدون torch</div>
+    <div style="margin-inline-start:auto;display:flex;align-items:center;gap:10px">
+      <div class="badge">موتور ONNX · آفلاین · بدون torch</div>
+      <button class="theme-btn" id="themeToggle" type="button" title="تغییر حالت روز / شب">
+        <svg class="sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
   </header>
+
+  <!-- Main Tabs Switcher -->
+  <nav class="main-tabs" role="tablist">
+    <button type="button" class="main-tab sel" id="tabBtnSingle" role="tab" aria-selected="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="18" x2="12" y2="22"/></svg>
+      <span>تبدیل گفتار تکی (Single TTS)</span>
+    </button>
+    <button type="button" class="main-tab" id="tabBtnBatch" role="tab" aria-selected="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <span>استودیوی کتاب صوتی (Audiobook Studio)</span>
+      <span class="tab-badge">جدید</span>
+    </button>
+  </nav>
+
+  <!-- Single TTS Container -->
+  <div id="singleView">
+    <!-- Engine Switcher -->
+    <div class="engine-switcher">
+    <button class="engine-btn sel" id="btnEngineLocal" data-engine="local">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span>موتور محلی (Pure-ONNX · آفلاین / کلونینگ صدا)</span>
+    </button>
+    <button class="engine-btn" id="btnEngineGemini" data-engine="gemini">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+      <span>موتور ابری گوگل (Gemini 3.8 Flash TTS)</span>
+    </button>
+  </div>
 
   <div class="grid">
     <section class="panel">
-      <div class="label"><span>متن فارسی</span><span class="cnt" id="cnt"></span></div>
-      <textarea id="txt" placeholder="متن خود را بنویسید…">سلام، حال شما چطور است؟ امیدوارم روز خوبی داشته باشید.</textarea>
-      <div class="chips" id="chips"></div>
-      <div class="pace-row">
+      <!-- File Info Badge when loaded -->
+      <div class="file-info-badge" id="fileBadge">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span id="fileBadgeText">فایل بارگذاری شد</span>
+        <button type="button" class="clear-file" id="clearFileBtn" title="حذف فایل و بازگشت به متن پیش‌فرض">✕</button>
+      </div>
+
+      <div class="label"><span>متن فارسی ورودی</span><span class="cnt" id="cnt"></span></div>
+      <textarea id="txt" placeholder="متن خود را بنویسید یا یک فایل متنی (.txt) را به داخل این کادر بکشید…">سلام، حال شما چطور است؟ امیدوارم روز خوبی داشته باشید.</textarea>
+
+      <div class="txt-toolbar">
+        <div class="chips" id="chips" style="margin-top:0"></div>
+        <button class="upload-txt-btn" id="uploadTxtBtn" type="button" title="انتخاب فایل متنی">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          بارگذاری فایل متنی (.txt)
+        </button>
+        <input type="file" id="txtFileInput" accept=".txt" hidden>
+      </div>
+
+      <div class="pace-row" id="modeRow">
         <span class="plabel">حالت گفتار</span>
         <div class="pchips">
           <button class="pchip sel" data-m="split" title="هر ویرگول و علامت، مکث خودش را می‌گیرد">با مکث ویرگول‌ها</button>
@@ -220,6 +515,13 @@ footer b{color:var(--muted);font-weight:600}
         <input type="range" id="pace" min="0.7" max="1.35" step="0.05" value="1" dir="ltr">
         <span class="pval" id="paceVal">۱٫۰۰×</span>
       </div>
+      <div class="pace-row" id="singleFormatRow">
+        <span class="plabel">فرمت خروجی</span>
+        <div class="pchips" id="singleFmtChips">
+          <button type="button" class="pchip sel" data-fmt="mp3" id="singleFmtMp3" title="فایل فشرده استاندارد صوتی با حجم سبک و سازگاری بالا">MP3 (پیش‌فرض)</button>
+          <button type="button" class="pchip" data-fmt="wav" id="singleFmtWav" title="فرمت صوتی غیرفشرده و کیفیت استودیویی (WAV)">WAV</button>
+        </div>
+      </div>
       <button class="go" id="go">
         <span class="tx" style="display:flex;align-items:center;gap:10px">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
@@ -230,7 +532,40 @@ footer b{color:var(--muted);font-weight:600}
         <span class="eq"><i></i><i></i><i></i><i></i></span>
       </button>
 
-      <div class="ph-tools">
+      <!-- Modern Multi-Stage Progress Card -->
+      <div class="progress-card" id="progressCard">
+        <div class="pcard-top">
+          <div class="pcard-stage">
+            <span class="pcard-pulse"></span>
+            <span id="pcardStageText">در حال آماده‌سازی و تحلیل متن…</span>
+          </div>
+          <div class="pcard-time">
+            <span id="pcardEta">باقی‌مانده: در حال تخمین…</span>
+            <span class="pcard-dot">·</span>
+            <span id="pcardElapsed">سپری‌شده: ۰ ثانیه</span>
+          </div>
+        </div>
+
+        <div class="pcard-bar-track">
+          <div class="pcard-bar-fill" id="pcardBarFill" style="width: 0%">
+            <span class="pcard-shimmer"></span>
+          </div>
+        </div>
+
+        <div class="pcard-bottom">
+          <div class="pcard-chunk-status">
+            <span class="pcard-percent" id="pcardPercent">۰٪</span>
+            <span class="pcard-chunk-badge" id="pcardChunkBadge">آماده‌سازی</span>
+            <span class="pcard-snippet" id="pcardSnippet"></span>
+          </div>
+          <button type="button" class="pcard-cancel-btn" id="pcardCancelBtn" title="لغو عملیات">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            لغو
+          </button>
+        </div>
+      </div>
+
+      <div class="ph-tools" id="phToolsWrap">
         <button class="ph-prep" id="phPrep">اصلاح تلفظ / ویرایش فونم</button>
         <div class="ph-editor" id="phEditor">
           <div class="label"><span>فونم قابل ویرایش</span><span class="cnt">لاتین</span></div>
@@ -242,13 +577,33 @@ footer b{color:var(--muted);font-weight:600}
     </section>
 
     <aside class="panel">
-      <div class="label"><span>صدای مرجع</span><span class="cnt">≤ ۵ ثانیه</span></div>
+      <div class="label"><span id="voiceHeader">صدای مرجع</span><span class="cnt" id="voiceSub">≤ ۵ ثانیه</span></div>
       <div id="voices"></div>
       <div class="drop" id="drop">
         <b>بارگذاری صدا</b> — یا فایل را اینجا رها کنید<br>
         <span style="font-size:11px;color:var(--faint)">صدای خودت را بده تا با آن حرف بزند (WAV)</span>
       </div>
       <input type="file" id="file" accept=".wav,.mp3,.ogg,.flac" hidden>
+
+      <!-- Gemini Cloud API Key Box -->
+      <div class="api-key-box" id="apiKeyBox">
+        <div class="label" style="margin-bottom:6px"><span>کلید Google Gemini API</span><span class="cnt" id="apiKeyStatus">اختیاری</span></div>
+        <div style="position:relative;display:flex;align-items:center">
+          <input type="password" id="apiKeyInput" placeholder="AIzaSy... (یا تنظیم متغیر GEMINI_API_KEY)" style="padding-inline-end:36px">
+          <button type="button" id="toggleApiKeyVis" title="نمایش/مخفی‌سازی کلید" style="position:absolute;left:8px;background:none;border:none;color:var(--muted);cursor:pointer;padding:4px;display:flex">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <div class="hint">کلید Google AI Studio شما برای اتصال مستقیم به Gemini (به‌صورت امن فقط در مرورگر شما ذخیره می‌شود).</div>
+        <div class="quota-warning" id="quotaWarning" style="display:none;margin-top:12px;padding:12px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.3);border-radius:var(--radius-s);font-size:12px;line-height:1.6;color:var(--text)">
+          <div style="font-weight:700;color:#ef4444;margin-bottom:4px">⚠️ سهمیه روزانه حساب رایگان گوگل تکمیل شد</div>
+          <div style="color:var(--muted)">مدل تبدیل صوت گوگل در پلن رایگان دارای محدودیت روزانه ۱۰ درخواست است. برای ساخت نامحدود گفتار بدون نیاز به اینترنت یا کلید:</div>
+          <button type="button" id="btnSwitchToLocalNow" style="margin-top:8px;background:var(--grad);border:none;border-radius:6px;color:#fff;padding:6px 14px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            سوئیچ فوری به موتور محلی (کاملاً آفلاین و رایگان)
+          </button>
+        </div>
+      </div>
     </aside>
   </div>
 
@@ -262,18 +617,168 @@ footer b{color:var(--muted);font-weight:600}
       </button>
       <div class="wave" id="wave"><canvas id="cv"></canvas></div>
       <div class="tm" id="tm">۰:۰۰ / ۰:۰۰</div>
-      <div class="dl" id="dl" title="دانلود WAV">
+      <div class="dl" id="dl" title="دانلود MP3">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M4 21h16"/>
         </svg>
       </div>
     </div>
   </section>
+  </div> <!-- /#singleView -->
 
-  <section class="hist" id="histWrap" style="display:none">
-    <h2>تاریخچه</h2>
-    <div id="hist"></div>
-  </section>
+  <!-- Audiobook Studio View -->
+  <div id="audiobookView" class="audiobook-view">
+    <!-- Studio Header -->
+    <div class="panel" style="margin-bottom: 20px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+        <div>
+          <h2 style="font-size: 19px; font-weight: 800; color: var(--text);">استودیوی تولید کتاب‌های صوتی کامل</h2>
+          <p style="font-size: 13px; color: var(--muted); margin-top: 3px;">
+            تفکیک هوشمند فصول، نظارت زنده بر صف پردازش و دریافت پکیج کامل فصول به‌صورت فایل فشرده (ZIP) یا فایل صوتی یکپارچه
+          </p>
+        </div>
+        <div class="badge" style="font-weight: 700;">مدیریت صف دسته‌ای ناهمگام</div>
+      </div>
+    </div>
+
+    <!-- Source Selector & Input Panel -->
+    <div class="panel">
+      <!-- Source Type Switcher -->
+      <div class="source-switch">
+        <button type="button" class="source-btn sel" id="btnSourceText">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+          <span>متن کامل کتاب (تفکیک خودکار فصول)</span>
+        </button>
+        <button type="button" class="source-btn" id="btnSourceFiles">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span>بارگذاری چندفایلی (چندین فایل .txt)</span>
+        </button>
+      </div>
+
+      <!-- View 1: Single Book Text -->
+      <div id="sourceTextSection">
+        <div class="label">
+          <span>متن رمان یا کتاب (شامل فصول)</span>
+          <span class="cnt" id="batchTextCnt">۰ کلمه</span>
+        </div>
+        <textarea id="batchBookText" style="min-height: 180px;" placeholder="متن کامل اثر خود را اینجا قرار دهید یا یک فایل متنی کتاب را به اینجا بکشید… (عناوینی چون «فصل اول»، «فصل ۲»، «مقدمه»، خطوط «---» یا تیترهای Markdown به طور خودکار شناسایی می‌شوند)"></textarea>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; flex-wrap:wrap; gap:10px;">
+          <button type="button" class="upload-txt-btn" id="btnUploadBookFile">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            بارگذاری فایل کتاب (.txt)
+          </button>
+          <input type="file" id="bookFileInput" accept=".txt" hidden>
+          <button type="button" class="go" id="btnParseText" style="margin-top:0; width:auto; padding:10px 22px; font-size:13.5px;">
+            <span>🔍 شناسایی و قطعه‌بندی هوشمند فصول</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- View 2: Multi-Files Drop -->
+      <div id="sourceFilesSection" style="display: none;">
+        <div class="multi-drop" id="multiDropZone">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <div style="font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px;">فایل‌های متنی فصول کتاب را اینجا رها کنید</div>
+          <div style="font-size: 12px; color: var(--muted);">یا برای انتخاب همزمان چندین فایل (.txt) کلیک کنید</div>
+        </div>
+        <input type="file" id="multiFilesInput" multiple accept=".txt" hidden>
+        <div class="dropped-file-list" id="multiFileList"></div>
+        <div style="text-align: left; margin-top: 14px;">
+          <button type="button" class="go" id="btnParseMultiFiles" style="display:none; margin-top:0; width:auto; padding:10px 22px; font-size:13.5px;">
+            <span>⚡ ساخت فصول از فایل‌های انتخابی</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Audiobook Settings Grid -->
+      <div class="meta-grid">
+        <div class="field-group">
+          <label class="field-label" for="batchBookTitle">عنوان اثر / نام کتاب</label>
+          <input type="text" class="input-text" id="batchBookTitle" placeholder="مثال: تاریخ بیهقی">
+        </div>
+        <div class="field-group">
+          <label class="field-label">فرمت خروجی صوت</label>
+          <div class="fmt-pills">
+            <button type="button" class="fmt-pill sel" data-fmt="mp3" id="fmtMp3">MP3 (کم‌حجم و استاندارد)</button>
+            <button type="button" class="fmt-pill" data-fmt="wav" id="fmtWav">WAV (بدون افت)</button>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="batchVoiceSelect">صدای گوینده</label>
+          <select class="input-text" id="batchVoiceSelect" style="cursor: pointer;"></select>
+        </div>
+      </div>
+
+      <div class="pace-row" style="margin-top: 6px; margin-bottom: 12px;">
+        <span class="plabel">سرعت گفتار کتاب</span>
+        <input type="range" id="batchPace" min="0.7" max="1.35" step="0.05" value="1" dir="ltr">
+        <span class="pval" id="batchPaceVal">۱٫۰۰×</span>
+      </div>
+
+      <!-- Chapters Review & Edit Grid -->
+      <div class="chapters-container" id="chaptersContainer">
+        <div class="chapters-summary">
+          <div class="summary-badges">
+            <span class="summary-badge" id="badgeChapterCount">۰ فصل</span>
+            <span class="summary-badge" id="badgeTotalWords">۰ واژه</span>
+            <span class="summary-badge" id="badgeTotalEst">~۰ دقیقه گفتار</span>
+          </div>
+          <button type="button" class="upload-txt-btn" id="btnAddChapter" style="margin-top:0;">+ افزودن فصل دستی</button>
+        </div>
+
+        <div class="chapter-cards-list" id="chapterCardsList"></div>
+
+        <button type="button" class="go" id="btnStartBatch" style="margin-top: 18px;">
+          <span style="display:flex; align-items:center; gap:8px;">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            شروع پردازش صف و تولید کتاب صوتی
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Batch Live Queue Monitor Card -->
+    <div class="batch-monitor" id="batchMonitorCard">
+      <div class="batch-monitor-top">
+        <div class="batch-status-badge">
+          <span class="batch-pulse-dot" id="batchPulseDot"></span>
+          <span id="batchMonitorStatusText">در حال پردازش فصول کتاب…</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px; font-size: 12px; color: var(--muted); flex-wrap: wrap;">
+          <span id="batchTimeEta">باقی‌مانده: در حال تخمین…</span>
+          <span>·</span>
+          <span id="batchTimeElapsed">سپری‌شده: ۰ ثانیه</span>
+          <button type="button" class="pcard-cancel-btn" id="btnCancelBatch">لغو پردازش</button>
+        </div>
+      </div>
+
+      <div class="batch-progress-bar">
+        <div class="batch-progress-fill" id="batchProgressFill" style="width: 0%;">
+          <span class="pcard-shimmer"></span>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 700; margin-bottom: 12px;">
+        <span id="batchBookTitleDisplay">کتاب صوتی</span>
+        <span id="batchProgressPercent" style="color: var(--accent);">۰٪</span>
+      </div>
+
+      <!-- Per-Chapter Live Status List -->
+      <div class="batch-chapters-list" id="batchChaptersLiveList"></div>
+
+      <!-- Download Hero Buttons -->
+      <div class="batch-downloads" id="batchDownloadsArea">
+        <a class="download-hero-btn zip" id="btnDownloadZip" href="#" download>
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          <span>دانلود پکیج کامل فصول (فایل ZIP با شناسنامه)</span>
+        </a>
+        <a class="download-hero-btn merged" id="btnDownloadMerged" href="#" download>
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          <span>دانلود فایل صوتی کامل کتاب (Merged Audio)</span>
+        </a>
+      </div>
+    </div>
+  </div>
 
   <footer>ساخته‌شده با <b>pocket-tts-farsi-v2</b> روی <b>ONNX Runtime</b> — کاملاً آفلاین، بدون GPU</footer>
 </div>
@@ -285,23 +790,104 @@ footer b{color:var(--muted);font-weight:600}
 const $ = id => document.getElementById(id);
 const fa = n => String(n).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
 const fmt = s => { s = Math.max(0, s|0); return fa((s/60|0)) + ":" + fa(String(s%60).padStart(2,"0")); };
+const escapeHtml = s => (s == null ? "" : String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;"));
 
-// the waveform gradient follows the theme: read the CSS custom properties
-// once at load (no theme switching here, so the cache never goes stale)
+// Theme Manager - Default to Light Theme
+const savedTheme = localStorage.getItem("ptts_theme") || "light";
+document.documentElement.setAttribute("data-theme", savedTheme);
+
 const cssVar = (name, fallback) =>
   (getComputedStyle(document.documentElement).getPropertyValue(name) || "").trim() || fallback;
-const ACCENT = cssVar("--accent", "#ff7a59"), ACCENT_2 = cssVar("--accent-2", "#ffb454");
+let ACCENT = cssVar("--accent", "#e8590c"), ACCENT_2 = cssVar("--accent-2", "#d97706");
 
+function updateThemeColors() {
+  ACCENT = cssVar("--accent", "#e8590c");
+  ACCENT_2 = cssVar("--accent-2", "#d97706");
+  if (peaks && curDur && $("aud")) drawCanvas($("aud").currentTime / curDur);
+  else if (peaks) drawCanvas(0);
+}
+
+const themeBtn = $("themeToggle");
+if (themeBtn) {
+  themeBtn.onclick = () => {
+    const cur = document.documentElement.getAttribute("data-theme") || "light";
+    const next = cur === "light" ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", next);
+    localStorage.setItem("ptts_theme", next);
+    updateThemeColors();
+  };
+}
+
+let currentEngine = "local";
 let VOICES = [], selVoice = null;
 let peaks = null, curId = null, curDur = 0, history = [];
 
+/* ---------- engine switching ---------- */
+function setEngine(eng) {
+  currentEngine = eng;
+  $("btnEngineLocal").classList.toggle("sel", eng === "local");
+  $("btnEngineGemini").classList.toggle("sel", eng === "gemini");
+
+  const isGemini = eng === "gemini";
+  $("drop").style.display = isGemini ? "none" : "block";
+  $("apiKeyBox").classList.toggle("show", isGemini);
+  $("modeRow").style.display = isGemini ? "none" : "flex";
+  $("phToolsWrap").style.display = isGemini ? "none" : "block";
+  $("voiceHeader").textContent = isGemini ? "صدای ابری گوگل" : "صدای مرجع";
+  $("voiceSub").textContent = isGemini ? "پیش‌ساخته" : "≤ ۵ ثانیه";
+
+  const badge = document.querySelector("header .badge");
+  if (badge) {
+    badge.textContent = isGemini
+      ? "موتور ابری Google Gemini 3.8 Flash TTS"
+      : "موتور ONNX · آفلاین · بدون torch";
+  }
+
+  if (eng === "local" && $("quotaWarning")) {
+    $("quotaWarning").style.display = "none";
+  }
+
+  selVoice = null;
+  loadVoices();
+}
+
+$("btnEngineLocal").onclick = () => setEngine("local");
+$("btnEngineGemini").onclick = () => setEngine("gemini");
+
+if ($("btnSwitchToLocalNow")) {
+  $("btnSwitchToLocalNow").onclick = () => {
+    setEngine("local");
+    toast("به موتور محلی تغییر یافت — می‌توانید بدون محدودیت گفتار بسازید");
+  };
+}
+
+/* ---------- api key persistence ---------- */
+const savedKey = localStorage.getItem("gemini_api_key") || "";
+if ($("apiKeyInput")) {
+  $("apiKeyInput").value = savedKey;
+  $("apiKeyInput").addEventListener("input", e => {
+    localStorage.setItem("gemini_api_key", e.target.value.trim());
+  });
+}
+if ($("toggleApiKeyVis")) {
+  $("toggleApiKeyVis").onclick = () => {
+    const inp = $("apiKeyInput");
+    inp.type = inp.type === "password" ? "text" : "password";
+  };
+}
+
 /* ---------- voices ---------- */
 async function loadVoices() {
-  const r = await fetch("/api/voices").then(r => r.json());
-  VOICES = r.voices;
-  if (!selVoice || !VOICES.find(v => v.id === selVoice))
-    selVoice = (VOICES[0] || {}).id;
-  renderVoices();
+  try {
+    const r = await fetch(`/api/voices?engine=${currentEngine}`).then(r => r.json());
+    VOICES = r.voices || [];
+    if (!selVoice || !VOICES.find(v => v.id === selVoice))
+      selVoice = (VOICES[0] || {}).id;
+    renderVoices();
+    populateBatchVoices();
+  } catch (err) {
+    console.error("Failed to load voices", err);
+  }
 }
 function renderVoices() {
   $("voices").innerHTML = VOICES.map(v => `
@@ -329,17 +915,65 @@ document.querySelectorAll(".chip").forEach(c => c.onclick = () => {
   $("txt").value = c.textContent; count();
 });
 
+/* ---------- text file upload & drag/drop ---------- */
+$("uploadTxtBtn").onclick = () => $("txtFileInput").click();
+$("txtFileInput").onchange = e => {
+  if (e.target.files[0]) handleTextFile(e.target.files[0]);
+  e.target.value = "";
+};
+
+const txtArea = $("txt");
+txtArea.addEventListener("dragover", e => {
+  e.preventDefault();
+  txtArea.classList.add("dragover");
+});
+txtArea.addEventListener("dragleave", () => txtArea.classList.remove("dragover"));
+txtArea.addEventListener("drop", e => {
+  e.preventDefault();
+  txtArea.classList.remove("dragover");
+  if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+    const file = e.dataTransfer.files[0];
+    if (file.name.endsWith(".txt") || file.type.includes("text")) {
+      handleTextFile(file);
+    } else {
+      toast("لطفاً یک فایل با پسوند txt. انتخاب کنید");
+    }
+  }
+});
+
+function handleTextFile(file) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    const content = e.target.result.trim();
+    if (!content) return toast("فایل متنی خالی است");
+    txtArea.value = content;
+    count();
+    const words = content.split(/\s+/).filter(Boolean).length;
+    const estMinutes = Math.max(1, Math.round(words / 125));
+    $("fileBadgeText").textContent = `فایل: ${file.name} (${fa(content.length)} کاراکتر · ~${fa(estMinutes)} دقیقه گفتار)`;
+    $("fileBadge").classList.add("show");
+    toast(`فایل متنی بارگذاری شد (${fa(words)} واژه)`);
+  };
+  reader.readAsText(file, "utf-8");
+}
+
+$("clearFileBtn").onclick = () => {
+  $("fileBadge").classList.remove("show");
+  txtArea.value = "سلام، حال شما چطور است؟ امیدوارم روز خوبی داشته باشید.";
+  count();
+};
+
 /* ---------- pace ---------- */
 const paceEl = $("pace");
 function faNum(x) { return fa(x).replace(".", "٫"); }
 function setPace(v, fromChip) {
   paceEl.value = v;
   $("paceVal").textContent = faNum((+v).toFixed(2)) + "×";
-  document.querySelectorAll(".pchip").forEach(c =>
+  document.querySelectorAll(".pchip[data-p]").forEach(c =>
     c.classList.toggle("sel", Math.abs(+c.dataset.p - v) < 0.01));
 }
 paceEl.addEventListener("input", () => setPace(paceEl.value));
-document.querySelectorAll(".pchip").forEach(c =>
+document.querySelectorAll(".pchip[data-p]").forEach(c =>
   c.onclick = () => setPace(c.dataset.p));
 setPace(1);
 
@@ -351,22 +985,124 @@ document.querySelectorAll(".pchip[data-m]").forEach(c =>
     document.querySelectorAll(".pchip[data-m]").forEach(x => x.classList.toggle("sel", x === c));
   });
 
+/* ---------- single tts audio format (default: mp3) ---------- */
+let currentSingleFormat = "mp3";
+function setSingleFormat(fmt) {
+  currentSingleFormat = (fmt || "mp3").toLowerCase() === "wav" ? "wav" : "mp3";
+  document.querySelectorAll("#singleFmtChips button").forEach(btn => {
+    btn.classList.toggle("sel", btn.dataset.fmt === currentSingleFormat);
+  });
+  if ($("dl")) $("dl").title = `دانلود ${currentSingleFormat.toUpperCase()}`;
+}
+document.querySelectorAll("#singleFmtChips button").forEach(btn => {
+  btn.onclick = () => setSingleFormat(btn.dataset.fmt);
+});
+
 /* ---------- counter ---------- */
-let MAX_TEXT = 800;  // fallback until /api/config answers; the server enforces the cap
+let MAX_TEXT = 50000;
 $("txt").maxLength = MAX_TEXT;
 fetch("/api/config").then(r => r.json()).then(c => {
   if (c.max_text) { MAX_TEXT = c.max_text; $("txt").maxLength = MAX_TEXT; count(); }
+  if (c.default_format) setSingleFormat(c.default_format);
+  if (c.has_gemini_key && $("apiKeyStatus")) {
+    $("apiKeyStatus").textContent = "تنظیم در سرور (فعال)";
+    $("apiKeyStatus").style.color = "#4ade80";
+  }
 });
 function count() { $("cnt").textContent = fa($("txt").value.length) + " / " + fa(MAX_TEXT); }
 $("txt").addEventListener("input", count); count();
 
-/* ---------- toast ---------- */
-let toastT;
-const TOAST_MS = 3200;
-function toast(msg) {
-  const t = $("toast"); t.textContent = msg; t.classList.add("show");
-  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), TOAST_MS);
+/* ---------- Toast & Persistent Error Notification ---------- */
+let toastT = null;
+
+function closeToast() {
+  const t = $("toast");
+  if (!t) return;
+  t.classList.remove("show");
+  if (toastT) {
+    clearTimeout(toastT);
+    toastT = null;
+  }
 }
+
+function isErrorContent(msg) {
+  if (!msg) return false;
+  const s = String(msg).toLowerCase();
+  return s.includes("خطا") || s.includes("error") || s.includes("سهمیه") ||
+         s.includes("quota") || s.includes("exhausted") || s.includes("429") ||
+         s.includes("failed") || s.includes("نامعتبر") || s.includes("نشد");
+}
+
+function buildToastHtml(msg, isErr, isQuota) {
+  const icon = isErr
+    ? `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#ef4444" stroke-width="2.3" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`
+    : `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>`;
+
+  let actions = "";
+  if (isQuota) {
+    actions = `
+      <div class="toast-actions">
+        <button type="button" class="toast-btn primary" id="toastSwitchLocalBtn">سوئیچ به موتور محلی (بدون محدودیت)</button>
+        <button type="button" class="toast-btn" id="toastDismissBtn">متوجه شدم</button>
+      </div>`;
+  } else if (isErr) {
+    actions = `
+      <div class="toast-actions">
+        <button type="button" class="toast-btn" id="toastDismissBtn">بستن پنجره خطا</button>
+      </div>`;
+  }
+
+  return `
+    <span class="toast-icon">${icon}</span>
+    <div class="toast-body">
+      ${isErr ? `<div class="toast-title">خطا در پردازش گفتار</div>` : ""}
+      <div class="toast-msg">${escapeHtml(msg)}</div>
+      ${actions}
+    </div>
+    <button type="button" class="toast-close" id="toastCloseBtn" title="بستن (Esc)" aria-label="بستن">✕</button>
+  `;
+}
+
+function bindToastButtons() {
+  const closeBtn = $("toastCloseBtn");
+  if (closeBtn) closeBtn.onclick = closeToast;
+  const dismissBtn = $("toastDismissBtn");
+  if (dismissBtn) dismissBtn.onclick = closeToast;
+  const switchBtn = $("toastSwitchLocalBtn");
+  if (switchBtn) {
+    switchBtn.onclick = () => {
+      setEngine("local");
+      closeToast();
+      toast("به موتور محلی تغییر یافت — می‌توانید بدون محدودیت گفتار بسازید");
+    };
+  }
+}
+
+function toast(msg, options = {}) {
+  const t = $("toast");
+  if (!t || !msg) return;
+  if (toastT) { clearTimeout(toastT); toastT = null; }
+
+  const isErr = (typeof options === "boolean" && options) ||
+                (typeof options === "object" && options.isError) ||
+                isErrorContent(msg);
+  const isQuota = String(msg).includes("سهمیه") || String(msg).includes("Gemini") ||
+                  String(msg).includes("Google") || String(msg).includes("Quota");
+
+  t.className = "toast show" + (isErr ? " is-error" : "");
+  t.innerHTML = buildToastHtml(msg, isErr, isQuota);
+  bindToastButtons();
+
+  // If ERROR: never auto-close! Closing is explicitly left to the user.
+  if (isErr) return;
+
+  const duration = typeof options === "number" ? options : (options.duration || 4500);
+  toastT = setTimeout(closeToast, duration);
+}
+
+window.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeToast();
+});
 
 /* ---------- upload ---------- */
 $("drop").onclick = () => $("file").click();
@@ -418,7 +1154,7 @@ $("phGo").onclick = async () => {
   try {
     const r = await fetch("/api/tts-phonemes", {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phonemes, voice: selVoice, pace: +paceEl.value }),
+      body: JSON.stringify({ phonemes, voice: selVoice, pace: +paceEl.value, format: currentSingleFormat }),
     }).then(r => r.json());
     if (r.detail) return toast(typeof r.detail === "string" ? r.detail : "خطا در تولید");
     await present(r, $("txt").value.trim());
@@ -430,26 +1166,161 @@ $("phGo").onclick = async () => {
   }
 };
 
-/* ---------- generate ---------- */
+/* ---------- progress card controls ---------- */
+function setPcardProgress({ percent, stageText, chunkBadge, snippet }) {
+  if (percent !== undefined) {
+    const p = Math.min(100, Math.max(0, percent));
+    $("pcardBarFill").style.width = p + "%";
+    $("pcardPercent").textContent = fa(Math.round(p)) + "٪";
+  }
+  if (stageText) $("pcardStageText").textContent = stageText;
+  if (chunkBadge) $("pcardChunkBadge").textContent = chunkBadge;
+  if (snippet !== undefined) $("pcardSnippet").textContent = snippet;
+}
+
+let activeAbortController = null;
+
+/* ---------- generate speech with streaming progress & live ETA ---------- */
 $("go").onclick = async () => {
   const text = $("txt").value.trim();
   if (!text) return toast("متنی بنویسید");
-  $("go").disabled = true; $("go").classList.add("busy");
+
+  $("go").disabled = true;
+  $("go").classList.add("busy");
+  $("progressCard").classList.add("show");
+  $("result").classList.remove("show");
+
+  setPcardProgress({
+    percent: 4,
+    stageText: "تحلیل ساختار و قطعه‌بندی متن…",
+    chunkBadge: "شروع",
+    snippet: text.length > 55 ? text.slice(0, 55) + "…" : text,
+  });
+
   const t0 = performance.now();
-  const tick = setInterval(() =>
-    $("go").querySelector(".tx").textContent = `در حال ساخت… ${fa(((performance.now()-t0)/1000).toFixed(0))} ثانیه`, 250);
+  let finishedChunks = 0;
+  let totalChunks = 1;
+
+  const timerTick = setInterval(() => {
+    const elapsedSec = (performance.now() - t0) / 1000;
+    $("pcardElapsed").textContent = `سپری‌شده: ${fa(elapsedSec.toFixed(0))} ثانیه`;
+
+    if (finishedChunks > 0 && totalChunks > finishedChunks) {
+      const avgTime = elapsedSec / finishedChunks;
+      const remaining = totalChunks - finishedChunks;
+      const eta = Math.max(1, Math.round(remaining * avgTime));
+      $("pcardEta").textContent = `باقی‌مانده: ~${fa(eta)} ثانیه`;
+    } else {
+      $("pcardEta").textContent = "باقی‌مانده: در حال تخمین…";
+    }
+  }, 400);
+
+  activeAbortController = new AbortController();
+
+  $("pcardCancelBtn").onclick = () => {
+    if (activeAbortController) {
+      activeAbortController.abort();
+      activeAbortController = null;
+    }
+    clearInterval(timerTick);
+    $("progressCard").classList.remove("show");
+    $("go").disabled = false;
+    $("go").classList.remove("busy");
+    toast("عملیات ساخت گفتار لغو شد");
+  };
+
   try {
-    const r = await fetch("/api/tts", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text, voice: selVoice, pace: +paceEl.value, mode }),
-    }).then(r => r.json());
-    if (r.detail) return toast(typeof r.detail === "string" ? r.detail : "خطا در تولید");
-    await present(r, text);
-  } catch (e) { toast("ارتباط با سرور برقرار نشد"); }
-  finally {
-    clearInterval(tick);
-    $("go").disabled = false; $("go").classList.remove("busy");
-    $("go").querySelector(".tx").innerHTML = `<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="display:flex"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><path d="M12 18v4"/></svg> ساخت گفتار`;
+    const payload = {
+      text,
+      voice: selVoice,
+      pace: +paceEl.value,
+      mode: mode,
+      engine: currentEngine,
+      format: currentSingleFormat,
+    };
+    if (currentEngine === "gemini") {
+      const k = ($("apiKeyInput").value || "").trim();
+      if (k) payload.api_key = k;
+    }
+
+    const response = await fetch("/api/tts-stream", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      signal: activeAbortController.signal,
+    });
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({ detail: "خطای سرور" }));
+      throw new Error(err.detail || "خطا در پردازش درخواست");
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+
+      const parts = buffer.split("\n\n");
+      buffer = parts.pop();
+
+      for (const part of parts) {
+        if (!part.trim().startsWith("data:")) continue;
+        const jsonStr = part.replace(/^data:\s*/, "").trim();
+        if (!jsonStr) continue;
+
+        const event = JSON.parse(jsonStr);
+        if (event.type === "progress") {
+          finishedChunks = event.current || finishedChunks;
+          totalChunks = event.total || totalChunks;
+
+          let stageLabel = "پردازش عصبی گفتار…";
+          if (event.stage === "text_analysis" || event.stage === "started") {
+            stageLabel = "تحلیل ساختار و قطعه‌بندی متن…";
+          } else if (event.stage === "finalizing") {
+            stageLabel = "یکپارچه‌سازی و مسترینگ نهایی صوت…";
+          }
+
+          setPcardProgress({
+            percent: event.percent,
+            stageText: stageLabel,
+            chunkBadge: totalChunks > 1 ? `قطعه ${fa(event.current)} از ${fa(totalChunks)}` : "در حال پردازش",
+            snippet: event.sentence ? `«${event.sentence}»` : "",
+          });
+        } else if (event.type === "complete") {
+          setPcardProgress({
+            percent: 100,
+            stageText: "تکمیل شد!",
+            chunkBadge: "پایان",
+            snippet: "در حال انتقال به پخش‌کننده…",
+          });
+          clearInterval(timerTick);
+          setTimeout(async () => {
+            $("progressCard").classList.remove("show");
+            await present(event, text);
+          }, 300);
+          return;
+        } else if (event.type === "error") {
+          throw new Error(event.message || "خطا در پردازش گفتار");
+        }
+      }
+    }
+  } catch (err) {
+    if (err.name === "AbortError") return;
+    const msg = typeof err.message === "string" ? err.message : "خطا در تولید گفتار";
+    toast(msg, { isError: true });
+    $("progressCard").classList.remove("show");
+    if (currentEngine === "gemini" && (msg.includes("سهمیه") || msg.includes("Quota") || msg.includes("429") || msg.includes("RESOURCE_EXHAUSTED"))) {
+      if ($("quotaWarning")) $("quotaWarning").style.display = "block";
+    }
+  } finally {
+    clearInterval(timerTick);
+    activeAbortController = null;
+    $("go").disabled = false;
+    $("go").classList.remove("busy");
   }
 };
 
@@ -491,23 +1362,26 @@ function computePeaks(data) {
 
 async function present(r, text) {
   curId = r.id; curDur = r.duration;
+  const activeFmt = (r.format || currentSingleFormat || "mp3").toLowerCase();
   $("result").classList.add("show");
   $("ph").textContent = r.phonemes;
-  $("rmeta").textContent = `${fa(r.sentences)} جمله · ${fa(r.duration)} ثانیه`;
+  $("rmeta").textContent = `${fa(r.sentences)} جمله · ${fa(r.duration)} ثانیه · ${activeFmt.toUpperCase()}`;
+  if ($("dl")) $("dl").title = `دانلود ${activeFmt.toUpperCase()}`;
   $("result").scrollIntoView({ behavior: "smooth", block: "nearest" });
 
   // decode for the waveform
-  const buf = await fetch(`/api/audio/${r.id}`).then(x => x.arrayBuffer());
+  const buf = await fetch(`/api/audio/${r.id}?format=${activeFmt}`).then(x => x.arrayBuffer());
   const actx = new (window.AudioContext || window.webkitAudioContext)();
   const ab = await actx.decodeAudioData(buf.slice(0));
   peaks = computePeaks(ab.getChannelData(0));
 
   const au = $("au");
-  au.src = URL.createObjectURL(new Blob([buf], { type: "audio/wav" }));
+  const mime = activeFmt === "mp3" ? "audio/mpeg" : "audio/wav";
+  au.src = URL.createObjectURL(new Blob([buf], { type: mime }));
   au.onloadedmetadata = () => { curDur = au.duration; draw(0); };
   au.ontimeupdate = () => { if (! seeking) draw(au.currentTime / au.duration); };
   au.onended = () => setPlayIcon(false);
-  history.unshift({ id: r.id, text, dur: r.duration });
+  history.unshift({ id: r.id, text, dur: r.duration, format: activeFmt });
   renderHistory();
   draw(0);
   setPlayIcon(false);
@@ -546,8 +1420,11 @@ $("wave").addEventListener("pointerdown", e => {
 });
 $("dl").onclick = () => {
   if (!curId) return;
+  const fmt = (currentSingleFormat || "mp3").toLowerCase();
   const a = document.createElement("a");
-  a.href = `/api/audio/${curId}`; a.download = "parsigo.wav"; a.click();
+  a.href = `/api/audio/${curId}?format=${fmt}`;
+  a.download = `parsigo_${curId}.${fmt}`;
+  a.click();
 };
 
 /* ---------- history ---------- */
@@ -562,9 +1439,11 @@ function renderHistory() {
     </div>`).join("");
   document.querySelectorAll(".hrow").forEach(row => row.onclick = () => {
     const h = history[+row.dataset.i];
-    au.src = `/api/audio/${h.id}`; curDur = h.dur; curId = h.id;
+    const fmt = (h.format || currentSingleFormat || "mp3").toLowerCase();
+    au.src = `/api/audio/${h.id}?format=${fmt}`; curDur = h.dur; curId = h.id;
+    if ($("dl")) $("dl").title = `دانلود ${fmt.toUpperCase()}`;
     $("result").classList.add("show");
-    fetch(`/api/audio/${h.id}`).then(x => x.arrayBuffer()).then(async buf => {
+    fetch(`/api/audio/${h.id}?format=${fmt}`).then(x => x.arrayBuffer()).then(async buf => {
       const actx = new (window.AudioContext || window.webkitAudioContext)();
       const ab = await actx.decodeAudioData(buf.slice(0));
       peaks = computePeaks(ab.getChannelData(0));
@@ -576,6 +1455,465 @@ function renderHistory() {
 
 addEventListener("resize", () => draw(au.currentTime / (curDur || 1)));
 loadVoices();
+
+/* ---------- Audiobook Studio Logic ---------- */
+function switchMainTab(tab) {
+  const isSingle = tab === "single";
+  $("tabBtnSingle").classList.toggle("sel", isSingle);
+  $("tabBtnSingle").setAttribute("aria-selected", isSingle);
+  $("tabBtnBatch").classList.toggle("sel", !isSingle);
+  $("tabBtnBatch").setAttribute("aria-selected", !isSingle);
+
+  $("singleView").style.display = isSingle ? "block" : "none";
+  $("audiobookView").classList.toggle("show", !isSingle);
+
+  if (!isSingle) {
+    populateBatchVoices();
+  }
+}
+$("tabBtnSingle").onclick = () => switchMainTab("single");
+$("tabBtnBatch").onclick = () => switchMainTab("batch");
+
+function populateBatchVoices() {
+  const select = $("batchVoiceSelect");
+  if (!select) return;
+  const prevVal = select.value;
+  select.innerHTML = VOICES.map(v =>
+    `<option value="${v.id}" ${v.id===selVoice ? "selected" : ""}>${v.name} (${v.desc})</option>`
+  ).join("");
+  if (prevVal && VOICES.some(v => v.id === prevVal)) select.value = prevVal;
+}
+
+let batchSource = "text";
+$("btnSourceText").onclick = () => {
+  batchSource = "text";
+  $("btnSourceText").classList.add("sel");
+  $("btnSourceFiles").classList.remove("sel");
+  $("sourceTextSection").style.display = "block";
+  $("sourceFilesSection").style.display = "none";
+};
+$("btnSourceFiles").onclick = () => {
+  batchSource = "files";
+  $("btnSourceFiles").classList.add("sel");
+  $("btnSourceText").classList.remove("sel");
+  $("sourceTextSection").style.display = "none";
+  $("sourceFilesSection").style.display = "block";
+};
+
+let currentBatchFormat = "mp3";
+$("fmtMp3").onclick = () => {
+  currentBatchFormat = "mp3";
+  $("fmtMp3").classList.add("sel");
+  $("fmtWav").classList.remove("sel");
+};
+$("fmtWav").onclick = () => {
+  currentBatchFormat = "wav";
+  $("fmtWav").classList.add("sel");
+  $("fmtMp3").classList.remove("sel");
+};
+
+const batchPaceEl = $("batchPace");
+if (batchPaceEl) {
+  batchPaceEl.addEventListener("input", () => {
+    $("batchPaceVal").textContent = faNum((+batchPaceEl.value).toFixed(2)) + "×";
+  });
+}
+
+const batchBookText = $("batchBookText");
+if (batchBookText) {
+  batchBookText.addEventListener("input", () => {
+    const w = batchBookText.value.split(/\s+/).filter(Boolean).length;
+    $("batchTextCnt").textContent = `${fa(w)} کلمه`;
+  });
+}
+
+$("btnUploadBookFile").onclick = () => $("bookFileInput").click();
+$("bookFileInput").onchange = e => {
+  if (e.target.files[0]) {
+    const f = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = ev => {
+      batchBookText.value = ev.target.result;
+      const w = batchBookText.value.split(/\s+/).filter(Boolean).length;
+      $("batchTextCnt").textContent = `${fa(w)} کلمه`;
+      const stem = f.name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ");
+      if (!$("batchBookTitle").value.trim()) $("batchBookTitle").value = stem;
+      toast(`فایل «${f.name}» بارگذاری شد`);
+    };
+    reader.readAsText(f, "utf-8");
+  }
+  e.target.value = "";
+};
+
+let droppedFiles = [];
+const multiDrop = $("multiDropZone");
+if (multiDrop) {
+  multiDrop.onclick = () => $("multiFilesInput").click();
+  multiDrop.addEventListener("dragover", e => { e.preventDefault(); multiDrop.classList.add("dragover"); });
+  multiDrop.addEventListener("dragleave", () => multiDrop.classList.remove("dragover"));
+  multiDrop.addEventListener("drop", e => {
+    e.preventDefault();
+    multiDrop.classList.remove("dragover");
+    if (e.dataTransfer.files) handleDroppedFiles(e.dataTransfer.files);
+  });
+  $("multiFilesInput").onchange = e => {
+    if (e.target.files) handleDroppedFiles(e.target.files);
+    e.target.value = "";
+  };
+}
+
+function handleDroppedFiles(fileList) {
+  let hasValid = false;
+  let hasInvalid = false;
+  for (const f of fileList) {
+    if (f.name.endsWith(".txt") || f.type.includes("text")) {
+      if (!droppedFiles.some(x => x.name === f.name)) {
+        droppedFiles.push(f);
+        hasValid = true;
+      }
+    } else {
+      hasInvalid = true;
+    }
+  }
+  droppedFiles.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
+  renderDroppedFiles();
+  if (hasInvalid) {
+    toast("برخی فایل‌ها نادیده گرفته شدند — فقط فایل‌های متنی (.txt) مجازند");
+  } else if (hasValid) {
+    toast(`${fa(droppedFiles.length)} فایل متنی بارگذاری شد`);
+  }
+}
+
+function renderDroppedFiles() {
+  const list = $("multiFileList");
+  list.innerHTML = droppedFiles.map((f, i) => `
+    <span class="dropped-file-chip">
+      📄 ${escapeHtml(f.name)} (${fa(Math.round(f.size/1024))} KB)
+      <span class="remove-chip" data-idx="${i}">✕</span>
+    </span>
+  `).join("");
+  list.querySelectorAll(".remove-chip").forEach(b => {
+    b.onclick = (e) => {
+      e.stopPropagation();
+      droppedFiles.splice(+b.dataset.idx, 1);
+      renderDroppedFiles();
+    };
+  });
+  $("btnParseMultiFiles").style.display = droppedFiles.length ? "inline-flex" : "none";
+  if (droppedFiles.length && !$("batchBookTitle").value.trim()) {
+    const firstStem = droppedFiles[0].name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ");
+    $("batchBookTitle").value = firstStem;
+  }
+}
+
+let currentChapters = [];
+
+$("btnParseText").onclick = async () => {
+  const text = batchBookText.value.trim();
+  if (!text) return toast("لطفاً متن کتاب را وارد کنید");
+  const b = $("btnParseText"), old = b.innerHTML;
+  b.disabled = true; b.innerHTML = "<span>در حال شناسایی فصول…</span>";
+  try {
+    const r = await fetch("/api/batch/parse-chapters", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text })
+    }).then(res => res.json());
+    if (r.detail) return toast(r.detail);
+    if (r.title && !$("batchBookTitle").value.trim()) $("batchBookTitle").value = r.title;
+    currentChapters = r.chapters || [];
+    renderChapterGrid();
+    toast(`${fa(currentChapters.length)} فصل شناسایی شد`);
+  } catch (err) {
+    toast("خطا در پردازش و تقطیع فصول");
+  } finally {
+    b.disabled = false; b.innerHTML = old;
+  }
+};
+
+$("btnParseMultiFiles").onclick = async () => {
+  if (!droppedFiles.length) return toast("هیچ فایلی انتخاب نشده است");
+  const b = $("btnParseMultiFiles"), old = b.innerHTML;
+  b.disabled = true; b.innerHTML = "<span>در حال بارگذاری فایل‌ها…</span>";
+  try {
+    const fd = new FormData();
+    for (const f of droppedFiles) fd.append("files", f);
+    const r = await fetch("/api/batch/parse-files", {
+      method: "POST", body: fd
+    }).then(res => res.json());
+    if (r.detail) return toast(r.detail);
+    if (r.title && !$("batchBookTitle").value.trim()) $("batchBookTitle").value = r.title;
+    currentChapters = r.chapters || [];
+    renderChapterGrid();
+    toast(`${fa(currentChapters.length)} فصل ایجاد شد`);
+  } catch (err) {
+    toast("خطا در بارگذاری فایل‌ها");
+  } finally {
+    b.disabled = false; b.innerHTML = old;
+  }
+};
+
+function updateChapterGridBadges() {
+  const totalWords = currentChapters.reduce((acc, c) => acc + (c.words || c.text.split(/\s+/).filter(Boolean).length), 0);
+  const totalEstSec = currentChapters.reduce((acc, c) => acc + (c.estimated_duration || (c.words / 125) * 60), 0);
+  const totalEstMin = Math.max(1, Math.round(totalEstSec / 60));
+
+  $("badgeChapterCount").textContent = `${fa(currentChapters.length)} فصل`;
+  $("badgeTotalWords").textContent = `${fa(totalWords)} واژه`;
+  $("badgeTotalEst").textContent = `~${fa(totalEstMin)} دقیقه گفتار`;
+}
+
+function renderChapterGrid() {
+  const container = $("chaptersContainer");
+  if (!currentChapters.length) {
+    container.classList.remove("show");
+    return;
+  }
+  container.classList.add("show");
+  updateChapterGridBadges();
+
+  const list = $("chapterCardsList");
+  list.innerHTML = currentChapters.map((c, i) => `
+    <div class="chapter-card" data-idx="${i}">
+      <div class="card-header-row">
+        <span class="chapter-idx-badge">فصل ${fa(i + 1)}</span>
+        <input type="text" class="chapter-title-input" value="${escapeHtml(c.title || `فصل ${i+1}`)}" data-idx="${i}">
+        <span class="chapter-meta-tag" id="meta_${i}">${fa(c.words || 0)} کلمه · ~${fa(Math.round(c.estimated_duration || 0))} ثانیه</span>
+        <button type="button" class="chapter-del-btn" title="حذف این فصل" data-idx="${i}">✕</button>
+      </div>
+      <textarea class="chapter-text-input" data-idx="${i}" rows="2" placeholder="متن فصل…">${escapeHtml(c.text)}</textarea>
+    </div>
+  `).join("");
+
+  list.querySelectorAll(".chapter-title-input").forEach(inp => {
+    inp.oninput = (e) => {
+      const idx = +e.target.dataset.idx;
+      if (currentChapters[idx]) currentChapters[idx].title = e.target.value;
+    };
+  });
+
+  list.querySelectorAll(".chapter-text-input").forEach(ta => {
+    ta.oninput = (e) => {
+      const idx = +e.target.dataset.idx;
+      if (currentChapters[idx]) {
+        currentChapters[idx].text = e.target.value;
+        const words = e.target.value.split(/\s+/).filter(Boolean).length;
+        currentChapters[idx].words = words;
+        currentChapters[idx].chars = e.target.value.length;
+        const estSec = Math.round((words / 125) * 60);
+        currentChapters[idx].estimated_duration = estSec;
+        const metaEl = document.getElementById(`meta_${idx}`);
+        if (metaEl) metaEl.textContent = `${fa(words)} کلمه · ~${fa(estSec)} ثانیه`;
+        updateChapterGridBadges();
+      }
+    };
+  });
+
+  list.querySelectorAll(".chapter-del-btn").forEach(btn => {
+    btn.onclick = (e) => {
+      const idx = +btn.dataset.idx;
+      currentChapters.splice(idx, 1);
+      renderChapterGrid();
+    };
+  });
+}
+
+$("btnAddChapter").onclick = () => {
+  const newIdx = currentChapters.length + 1;
+  currentChapters.push({
+    index: newIdx,
+    title: `فصل ${fa(newIdx)}`,
+    text: "متن فصل جدید را اینجا بنویسید…",
+    words: 6,
+    chars: 30,
+    estimated_duration: 3.0,
+  });
+  renderChapterGrid();
+};
+
+let activeBatchJobId = null;
+let batchEventSource = null;
+let batchTimer = null;
+let batchStartTime = 0;
+
+$("btnStartBatch").onclick = async () => {
+  if (!currentChapters.length) return toast("هیچ فصلی برای پردازش وجود ندارد");
+  const title = $("batchBookTitle").value.trim() || "کتاب صوتی";
+  const voice = $("batchVoiceSelect").value || selVoice;
+  const pace = +$("batchPace").value;
+
+  const payload = {
+    title,
+    chapters: currentChapters,
+    engine: currentEngine,
+    voice,
+    format: currentBatchFormat,
+    pace,
+  };
+  if (currentEngine === "gemini") {
+    const k = ($("apiKeyInput").value || "").trim();
+    if (k) payload.api_key = k;
+  }
+
+  const b = $("btnStartBatch"), old = b.innerHTML;
+  b.disabled = true; b.innerHTML = "<span>در حال ایجاد کار دسته‌ای…</span>";
+
+  try {
+    const r = await fetch("/api/batch/create", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    }).then(res => res.json());
+
+    if (r.detail) throw new Error(r.detail);
+
+    activeBatchJobId = r.job_id;
+    startBatchMonitoring(r.job_id, title);
+    toast("کار تبدیل کتاب صوتی در صف قرار گرفت");
+  } catch (err) {
+    toast(err.message || "خطا در شروع پردازش دسته‌ای");
+  } finally {
+    b.disabled = false; b.innerHTML = old;
+  }
+};
+
+function startBatchMonitoring(jobId, bookTitle) {
+  const monitor = $("batchMonitorCard");
+  monitor.classList.add("show");
+  monitor.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+  $("batchBookTitleDisplay").textContent = bookTitle;
+  $("batchDownloadsArea").classList.remove("show");
+  $("batchProgressFill").style.width = "0%";
+  $("batchProgressPercent").textContent = "۰٪";
+  $("batchMonitorStatusText").textContent = "در صف پردازش و آماده‌سازی موتور…";
+
+  batchStartTime = performance.now();
+  clearInterval(batchTimer);
+  batchTimer = setInterval(() => {
+    const el = (performance.now() - batchStartTime) / 1000;
+    $("batchTimeElapsed").textContent = `سپری‌شده: ${fa(el.toFixed(0))} ثانیه`;
+  }, 500);
+
+  if (batchEventSource) {
+    batchEventSource.close();
+  }
+  batchEventSource = new EventSource(`/api/batch/stream/${jobId}`);
+
+  batchEventSource.onmessage = (e) => {
+    try {
+      const data = JSON.parse(e.data);
+      handleBatchEvent(data, jobId);
+    } catch (err) {
+      console.error("SSE parse error", err);
+    }
+  };
+
+  batchEventSource.onerror = () => {
+    console.warn("SSE connection error");
+  };
+}
+
+function handleBatchEvent(ev, jobId) {
+  if (ev.job) {
+    const j = ev.job;
+    const pct = Math.min(100, Math.max(0, j.total_progress || 0));
+    $("batchProgressFill").style.width = pct + "%";
+    $("batchProgressPercent").textContent = fa(Math.round(pct)) + "٪";
+
+    if (j.eta_seconds !== null && j.eta_seconds !== undefined) {
+      $("batchTimeEta").textContent = `باقی‌مانده: ~${fa(Math.round(j.eta_seconds))} ثانیه`;
+    }
+
+    renderLiveChaptersList(j.chapters, jobId);
+
+    if (j.status === "completed") {
+      finishBatchJob(jobId, true);
+    } else if (j.status === "failed") {
+      $("batchMonitorStatusText").textContent = `خطا در پردازش: ${j.error || "نامشخص"}`;
+      $("batchPulseDot").style.background = "#ef4444";
+      clearInterval(batchTimer);
+      if (batchEventSource) batchEventSource.close();
+    } else if (j.status === "cancelled") {
+      $("batchMonitorStatusText").textContent = "پردازش لغو شد";
+      $("batchPulseDot").style.background = "#94a3b8";
+      clearInterval(batchTimer);
+      if (batchEventSource) batchEventSource.close();
+    } else if (j.status === "processing") {
+      $("batchMonitorStatusText").textContent = `در حال تبدیل فصل‌ها (${fa(j.completed_chapters || 0)} از ${fa(j.total_chapters || 0)})…`;
+      $("batchPulseDot").style.background = "var(--accent)";
+    }
+  } else if (ev.type === "chapter_progress") {
+    if (ev.total_progress !== undefined) {
+      const pct = Math.min(100, Math.max(0, ev.total_progress));
+      $("batchProgressFill").style.width = pct + "%";
+      $("batchProgressPercent").textContent = fa(Math.round(pct)) + "٪";
+    }
+    if (ev.eta_seconds) {
+      $("batchTimeEta").textContent = `باقی‌مانده: ~${fa(Math.round(ev.eta_seconds))} ثانیه`;
+    }
+  } else if (ev.type === "job_completed") {
+    finishBatchJob(jobId, true);
+  } else if (ev.type === "job_cancelled") {
+    $("batchMonitorStatusText").textContent = "پردازش لغو شد";
+    $("batchPulseDot").style.background = "#94a3b8";
+    clearInterval(batchTimer);
+    if (batchEventSource) batchEventSource.close();
+  }
+}
+
+function renderLiveChaptersList(chapters, jobId) {
+  if (!chapters || !chapters.length) return;
+  const list = $("batchChaptersLiveList");
+  list.innerHTML = chapters.map(c => `
+    <div class="batch-chapter-row">
+      <div class="batch-chapter-info">
+        <span class="chapter-idx-badge" style="font-size:11px; padding:2px 7px;">فصل ${fa(c.index)}</span>
+        <span class="batch-row-title">${escapeHtml(c.title)}</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        ${c.status === "completed" && c.audio_file ? `<button type="button" class="chapter-play-btn" onclick="playChapterAudio('${jobId}', ${c.index})">▶ پخش</button>` : ""}
+        <span class="batch-row-status ${c.status}">${
+          c.status === "completed" ? `✓ تکمیل (${fa((c.duration || 0).toFixed(1))}s)` :
+          c.status === "processing" ? `در حال تولید (${fa(Math.round(c.progress || 0))}٪)` :
+          c.status === "cancelled" ? "لغو شده" :
+          c.status === "failed" ? "خطا" : "در صف"
+        }</span>
+      </div>
+    </div>
+  `).join("");
+}
+
+function finishBatchJob(jobId, success) {
+  clearInterval(batchTimer);
+  if (batchEventSource) {
+    batchEventSource.close();
+    batchEventSource = null;
+  }
+  $("batchProgressFill").style.width = "100%";
+  $("batchProgressPercent").textContent = "۱۰۰٪";
+  $("batchMonitorStatusText").textContent = "کتاب صوتی با موفقیت تولید و بسته‌بندی شد!";
+  $("batchPulseDot").style.background = "#10b981";
+
+  $("btnDownloadZip").href = `/api/batch/download/${jobId}?type=zip`;
+  $("btnDownloadMerged").href = `/api/batch/download/${jobId}?type=merged`;
+  $("batchDownloadsArea").classList.add("show");
+  toast("کتاب صوتی آماده دریافت است!");
+}
+
+window.playChapterAudio = function(jobId, chapterIndex) {
+  const au = $("au");
+  au.src = `/api/batch/chapter/${jobId}/${chapterIndex}`;
+  au.play().then(() => toast(`پخش فصل ${fa(chapterIndex)}`)).catch(() => {});
+};
+
+$("btnCancelBatch").onclick = async () => {
+  if (!activeBatchJobId) return;
+  try {
+    await fetch(`/api/batch/cancel/${activeBatchJobId}`, { method: "POST" });
+    toast("درخواست لغو ارسال شد");
+  } catch (e) {
+    toast("خطا در ارسال درخواست لغو");
+  }
+};
 </script>
 </body>
 </html>
