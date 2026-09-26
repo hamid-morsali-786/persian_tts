@@ -17,11 +17,11 @@
 :root{
   --bg:#fbfbfa; --surface:#ffffff; --surface-2:#f3f1ec; --surface-hover:#ebe8e1;
   --border:#e5e1d8; --border-focus:#1d4ed8;
-  --text:#121211; --muted:#5c5a53; --faint:#8c8980;
-  --accent:#1d4ed8; --accent-2:#2563eb; --accent-soft:rgba(29,78,216,.08);
+  --text:#121211; --muted:#52504a; --faint:#706d64;
+  --accent:#1d4ed8; --accent-2:#2563eb; --accent-soft:rgba(29,78,216,.14);
   --on-accent:#ffffff;
   --primary-btn-bg:#141413; --primary-btn-text:#ffffff; --primary-btn-hover:#262624;
-  --radius:16px; --radius-s:10px; --radius-pill:9999px;
+  --radius:20px; --radius-s:10px; --radius-pill:9999px;
   --shadow:0 8px 24px -4px rgba(18,18,17,.05),0 2px 8px -2px rgba(18,18,17,.03);
   --shadow-sm:0 1px 4px rgba(18,18,17,.05),0 1px 2px rgba(18,18,17,.03);
 }
@@ -30,8 +30,8 @@
 html[data-theme="dark"]{
   --bg:#111113; --surface:#19191d; --surface-2:#232329; --surface-hover:#2c2c34;
   --border:rgba(255,255,255,.09); --border-focus:#3b82f6;
-  --text:#f4f4f6; --muted:#9e9ea6; --faint:#686873;
-  --accent:#3b82f6; --accent-2:#60a5fa; --accent-soft:rgba(59,130,246,.15);
+  --text:#f4f4f6; --muted:#a3a3ac; --faint:#90909c;
+  --accent:#3b82f6; --accent-2:#60a5fa; --accent-soft:rgba(59,130,246,.25);
   --on-accent:#111113;
   --primary-btn-bg:#f4f4f6; --primary-btn-text:#111113; --primary-btn-hover:#ffffff;
   --shadow:0 14px 40px rgba(0,0,0,.5);
@@ -56,8 +56,8 @@ header{display:flex;align-items:center;gap:14px;margin-bottom:28px}
   color:var(--primary-btn-text);display:grid;place-items:center;flex-shrink:0;
   box-shadow:0 3px 12px rgba(0,0,0,.12)}
 .logo svg{width:22px;height:22px;stroke:currentColor}
-h1{font-size:22px;font-weight:800;letter-spacing:-.3px}
-.sub{font-size:12.5px;color:var(--muted);margin-top:-4px}
+h1{font-size:22px;font-weight:800;letter-spacing:normal}
+.sub{font-size:12.5px;color:var(--muted);margin-top:2px}
 .badge{font-size:11.5px;color:var(--muted);
   border:1px solid var(--border);background:var(--surface-2);
   padding:5px 14px;border-radius:9999px;white-space:nowrap;font-weight:600}
@@ -79,6 +79,8 @@ html[data-theme="dark"] .theme-btn .moon{display:none}
 .panel{background:var(--surface);border:1px solid var(--border);
   border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
 
+:focus-visible{outline:2px solid var(--border-focus);outline-offset:2px}
+
 .label{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between}
 .label .cnt{font-weight:400;color:var(--faint);font-size:12px}
 
@@ -90,6 +92,8 @@ textarea{
 }
 textarea:focus{border-color:var(--border-focus);box-shadow:0 0 0 3px var(--accent-soft)}
 textarea::placeholder{color:var(--faint)}
+
+.drop:focus-visible, .multi-drop:focus-visible, .wave:focus-visible{outline:2px solid var(--border-focus);outline-offset:3px}
 
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .chip{font-size:12.5px;color:var(--muted);background:transparent;
@@ -597,8 +601,8 @@ textarea.dragover{border-color:var(--text);background:var(--surface-2)}
 
     <aside class="panel">
       <div class="label"><span id="voiceHeader">صدای مرجع</span><span class="cnt" id="voiceSub">≤ ۵ ثانیه</span></div>
-      <div id="voices"></div>
-      <div class="drop" id="drop">
+      <div id="voices" role="radiogroup" aria-label="انتخاب صدای گوینده"></div>
+      <div class="drop" id="drop" role="button" tabindex="0" aria-label="بارگذاری فایل صدای مرجع">
         <b>بارگذاری صدا</b> — یا فایل را اینجا رها کنید<br>
         <span style="font-size:11px;color:var(--faint)">صدای خودت را بده تا با آن حرف بزند (WAV)</span>
       </div>
@@ -634,13 +638,13 @@ textarea.dragover{border-color:var(--text);background:var(--surface-2)}
         <svg id="icPlay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
         <svg id="icPause" viewBox="0 0 24 24" style="display:none"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
       </button>
-      <div class="wave" id="wave"><canvas id="cv"></canvas></div>
+      <div class="wave" id="wave" role="slider" tabindex="0" aria-label="موقعیت پخش صوت" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><canvas id="cv"></canvas></div>
       <div class="tm" id="tm">۰:۰۰ / ۰:۰۰</div>
-      <div class="dl" id="dl" title="دانلود MP3">
+      <button type="button" class="dl" id="dl" title="دانلود MP3" aria-label="دانلود فایل صوتی">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M4 21h16"/>
         </svg>
-      </div>
+      </button>
     </div>
   </section>
   </div> <!-- /#singleView -->
@@ -695,7 +699,7 @@ textarea.dragover{border-color:var(--text);background:var(--surface-2)}
 
       <!-- View 2: Multi-Files Drop -->
       <div id="sourceFilesSection" style="display: none;">
-        <div class="multi-drop" id="multiDropZone">
+        <div class="multi-drop" id="multiDropZone" role="button" tabindex="0" aria-label="بارگذاری فایل‌های متنی فصول کتاب">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
           <div style="font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px;">فایل‌های متنی فصول کتاب را اینجا رها کنید</div>
           <div style="font-size: 12px; color: var(--muted);">یا برای انتخاب همزمان چندین فایل (.txt) کلیک کنید</div>
@@ -910,7 +914,7 @@ async function loadVoices() {
 }
 function renderVoices() {
   $("voices").innerHTML = VOICES.map(v => `
-    <button class="vcard ${v.id===selVoice?"sel":""}" data-id="${v.id}">
+    <button type="button" role="radio" aria-checked="${v.id===selVoice ? "true" : "false"}" class="vcard ${v.id===selVoice?"sel":""}" data-id="${v.id}">
       <span class="ic">
         ${v.id===selVoice
           ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M3 12h2l2-6 3 12 3-16 3 16 2-6h3"/></svg>'
@@ -1125,6 +1129,9 @@ window.addEventListener("keydown", e => {
 
 /* ---------- upload ---------- */
 $("drop").onclick = () => $("file").click();
+$("drop").addEventListener("keydown", e => {
+  if (e.key === "Enter" || e.key === " ") { e.preventDefault(); $("file").click(); }
+});
 $("drop").ondragover = e => { e.preventDefault(); $("drop").classList.add("over"); };
 $("drop").ondragleave = () => $("drop").classList.remove("over");
 $("drop").ondrop = e => { e.preventDefault(); $("drop").classList.remove("over");
@@ -1411,6 +1418,7 @@ let seeking = false;
 function draw(t) {
   drawCanvas(t || 0);
   $("tm").textContent = `${fmt((t || 0) * curDur)} / ${fmt(curDur)}`;
+  if ($("wave")) $("wave").setAttribute("aria-valuenow", Math.round((t || 0) * 100));
   if (au && !au.paused && !au.ended) raf = requestAnimationFrame(() => draw(au.currentTime / au.duration));
 }
 const au = $("au");
@@ -1436,6 +1444,16 @@ $("wave").addEventListener("pointerdown", e => {
   };
   const up = () => { seeking = false; removeEventListener("pointermove", move); removeEventListener("pointerup", up); };
   addEventListener("pointermove", move); addEventListener("pointerup", up);
+});
+$("wave").addEventListener("keydown", e => {
+  if (!au.src || !curDur) return;
+  if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+    e.preventDefault();
+    const delta = (e.key === "ArrowLeft") ? 5 : -5;
+    au.currentTime = Math.min(curDur, Math.max(0, au.currentTime + delta));
+    const frac = au.currentTime / curDur;
+    draw(frac);
+  }
 });
 $("dl").onclick = () => {
   if (!curId) return;
@@ -1569,6 +1587,9 @@ let droppedFiles = [];
 const multiDrop = $("multiDropZone");
 if (multiDrop) {
   multiDrop.onclick = () => $("multiFilesInput").click();
+  multiDrop.addEventListener("keydown", e => {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); $("multiFilesInput").click(); }
+  });
   multiDrop.addEventListener("dragover", e => { e.preventDefault(); multiDrop.classList.add("dragover"); });
   multiDrop.addEventListener("dragleave", () => multiDrop.classList.remove("dragover"));
   multiDrop.addEventListener("drop", e => {
@@ -1609,7 +1630,7 @@ function renderDroppedFiles() {
   list.innerHTML = droppedFiles.map((f, i) => `
     <span class="dropped-file-chip">
       📄 ${escapeHtml(f.name)} (${fa(Math.round(f.size/1024))} KB)
-      <span class="remove-chip" data-idx="${i}">✕</span>
+      <button type="button" class="remove-chip" data-idx="${i}" aria-label="حذف فایل ${escapeHtml(f.name)}">✕</button>
     </span>
   `).join("");
   list.querySelectorAll(".remove-chip").forEach(b => {
