@@ -311,7 +311,7 @@ html[data-theme="dark"] .pcard-chunk-badge{background:rgba(255,122,89,.12);color
 .main-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;
   background:transparent;border:none;border-radius:var(--radius-s);padding:11px 16px;
   color:var(--muted);font:inherit;font-size:14px;font-weight:700;cursor:pointer;
-  transition:all .2s cubic-bezier(0.2,0,0,1);position:relative}
+  transition:all .2s cubic-bezier(0.2,0,0,1);position:relative;white-space:nowrap}
 .main-tab:hover{color:var(--text);background:var(--surface-2)}
 .main-tab.sel{background:var(--grad);color:var(--on-accent);box-shadow:0 4px 16px rgba(232,89,12,.3)}
 .main-tab svg{width:19px;height:19px;stroke:currentColor;flex-shrink:0}
@@ -1476,6 +1476,7 @@ function switchMainTab(tab) {
 }
 $("tabBtnSingle").onclick = () => switchMainTab("single");
 $("tabBtnBatch").onclick = () => switchMainTab("batch");
+if (window.location.hash === "#audiobook") switchMainTab("batch");
 
 function populateBatchVoices() {
   const select = $("batchVoiceSelect");

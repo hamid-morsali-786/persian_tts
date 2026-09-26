@@ -12,10 +12,11 @@
 
 [فارسی](README.md) | **English**
 
-<a href="docs/demo.mp4"><img src="docs/demo-poster.jpg" width="640" alt="ParSiGo video demo"></a>
+<p align="center">
+  <img src="docs/demo-poster.jpg" width="820" alt="ParSiGo Modern Light UI Demo">
+</p>
 
-🎬 **Video demo (with audio)** — Reference voice selection, speech synthesis, voice cloning, batch processing, and audiobook studio.
-(Downloadable copy in repo: [docs/demo.mp4](docs/demo.mp4) — Poster: [docs/demo-poster.jpg](docs/demo-poster.jpg))
+🎬 **Modern Light UI Demo** — Cutting-edge interface with light theme, audiobook studio, MP3/WAV format exporter, and hybrid local/cloud engine switcher.
 
 </div>
 
@@ -57,6 +58,31 @@ This repository extends the original upstream codebase with the following enterp
 
 ---
 
+## 🤖 Google Gemini Cloud TTS API Integration
+
+In addition to the pure offline ONNX engine, this repository features native integration with Google's state-of-the-art **Gemini 2.5 Flash TTS**:
+
+### Advantages of Cloud Gemini TTS:
+- **Expressive & Contextual Prosody:** Nuanced Persian intonation and human-like emotional speech suitable for expressive narratives, novels, and podcasts.
+- **Complex Text Comprehension:** Enhanced handling of implicit Persian diacritics and rare idioms.
+
+### Setting Up Your Gemini API Key:
+1. Obtain an API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
+2. Configure it using either:
+   - **Option A (`.env` file - Recommended):** Create a `.env` file in the project root:
+     ```env
+     GEMINI_API_KEY=AIzaSyYourActualApiKeyHere
+     ```
+   - **Option B (Environment Variable):**
+     ```powershell
+     $env:GEMINI_API_KEY="AIzaSyYourActualApiKeyHere"
+     ```
+
+### Zero-Downtime Smart Fallback:
+If an API key is not supplied, if the internet connection is disrupted, or if the request fails due to geographical restrictions (e.g. Google Cloud's `PERMISSION_DENIED 403` for direct Iranian IP requests without proxy), the system automatically routes the synthesis to the **local ONNX engine** with 0 downtime.
+
+---
+
 ## Project Structure
 
 ```
@@ -82,7 +108,9 @@ persian_tts/
 │   ├── tts.py               PyTorch CLI
 │   └── export_unified.py    ONNX exporter script
 ├── web/
-│   └── index.html           Modern responsive RTL web UI with Audiobook Studio
+│   ├── index.html           Modern responsive RTL web UI with Audiobook Studio
+│   ├── readme-demo.png      Single TTS light theme screenshot
+│   └── readme-audiobook.png Audiobook Studio light theme screenshot
 ├── run_web_ui.bat           One-click launcher for Windows
 ├── push_to_github.bat       One-click GitHub sync script
 ├── README.md                Persian documentation
@@ -120,6 +148,22 @@ hf download Nimaone/pocket-tts-farsi-v2-onnx --local-dir model/onnx
 ./env/Scripts/python.exe scripts/server.py
 ./env/Scripts/python.exe scripts/convert_text.py input.txt --play
 ```
+
+---
+
+## Web Studio & Audiobook App
+
+Launch the local server and visit `http://127.0.0.1:8000`:
+
+### 1. Single Speech Synthesis (Single TTS View):
+<p align="center">
+  <img src="web/readme-demo.png" width="95%" alt="Single Speech Synthesis in Light Theme">
+</p>
+
+### 2. Audiobook Studio & Batch Processing:
+<p align="center">
+  <img src="web/readme-audiobook.png" width="95%" alt="Audiobook Studio in Light Theme">
+</p>
 
 ---
 
