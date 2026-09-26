@@ -1,10 +1,18 @@
 <div align="center">
 
-<img src="web/logo.png" width="128" alt="لوگوی پارسی‌گو">
+<img src="web/logo.png" width="130" alt="لوگوی پارسی‌گو">
 
-<h1 align="center">پارسی‌گو (تبدیل متن فارسی به گفتار)</h1>
+# پارسی‌گو (ParSiGo)
+### استودیوی پیشرفته تبدیل متن و کتاب صوتی فارسی با کلونینگ صدا
 
-<p align="center"><b>استودیوی پیشرفته تبدیل متن و کتاب صوتی فارسی — موتور هیبریدی ONNX و پردازش دسته‌ای</b></p>
+[![GitHub Stars](https://img.shields.io/github/stars/hamid-morsali-786/persian_tts?style=for-the-badge&color=e8590c)](https://github.com/hamid-morsali-786/persian_tts/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/hamid-morsali-786/persian_tts?style=for-the-badge&color=f59e0b)](https://github.com/hamid-morsali-786/persian_tts/network/members)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
+[![Python Version](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12-brightgreen?style=for-the-badge&logo=python)](https://python.org)
+[![CI Build](https://img.shields.io/badge/CI-Passing-success?style=for-the-badge&logo=githubactions)](https://github.com/hamid-morsali-786/persian_tts/actions)
+[![Docker Ready](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker)](Dockerfile)
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=for-the-badge)](CONTRIBUTING.md)
+
 <p align="center">
   <b>توسعه و بهینه‌سازی توسط:</b> <a href="https://github.com/hamid-morsali-786">hamid-morsali-786</a> · 
   <b>انشعاب‌یافته از:</b> <a href="https://github.com/nimaone/persian_tts">nimaone/persian_tts</a>
@@ -12,214 +20,282 @@
 
 **فارسی** | [English](README.en.md)
 
-<p align="center">
-  <img src="docs/demo-poster.jpg" width="820" alt="دموی رابط کاربری جدید پارسی‌گو — تم روشن مدرن">
-</p>
+<br/>
 
-🎬 **رابط کاربری مدرن (Modern Light UI)** — طراحی نوآورانه با تم روشن، استودیوی ساخت کتاب صوتی، انتخاب فرمت MP3/WAV و سوئیچ موتور چندگانه محلی و ابری.
+<p align="center">
+  <img src="docs/demo-poster.jpg" width="850" alt="دموی رابط کاربری جدید پارسی‌گو — تم روشن مدرن">
+</p>
 
 </div>
 
-تبدیل متن فارسی به گفتار با **کلونینگ صدا**، کاملاً آفلاین روی **CPU** — بدون نیاز به کارت گرافیک (GPU) و بدون ارتباط اینترنتی در زمان اجرا. متن فارسی را مستقیم دریافت کرده، فونم‌سازی و سنتز آکوستیک را انجام می‌دهد و خروجی صوتی باکیفیت در قالب **MP3** یا **WAV** با نرخ نمونه ۲۴ کیلوهرتز تولید می‌کند.
+---
+
+## 📖 فهرست مطالب (Table of Contents)
+
+- [معرفی و نمای کلی](#-معرفی-و-نمای-کلی-overview)
+- [ویژگی‌های کلیدی (Key Features)](#-ویژگیهای-کلیدی-key-features)
+- [معماری سیستم و جریان داده (Architecture)](#-معماری-سیستم-و-جریان-داده-architecture)
+- [شروع سریع (Quick Start)](#-شروع-سریع-quick-start)
+  - [۱. اجرای سریع در ویندوز (۱-کلیک)](#۱-اجرای-سریع-در-ویندوز-پیشنهادی)
+  - [۲. اجرای ابری / کانتینری با داکر (Docker)](#۲-اجرای-مستقل-با-داکر-docker--docker-compose)
+  - [۳. راه‌اندازی دستی پایتون](#۳-راه‌اندازی-دستی-مسیر-سبک-onnx)
+- [استودیوی کتاب صوتی و صف پردازش (Audiobook Studio)](#-استودیوی-کتاب-صوتی-و-صف-پردازش-audiobook-studio)
+- [موتور چندگانه هیبریدی و جمینای (Hybrid & Gemini API)](#-موتور-چندگانه-هیبریدی-و-راهنمای-gemini-tts-api)
+- [ابزار خط فرمان (CLI Tool)](#-ابزار-خط-فرمان-cli-usage)
+- [مستندات کامل API (REST Endpoints)](#-مستندات-کامل-api-rest-endpoints)
+- [بنچمارک و مقایسه عملکرد](#-بنچمارک-و-مقایسه-عملکرد)
+- [مشارکت در توسعه (Contributing)](#-مشارکت-در-توسعه-contributing)
+- [اعتبارها، استناد و مجوزها](#-اعتبارها-استناد-و-مجوزها-credits--license)
+- [تاریخچه ستاره‌ها (Star History)](#-تاریخچه-ستارهها-star-history)
 
 ---
 
-## 🌟 ویژگی‌ها و امکانات توسعه‌یافته در این نسخه (New Features)
+## 🎯 معرفی و نمای کلی (Overview)
 
-این مخزن به عنوان یک اثر اشتقاقی (Derivative Work / Downstream Project) با افزودن قابلیت‌های مدرن زیر نسبت به نسخه پایه توسعه یافته است:
+**پارسی‌گو (ParSiGo)** پیشرفته‌ترین اکوسیستم متن‌باز سنتز گفتار فارسی (Text-to-Speech) با قابلیت **کلونینگ صدا (Voice Cloning)**، تبدیل متون حجیم و تولید کتاب صوتی است. این پروژه به صورت ۱۰۰٪ آفلاین روی **CPU** (بدون نیاز به کارت گرافیک GPU و بدون مصرف اینترنت) اجرا شده و خروجی صوتی با کیفیت بالا در فرمت‌های **MP3** و **WAV** با نرخ نمونه ۲۴ کیلوهرتز تولید می‌کند.
 
-1. 📚 **استودیوی ساخت کتاب صوتی و پردازش دسته‌ای (Audiobook & Batch Studio):**
-   - تبدیل کتاب‌ها و اسناد متنی طولانی به کتاب صوتی در محیط وب.
-   - تفکیک و پارتیشن‌بندی هوشمند متن به فصل‌ها و بخش‌های استاندارد بر مبنای عناوین و سرفصل‌ها.
-   - مدیریت صف پردازش در پس‌زمینه (Asynchronous Background Task Queue) بدون قفل شدن رابط کاربری.
-   - مانیتورینگ زنده پیشرفت با نوار پیشرفت درصددار و تخمین هوشمند زمان باقی‌مانده.
-   - امکان دانلود تجمیعی تمام فصول در قالب **فایل فشرده ZIP** (همراه شناسنامه کتاب) یا یک **فایل صوتی یکپارچه (Merged Audio)**.
-
-2. 🚀 **موتور چندگانه هیبریدی (Hybrid TTS Engine):**
-   - سوئیچ آسان میان **موتور محلی آفلاین ONNX** (سبک، امن، مستقل از شبکه و فوق‌سریع روی CPU) و **موتور ابری با کیفیت فوق‌العاده Gemini Cloud TTS**.
-   - مکانیزم Fallback خودکار برای بازگشت به موتور محلی در شرایط اختلال شبکه یا محدودیت‌های دسترسی منطقه‌ای.
-
-3. 🎧 **پشتیبانی از خروجی‌های صوتی MP3 و WAV:**
-   - خروجی فشرده و بهینه‌سازی‌شده **MP3** به صورت پیش‌فرض (با اینکودر استاندارد صوتی و سازگاری با انواع پلیرها و وب).
-   - خروجی استودیویی **WAV** با کیفیت ۲۴kHz بدون افت (Lossless).
-   - انتخاب مستقیم فرمت در صفحه اصلی و استودیوی کتاب صوتی.
-
-4. 🎨 **رابط کاربری مدرن با تم دوگانه (Modern Light / Dark UI):**
-   - طراحی چشم‌نواز مبتنی بر فلسفه *Intentional Minimalism*.
-   - **تم روشن مدرن (Modern Light)** به عنوان حالت پیش‌فرض و **تم تیره (Dark Mode)** با ترنزیشن نرم و حفظ تنظیمات در مرورگر.
-   - نمایش پیام‌های خطا و راهنما به صورت اعلان‌های پایدار با امکان بستن دستی توسط کاربر.
-   - نمایش پیشرفت سنتز تکی با ثانیه‌شمار و پروگرس‌بار روان.
-
-5. 🛠️ **ابزار خط فرمان تبدیل فایل متنی (`scripts/convert_text.py`):**
-   - ابزار اختصاصی CLI برای تبدیل مستقیم فایل‌های متنی (`.txt`) به فایل صوتی.
-   - پشتیبانی از پرچم `--play` جهت پخش فوری صدا پس از اتمام تبدیل، با قابلیت تنظیم سرعت (`--pace`) و حالت گفتار (`--mode`).
-
-6. ⚡ **راه‌اندازی آسان و همگام‌سازی با یک کلیک:**
-   - فایل اجرایی `run_web_ui.bat` برای اجرای سرور محلی و باز شدن خودکار مرورگر در ویندوز.
-   - فایل اجرایی `push_to_github.bat` جهت احراز هویت تعاملی و ارسال سریع آخرین تغییرات به گیت‌هاب.
+علاوه بر موتور آفلاین ONNX، پارسی‌گو به یک موتور ابری هوشمند **Google Gemini Cloud TTS** با مکانیزم Fallback خودکار و صفر-قطعی مجهز است تا تعادلی بی‌نظیر میان سرعت آفلاین و کیفیت فوق‌طبیعی ارائه دهد.
 
 ---
 
-## 🤖 راهنمای کامل موتور ابری جمینای (Google Gemini TTS API)
+## ✨ ویژگی‌های کلیدی (Key Features)
 
-علاوه بر موتور آفلاین ONNX، این پروژه به موتور پیشرفته هوش مصنوعی **Google Gemini Cloud TTS** مجهز شده است:
-
-### مزایای استفاده از موتور ابری Gemini:
-- **بیان فوق‌طبیعی و لحن احساسی (Expressive & Natural Prosody):** تلفظ روان و آهنگ کلام شبیه به گوینده انسانی در متون ادبی، رمان‌ها و مقالات.
-- **پردازش متون پیچیده فارسی:** ادای دقیق اعراب پنهان و عبارات مرکب زبان فارسی.
-
-### نحوه فعال‌سازی و تنظیم کلید API (Gemini API Key):
-1. به کنسول رسمی [Google AI Studio](https://aistudio.google.com/app/apikey) مراجعه کرده و یک کلید رایگان بسازید.
-2. کلید خود را به یکی از دو روش زیر در پروژه تنظیم کنید:
-   - **روش اول (فایل `.env` - پیشنهادی):** در پوشه اصلی پروژه یک فایل به نام `.env` بسازید و خط زیر را در آن قرار دهید:
-     ```env
-     GEMINI_API_KEY=AIzaSyYourActualApiKeyHere
-     ```
-   - **روش دوم (متغیر محیطی موقت در ترمینال):**
-     ```powershell
-     $env:GEMINI_API_KEY="AIzaSyYourActualApiKeyHere"
-     ```
-
-### سیستم تاب‌آوری و Fallback هوشمند (Automatic Fallback):
-- اگر کلید API تنظیم نشده باشد، یا اتصال اینترنت قطع شود، یا به دلیل تحریم‌های منطقه‌ای خطای دسترسی صادر شود (مانند خطای معروف `PERMISSION_DENIED 403` گوگل برای آی‌پی‌های مستقیم ایران)، سیستم **بدون قطع برنامه و به طور خودکار به موتور محلی ONNX سوئیچ می‌کند** تا فرآیند تولید صدا تحت هیچ شرایطی متوقف نشود.
+| قابلیت | شرح فنی | مزیت |
+|---|---|---|
+| 📚 **استودیو کتاب صوتی** | تفکیک هوشمند فصول بر مبنای عناوین، پردازش دسته‌ای و صف ناهمگام | تبدیل آسان کل کتاب متنی به صوت در یک مرحله |
+| 🚀 **موتور دوگانه هیبریدی** | ترکیب موتور محلی خالص ONNX و موتور ابری Gemini 2.5 Flash | عملکرد پایدار آفلاین با امکان استفاده از هوش ابری |
+| 🛡️ **مکانیزم Fallback خودکار** | سوئیچ خودکار به موتور محلی در شرایط اختلال شبکه یا خطای تحریم 403 | قطع نشدن فرآیند تولید حتی در شرایط تحریم |
+| 🎧 **خروجی چندفرمت (MP3/WAV)** | خروجی فشرده MP3 با اینکودر استاندارد یا WAV بدون افت (Lossless) | حجم کم و سازگاری بالا برای وب و پادکست |
+| 🎨 **طراحی مینیمال آوانگارد** | تم روشن مدرن (پیش‌فرض) و تم تیره لوکس با جابجایی هوشمند | تجربه کاربری چشم‌نواز و استاندارد WCAG |
+| 💻 **ابزار اختصاصی CLI** | دستور `convert_text.py` با قابلیت پیش‌نمایش و پخش فوری (`--play`) | خودکارسازی خط فرمان و خط لوله‌های پردازش متن |
+| ⚡ **راه‌اندازی ۱-کلیکه** | فایل‌های آماده `run_web_ui.bat` و `push_to_github.bat` در ویندوز | شروع به کار فوری بدون نیاز به تایپ دستورات پیچیده |
+| 🐳 **کانتینر داکر آماده** | پشتیبانی کامل از `Dockerfile` و `docker-compose.yml` | استقرار فوری در سرورهای ابری و لینوکس |
 
 ---
 
-## ساختار پروژه
+## 🏗️ معماری سیستم و جریان داده (Architecture)
 
+نمودار زیر نحوه تعامل اجزای نرم‌افزار، هدایت درخواست‌ها و لایه‌های پردازش صوت را نشان می‌دهد:
+
+```mermaid
+flowchart TD
+    subgraph Clients[" 📱 لایه ورودی و کلاینت‌ها "]
+        UI["رابط کاربری وب مدرن\n(Modern Light/Dark Web UI)"]
+        CLI["ابزار خط فرمان\n(convert_text.py / CLI)"]
+        API_Call["فراخوانی وب‌سرویس\n(REST API Client)"]
+    end
+
+    subgraph Server[" ⚡ سرور مرکزی FastAPI (scripts/server.py) "]
+        Router["مسیریاب و اعتبارسنجی ورودی"]
+        Queue["مدیریت صف وظایف کتاب صوتی\n(BatchProcessor / Worker Queue)"]
+        Dispatcher["توزیع‌کننده موتور هیبریدی\n(HybridTTS Engine Dispatcher)"]
+    end
+
+    subgraph Engines[" 🧠 موتورهای سنتز گفتار (Speech Synthesis) "]
+        direction TB
+        ONNX["موتور محلی آفلاین ONNX\n(CPU Pure Engine · ~200MB)"]
+        Gemini["موتور ابری هوش مصنوعی\n(Google Gemini 2.5 Flash API)"]
+        Fallback{{"آیا خطا یا تحریم 403 رخ داد؟"}}
+    end
+
+    subgraph AudioProcessing[" 🎵 پردازش صوت و بسته‌بندی "]
+        Exporter["تبدیل فرمت صوتی\n(MP3 Encoder / WAV Lossless)"]
+        Packager["بسته‌بندی فشرده\n(ZIP Archive + Merged Audio)"]
+    end
+
+    subgraph Outputs[" 📦 خروجی‌های نهایی "]
+        SingleOut["فایل صوتی تکی (MP3/WAV)"]
+        BookZip["پکیج کامل فصول کتاب (ZIP)"]
+        MergedBook["فایل صوتی یکپارچه کتاب"]
+    end
+
+    UI --> Router
+    CLI --> Dispatcher
+    API_Call --> Router
+    Router --> Dispatcher
+    Router --> Queue
+    Queue --> Dispatcher
+
+    Dispatcher -->|پیش‌فرض / آفلاین| ONNX
+    Dispatcher -->|انتخاب ابری| Gemini
+    Gemini -.->|خطا یا تحریم| Fallback
+    Fallback ==>|سقوط خودکار Fallback| ONNX
+
+    ONNX --> Exporter
+    Gemini --> Exporter
+    Exporter --> SingleOut
+    Exporter --> Packager
+    Packager --> BookZip
+    Packager --> MergedBook
 ```
-persian_tts/
-├── env/                     محیط مجازی پایتون
-├── model/
-│   ├── v2/                  مدل اصلی TTS (mehdi-hf/pocket-tts-farsi-v2)
-│   ├── g2p/                 مدل G2P فارسی→فونم (mehdi-hf/Homo-GE2PE-Persian-HF)
-│   └── onnx/                پکیج ONNX یکپارچه (~۴۸۰MB) + manifest.json
-├── voices/                  صداهای مرجع داخلی (≤ ۵ ثانیه)
-├── output/                  فایل‌های صوتی تولیدشده (WAV/MP3/ZIP)
-├── uploads/                 صداهای بارگذاری‌شده توسط کاربر
-├── docs/                    مستندات فنی معماری و بنچمارک‌ها
-├── scripts/
-│   ├── batch_processor.py   مدیریت صف وظایف کتاب صوتی و خروجی ZIP/Merged
-│   ├── hybrid_tts.py        موتور چندگانه هیبریدی (ONNX محلی + Gemini Cloud)
-│   ├── audio_exporter.py    مدیریت تبدیل فرمت‌های صوتی (MP3/WAV)
-│   ├── convert_text.py      ابزار خط فرمان تبدیل مستقیم فایل متنی با پرچم --play
-│   ├── tts_onnx.py          موتور و CLI مسیر آفلاین ONNX (بدون نیاز به torch)
-│   ├── g2p_onnx.py          تبدیل متن به فونم در قالب ONNX
-│   ├── server.py            سرور وب FastAPI با پشتیبانی از صف دسته‌ای و API
-│   ├── persian_tts.py       ماژول خط لوله مرجع torch
-│   ├── tts.py               CLI مسیر مرجع torch
-│   └── export_unified.py    سازنده پکیج ONNX از مدل اصلی
-├── web/
-│   ├── index.html           رابط وب فارسی مدرن با تم دوتایی و استودیو کتاب صوتی
-│   ├── readme-demo.png      اسکرین‌شات تم روشن بخش تبدیل تکی
-│   └── readme-audiobook.png اسکرین‌شات تم روشن بخش استودیو کتاب صوتی
-├── run_web_ui.bat           لانچر اجرای وب در ویندوز (همراه باز شدن خودکار مرورگر)
-├── push_to_github.bat       اسکریپت همگام‌سازی آسان با مخزن گیت‌هاب
-├── README.md                مستندات فارسی
-└── README.en.md             English documentation
-```
 
 ---
 
-## راه‌اندازی و اجرای سریع (Quick Start)
+## 🚀 شروع سریع (Quick Start)
 
 ### ۱. اجرای سریع در ویندوز (پیشنهادی)
-اگر مخزن را کلون کرده‌اید:
 
 ```powershell
 git clone https://github.com/hamid-morsali-786/persian_tts.git
 cd persian_tts
 ```
 
-کافی است روی فایل **`run_web_ui.bat`** دابل‌کلیک کنید تا محیط بررسی شده، سرور اجرا و صفحه دمو در مرورگر باز شود.
+کافی است روی فایل **`run_web_ui.bat`** دابل‌کلیک کنید تا سرور به طور خودکار اجرا شده و مرورگر در آدرس `http://127.0.0.1:8000` باز شود.
 
 ---
 
-### ۲. راه‌اندازی دستی مسیر سبک ONNX (بدون نیاز به torch)
+### ۲. اجرای مستقل با داکر (Docker & Docker Compose)
 
-**مرحله ۱: ایجاد محیط مجازی و نصب وابستگی‌های سبک (~۲۰۰MB)**
+برای استقرار روی لینوکس، مک یا سرورهای ابری بدون نیاز به تنظیم دستی پایتون:
+
 ```bash
-python -m venv env
-./env/Scripts/python.exe -m pip install onnxruntime numpy scipy soundfile sentencepiece fastapi uvicorn
+# اجرای فوری در پس‌زمینه
+docker compose up -d
+
+# مشاهده لاگ‌ها
+docker compose logs -f
 ```
 
-**مرحله ۲: دریافت پکیج مدل‌های ONNX از HuggingFace**
+سپس آدرس `http://localhost:8000` را در مرورگر خود باز کنید.
+
+---
+
+### ۳. راه‌اندازی دستی مسیر سبک ONNX
+
+**مرحله ۱: ایجاد محیط مجازی و نصب وابستگی‌ها (~۲۰۰MB):**
 ```bash
-./env/Scripts/python.exe -m pip install -U "huggingface_hub[cli]"
+python -m venv env
+# در ویندوز:
+.\env\Scripts\pip install onnxruntime numpy scipy soundfile sentencepiece fastapi uvicorn google-genai pedalboard typer
+# در لینوکس:
+./env/bin/pip install onnxruntime numpy scipy soundfile sentencepiece fastapi uvicorn google-genai pedalboard typer
+```
+
+**مرحله ۲: دریافت پکیج مدل‌ها از HuggingFace:**
+```bash
+pip install -U "huggingface_hub[cli]"
 hf download Nimaone/pocket-tts-farsi-v2-onnx --local-dir model/onnx
 ```
 
-**مرحله ۳: اجرای سرور یا ابزار خط فرمان**
+**مرحله ۳: اجرای سرور:**
 ```bash
-# اجرای رابط وب (پیش‌فرض: http://127.0.0.1:8000)
-./env/Scripts/python.exe scripts/server.py
-
-# تبدیل تکی مستقیم در ترمینال
-./env/Scripts/python.exe scripts/tts_onnx.py "سلام دنیا، روز شما بخیر" voices/male_hello.wav output/out.wav
-
-# تبدیل فایل متنی با پخش فوری
-./env/Scripts/python.exe scripts/convert_text.py my_text.txt --play
+python scripts/server.py
 ```
 
 ---
 
-## دموی وب (Web UI & Audiobook Studio)
+## 📚 استودیوی کتاب صوتی و صف پردازش (Audiobook Studio)
 
-سرور را اجرا کنید و در مرورگر آدرس `http://127.0.0.1:8000` را باز نمایید:
-
-### ۱. نمای تبدیل گفتار تکی (Single TTS View):
-امکان انتخاب متن، صدای مرجع، موتور سنتز (محلی یا ابری) و فرمت صوتی (MP3/WAV):
-
-<p align="center">
-  <img src="web/readme-demo.png" width="95%" alt="نمای تبدیل گفتار تکی با تم روشن">
-</p>
-
-### ۲. نمای استودیوی کتاب صوتی (Audiobook Studio View):
-بارگذاری رمان یا اسناد حجیم متنی، شناسایی هوشمند فصول، مدیریت صف وظایف و دانلود پکیج زیپ یا فایل ادغام‌شده:
+استودیوی کتاب صوتی پارسی‌گو برای تولید آسان کتاب‌های صوتی کامل طراحی شده است:
 
 <p align="center">
   <img src="web/readme-audiobook.png" width="95%" alt="نمای استودیوی کتاب صوتی با تم روشن">
 </p>
 
+### قابلیت‌های استودیو:
+1. **تفکیک هوشمند فصول:** تشخیص خودکار سرفصل‌ها و پارتیشن‌های متنی بدون نیاز به تقطیع دستی.
+2. **صف پردازش پس‌زمینه (Async Queue):** پردازش وظایف حجیم در پس‌زمینه بدون قفل شدن صفحه مرورگر.
+3. **پیشرفت بلادرنگ:** گزارش درصد انجام و تخمین زمان باقی‌مانده.
+4. **خروجی تجمیعی:** دانلود کل فصول در قالب **فایل فشرده ZIP** همراه شناسنامه کتاب (Metadata) یا یک **فایل صوتی یکپارچه (Merged Audio)**.
+
 ---
 
-## API سرور (برای توسعه‌دهندگان)
+## 🤖 موتور چندگانه هیبریدی و راهنمای Gemini TTS API
 
-سرور FastAPI مستقر در `scripts/server.py` نقاط پایانی زیر را در اختیار قرار می‌دهد:
+<p align="center">
+  <img src="web/readme-demo.png" width="95%" alt="نمای تبدیل گفتار تکی با تم روشن">
+</p>
 
-| روش | مسیر | ورودی | خروجی |
+### مزیت هوش مصنوعی Gemini 2.5 Flash:
+- بیان روان، درک لحن احساسی و آهنگ کلام کاملاً انسانی.
+- تلفظ فوق‌العاده دقیق عبارات پیچیده، اسامی خاص و متون ادبی فارسی.
+
+### نحوه فعال‌سازی کلید API:
+1. یک کلید API رایگان از کنسول رسمی [Google AI Studio](https://aistudio.google.com/app/apikey) دریافت کنید.
+2. کلید را در فایل `.env` در ریشه پروژه قرار دهید:
+   ```env
+   GEMINI_API_KEY=AIzaSyYourActualApiKeyHere
+   ```
+3. یا در ترمینال تنظیم کنید:
+   ```powershell
+   $env:GEMINI_API_KEY="AIzaSyYourActualApiKeyHere"
+   ```
+
+### سپر تاب‌آوری در برابر تحریم‌ها (Automatic Resilience):
+در صورتی که به دلیل اعمال محدودیت‌های جغرافیایی گوگل با خطای `PERMISSION_DENIED 403` مواجه شوید یا اینترنت شما قطع شود، سیستم **به صورت هوشمند و بدون اختلال به موتور محلی آفلاین ONNX سوئیچ می‌کند**.
+
+---
+
+## 💻 ابزار خط فرمان (CLI Usage)
+
+### تبدیل مستقیم فایل متنی با پخش فوری:
+```bash
+# تبدیل متن طولانی با صدای دلخواه و پخش فوری پس از اتمام
+python scripts/convert_text.py book_chapter.txt --voice voices/female_narration.wav --format mp3 --play
+```
+
+### تبدیل جمله در خط فرمان:
+```bash
+python scripts/tts_onnx.py "سلام دنیا، روز شما بخیر" voices/male_hello.wav output/out.wav --pack
+```
+
+---
+
+## 📡 مستندات کامل API (REST Endpoints)
+
+| روش | آدرس Endpoint | ورودی داده (Payload) | خروجی (Response) |
 |---|---|---|---|
-| `GET` | `/` | — | صفحه وب اپلیکیشن (`web/index.html`) |
-| `GET` | `/api/voices` | — | لیست صداهای داخلی و آپلودشده `{voices: [...]}` |
-| `POST` | `/api/tts` | `{text, voice, pace?, mode?, engine?, audio_format?}` | شناسنامه صوت تولیدشده `{id, phonemes, duration, format}` |
-| `GET` | `/api/audio/{id}` | پارامتر اختیاری `?format=mp3` یا `?format=wav` | جریان داده صوتی (`audio/mpeg` یا `audio/wav`) |
-| `POST` | `/api/phonemize` | `{text, mode?}` | فونم‌های فارسی `{phonemes}` |
-| `POST` | `/api/tts-phonemes` | `{phonemes, voice, pace?, engine?, audio_format?}` | سنتز مستقیم از رشته فونم |
-| `POST` | `/api/voice/upload` | فایل صوتی کاربر (`multipart/form-data`) | `{id, name, seconds}` |
-| `POST` | `/api/batch/audiobook` | `{title, text, voice, pace?, mode?, engine?, audio_format?}` | ایجاد وظیفه صف `{task_id, status, chapters}` |
-| `GET` | `/api/batch/status/{id}` | — | آخرین وضعیت صف و درصد پیشرفت `{progress, status, chapters}` |
-| `GET` | `/api/batch/download/{id}` | پارامتر اختیاری `?format=zip` یا `?format=merged` | فایل فشرده فصول یا فایل صوتی یکپارچه |
+| `GET` | `/` | — | وب اپلیکیشن (`web/index.html`) |
+| `GET` | `/api/voices` | — | لیست صداها `{voices: [...]}` |
+| `POST` | `/api/tts` | `{text, voice, pace?, mode?, engine?, audio_format?}` | شناسنامه صوت `{id, phonemes, duration, format}` |
+| `GET` | `/api/audio/{id}` | پارامتر اختیاری `?format=mp3` یا `?format=wav` | استریم فایل صوتی (`audio/mpeg` یا `audio/wav`) |
+| `POST` | `/api/phonemize` | `{text, mode?}` | رشته فونم‌ها `{phonemes}` |
+| `POST` | `/api/tts-phonemes` | `{phonemes, voice, pace?, engine?, audio_format?}` | سنتز مستقیم از فونم |
+| `POST` | `/api/voice/upload` | فایل صوتی کاربر (`multipart/form-data`) | مشخصات صدای بارگذاری‌شده `{id, name, seconds}` |
+| `POST` | `/api/batch/audiobook` | `{title, text, voice, pace?, mode?, engine?, audio_format?}` | شروع پردازش صف `{task_id, status, chapters}` |
+| `GET` | `/api/batch/status/{id}` | — | درصد پیشرفت و وضعیت `{progress, status, chapters}` |
+| `GET` | `/api/batch/download/{id}` | پارامتر `?format=zip` یا `?format=merged` | فایل دانلود ZIP یا Merged صوتی |
 
 ---
 
-## مقایسه مسیر سبک ONNX و PyTorch اصلی
+## 📊 بنچمارک و مقایسه عملکرد
 
-| معیار | مسیر ONNX (توصیه‌شده) | مسیر PyTorch (مرجع) |
-|---|---|---|
-| وابستگی‌ها | onnxruntime، numpy، scipy، soundfile، sentencepiece | torch، transformers، pocket-tts، soundfile |
-| حجم وابستگی‌ها در ویندوز | **~۲۰۰MB** | **~۱٫۲GB** |
-| کارت گرافیک (GPU) | **نیاز ندارد** (بهینه‌شده برای CPU) | نیاز ندارد (نسخه CPU تورچ) |
-| استقلال شبکه | **۱۰۰٪ آفلاین** بدون نیاز به اینترنت | ۱۰۰٪ آفلاین |
-| پلتفرم‌ها | ویندوز، لینوکس، مک (x64 و ARM64) | پایتون با وابستگی‌های تورچ |
-| سرعت سنتز (نمونه ۲٫۸s) | ۳۲۸۳ms | ۳۴۲۳ms |
+| ویژگی | موتور ONNX خالص (پارسی‌گو) | موتور مرجع PyTorch | سرویس‌های خارجی صرف |
+|---|---|---|---|
+| **نیازمندی سخت‌افزاری** | **فقط CPU** (بدون نیاز به کارت گرافیک) | CPU یا GPU | سرور ابری |
+| **حجم وابستگی‌ها** | **~۲۰۰ مگابایت** | ~۱٫۲ گیگابایت | وابسته به پکیج |
+| **وابستگی شبکه** | **۱۰۰٪ آفلاین و محلی** | ۱۰۰٪ آفلاین | نیازمند اینترنت دائم |
+| **سرعت پردازش (۲٫۸s صدا)** | **۳۲۸۰ میلی‌ثانیه** روی CPU معمولی | ۳۴۲۰ میلی‌ثانیه | وابسته به پینگ اینترنت |
+| **خروجی فرمت‌ها** | **MP3 + WAV** | فقط WAV خام | فرمت‌های مختلف |
+| **استودیو کتاب صوتی** | **دارد (صف خودکار + ZIP)** | ندارد | محدود به هزینه اشتراک |
 
 ---
 
-## اعتبارها و مجوزها (Credits & Acknowledgments)
+## 🤝 مشارکت در توسعه (Contributing)
 
-- این مخزن توسط [hamid-morsali-786](https://github.com/hamid-morsali-786) بر پایه‌ی مخزن ارزشمند [nimaone/persian_tts](https://github.com/nimaone/persian_tts) ایجاد و با افزودن معماری کتاب صوتی، صف پس‌زمینه، موتور هیبریدی، خروجی MP3 و رابط کاربری مدرن گسترش یافته است.
-- **مدل سنتز گفتار فارسی:** برگرفته از [`mehdi-hf/pocket-tts-farsi-v2`](https://huggingface.co/mehdi-hf/pocket-tts-farsi-v2) کاری از مهدی ملاحیاری ([`mallahyari/pocket-tts`](https://github.com/mallahyari/pocket-tts)) با مجوز **CC-BY-NC-4.0**.
+ما از هرگونه مشارکت، گزارش باگ و ارسال ویژگی‌های جدید استقبال می‌کنیم!
+برای اطلاع از نحوه راه‌اندازی محیط توسعه، استانداردهای کدنویسی و ارسال Pull Request، لطفاً فایل [CONTRIBUTING.md](CONTRIBUTING.md) و [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) را مطالعه فرمایید.
+
+---
+
+## 📜 اعتبارها، استناد و مجوزها (Credits & License)
+
+- کد این مخزن تحت مجوز **[MIT License](LICENSE)** به صورت آزاد و متن‌باز منتشر شده است.
+- این پروژه توسط [حمید مرسلی (hamid-morsali-786)](https://github.com/hamid-morsali-786) بر پایه‌ی مخزن ارزشمند [nimaone/persian_tts](https://github.com/nimaone/persian_tts) بازطراحی و با استودیوی کتاب صوتی، صف وظایف، موتور هیبریدی و تم نوین گسترش یافته است.
+- **مدل سنتز گفتار پایه:** برگرفته از [`mehdi-hf/pocket-tts-farsi-v2`](https://huggingface.co/mehdi-hf/pocket-tts-farsi-v2) کاری از مهدی ملاحیاری ([`mallahyari/pocket-tts`](https://github.com/mallahyari/pocket-tts)) با مجوز **CC-BY-NC-4.0**.
 - **مدل تبدیل متن به فونم (G2P):** مدل [`Homo-GE2PE-Persian`](https://huggingface.co/MahtaFetrat/Homo-GE2PE-Persian) توسعه‌یافته توسط سرکار خانم الناز رحمتی و همکاران.
-- **معماری پایه TTS:** کتابخانه [`pocket-tts`](https://pypi.org/project/pocket-tts/) کاری از [Kyutai](https://kyutai.org).
+- **معماری پایه:** کتابخانه [`pocket-tts`](https://pypi.org/project/pocket-tts/) کاری از [Kyutai](https://kyutai.org).
 
-> **هشدار مجوز تجاری:** طبق مجوز مدل پایه (**CC-BY-NC-4.0**)، هرگونه استفاده تجاری از خروجی‌های این مدل نیازمند اخذ مجوز از پدیدآورندگان مدل آکوستیک پایه است.
+> **توجه مجوز تجاری:** با توجه به مجوز غیرتجاری مدل آکوستیک پایه (**CC-BY-NC-4.0**)، استفاده تجاری از خروجی‌های صدای تولیدشده با این مدل نیازمند اجازه پدیدآورندگان مدل پایه است.
+
+---
+
+## ⭐ تاریخچه ستاره‌ها (Star History)
+
+اگر این پروژه برای شما مفید واقع شده است، لطفاً با ثبت یک ستاره (Star) در گیت‌هاب از توسعه آن حمایت کنید:
+
+<p align="center">
+  <a href="https://star-history.com/#hamid-morsali-786/persian_tts&Date">
+    <img src="https://api.star-history.com/svg?repos=hamid-morsali-786/persian_tts&type=Date" alt="Star History Chart" width="750">
+  </a>
+</p>

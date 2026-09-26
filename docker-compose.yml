@@ -1,0 +1,18 @@
+services:
+  parsi-go:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: parsi-go-tts
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - PARSIGO_HOST=0.0.0.0
+      - PARSIGO_PORT=8000
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+    volumes:
+      - ./model:/app/model
+      - ./output:/app/output
+      - ./uploads:/app/uploads
+      - ./voices:/app/voices

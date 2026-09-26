@@ -1,0 +1,17 @@
+.git
+.gitignore
+.github
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+output/
+uploads/
+tests/
+gui-test-screenshots/
+*.log
+*.bat
+.env
+leadership*
