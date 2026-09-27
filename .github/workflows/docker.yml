@@ -22,4 +22,4 @@ jobs:
       with:
         context: .
         push: false
-        tags: hamid-morsali-786/persian-tts:latest
+        tags: hamid-morsali-786/raavi-tts:latest

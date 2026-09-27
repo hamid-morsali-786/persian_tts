@@ -10,7 +10,7 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in ParSiGo, please DO NOT open a public issue.
+If you discover a security vulnerability in Raavi, please DO NOT open a public issue.
 
 Instead, please report the vulnerability privately via GitHub Security Advisories or email the maintainers directly.
 

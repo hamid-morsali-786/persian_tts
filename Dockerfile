@@ -5,8 +5,8 @@ WORKDIR /app
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PARSIGO_HOST=0.0.0.0 \
-    PARSIGO_PORT=8000
+    RAAVI_HOST=0.0.0.0 \
+    RAAVI_PORT=8000
 
 # Install system dependencies (libsndfile for audio processing, curl for health checks)
 RUN apt-get update && apt-get install -y --no-install-recommends \

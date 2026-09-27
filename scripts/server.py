@@ -52,7 +52,7 @@ BUILTIN_VOICE_META = {
     "male_news.wav": ("آقا · خبری", "صدای مرد، لحن خبرگزاری"),
 }
 
-app = FastAPI(title="پارسی‌گو — Persian TTS demo")
+app = FastAPI(title="راوی — Persian TTS demo")
 
 _audio_store: dict[str, dict] = {}
 _store_lock = threading.Lock()
@@ -440,7 +440,7 @@ def audio(audio_id: str, format: Optional[str] = None):
     return Response(
         content=cache[fmt],
         media_type=media_type,
-        headers={"Content-Disposition": f'inline; filename="parsigo_{audio_id}.{ext}"'},
+        headers={"Content-Disposition": f'inline; filename="raavi_{audio_id}.{ext}"'},
     )
 
 
@@ -690,8 +690,8 @@ def api_batch_chapter_audio(job_id: str, chapter_index: int):
 if __name__ == "__main__":
     # defaults keep the demo loopback-only; 0.0.0.0 exposes an
     # unauthenticated demo (disk-writing upload included) — opt in
-    host = os.environ.get("PARSIGO_HOST", "127.0.0.1")
-    port = int(os.environ.get("PARSIGO_PORT", "8000"))
+    host = os.environ.get("RAAVI_HOST", "127.0.0.1")
+    port = int(os.environ.get("RAAVI_PORT", "8000"))
     print("loading engine (first request may take a moment)...")
     get_engine_manager().get_engine("local")._ensure_loaded()
     print(f"demo:  http://{host}:{port}")

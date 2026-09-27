@@ -5,7 +5,7 @@ cd /d "%~dp0"
 echo ====================================================
 echo  Persian TTS - Push to GitHub
 echo ====================================================
-echo Sending commits to https://github.com/hamid-morsali-786/persian_tts ...
+echo Sending commits to https://github.com/hamid-morsali-786/raavi-tts ...
 echo.
 git push -u origin main
 echo.

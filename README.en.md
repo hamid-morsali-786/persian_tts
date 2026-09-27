@@ -1,21 +1,21 @@
 <div align="center">
 
-<img src="web/logo.png" width="130" alt="ParSiGo Logo">
+<img src="web/logo.png" width="130" alt="Raavi Logo">
 
-# ParSiGo (Persian Text-to-Speech)
+# Raavi (Persian Text-to-Speech)
 ### Advanced Persian Speech & Audiobook Studio with Voice Cloning
 
-[![GitHub Stars](https://img.shields.io/github/stars/hamid-morsali-786/persian_tts?style=for-the-badge&color=e8590c)](https://github.com/hamid-morsali-786/persian_tts/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/hamid-morsali-786/persian_tts?style=for-the-badge&color=f59e0b)](https://github.com/hamid-morsali-786/persian_tts/network/members)
+[![GitHub Stars](https://img.shields.io/github/stars/hamid-morsali-786/raavi-tts?style=for-the-badge&color=e8590c)](https://github.com/hamid-morsali-786/raavi-tts/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/hamid-morsali-786/raavi-tts?style=for-the-badge&color=f59e0b)](https://github.com/hamid-morsali-786/raavi-tts/network/members)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 [![Python Version](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12-brightgreen?style=for-the-badge&logo=python)](https://python.org)
-[![CI Build](https://img.shields.io/badge/CI-Passing-success?style=for-the-badge&logo=githubactions)](https://github.com/hamid-morsali-786/persian_tts/actions)
+[![CI Build](https://img.shields.io/badge/CI-Passing-success?style=for-the-badge&logo=githubactions)](https://github.com/hamid-morsali-786/raavi-tts/actions)
 [![Docker Ready](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker)](Dockerfile)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=for-the-badge)](CONTRIBUTING.md)
 
 <p align="center">
   <b>Developed by:</b> <a href="https://github.com/hamid-morsali-786">hamid-morsali-786</a> · 
-  <b>Forked from:</b> <a href="https://github.com/nimaone/persian_tts">nimaone/persian_tts</a>
+  <b>Forked from:</b> <a href="https://github.com/nimaone/raavi-tts">nimaone/raavi-tts</a>
 </p>
 
 [فارسی](README.md) | **English**
@@ -23,7 +23,7 @@
 <br/>
 
 <p align="center">
-  <img src="docs/demo-poster.jpg" width="850" alt="ParSiGo Modern Light UI Demo">
+  <img src="docs/demo-poster.jpg" width="850" alt="Raavi Modern Light UI Demo">
 </p>
 
 </div>
@@ -52,9 +52,9 @@
 
 ## 🎯 Overview
 
-**ParSiGo** is a state-of-the-art open-source Persian speech synthesis (TTS) ecosystem featuring **voice cloning**, intelligent long-form text conversion, and full-scale **Audiobook generation**. Operating 100% offline on **CPU** (zero GPU and no internet required at runtime), it outputs crystal-clear 24 kHz audio in both **MP3** and studio-grade **WAV** formats.
+**Raavi** is a state-of-the-art open-source Persian speech synthesis (TTS) ecosystem featuring **voice cloning**, intelligent long-form text conversion, and full-scale **Audiobook generation**. Operating 100% offline on **CPU** (zero GPU and no internet required at runtime), it outputs crystal-clear 24 kHz audio in both **MP3** and studio-grade **WAV** formats.
 
-Additionally, ParSiGo integrates Google's **Gemini 2.5 Flash TTS API** with an automatic zero-downtime fallback to local ONNX, providing an ideal harmony between offline speed and cloud-grade emotional prosody.
+Additionally, Raavi integrates Google's **Gemini 2.5 Flash TTS API** with an automatic zero-downtime fallback to local ONNX, providing an ideal harmony between offline speed and cloud-grade emotional prosody.
 
 ---
 
@@ -134,8 +134,8 @@ flowchart TD
 ### 1. Windows One-Click Launcher (Recommended)
 
 ```powershell
-git clone https://github.com/hamid-morsali-786/persian_tts.git
-cd persian_tts
+git clone https://github.com/hamid-morsali-786/raavi-tts.git
+cd raavi-tts
 ```
 
 Simply double-click **`run_web_ui.bat`** to start the server and automatically launch `http://127.0.0.1:8000` in your default browser.
@@ -206,7 +206,7 @@ python scripts/server.py
    ```
 
 ### Sanction & Failure Immunity:
-If regional sanctions cause a `PERMISSION_DENIED 403` error or internet access drops, ParSiGo **instantly falls back to the local ONNX engine** with 0 interruption.
+If regional sanctions cause a `PERMISSION_DENIED 403` error or internet access drops, Raavi **instantly falls back to the local ONNX engine** with 0 interruption.
 
 ---
 
@@ -241,7 +241,7 @@ python scripts/tts_onnx.py "سلام دنیا، روز شما بخیر" voices/m
 
 ## 📊 Performance & Benchmarks
 
-| Metric | ParSiGo (Pure ONNX) | PyTorch Reference | Cloud-Only Services |
+| Metric | Raavi (Pure ONNX) | PyTorch Reference | Cloud-Only Services |
 |---|---|---|---|
 | **Hardware Requirement** | **CPU Only** (No GPU required) | CPU or GPU | Cloud Server |
 | **Dependency Size** | **~200 MB** | ~1.2 GB | Package Dependent |
@@ -261,7 +261,7 @@ Contributions are warmly welcomed! Please review [CONTRIBUTING.md](CONTRIBUTING.
 ## 📜 License & Acknowledgments
 
 - Software code is distributed under the **[MIT License](LICENSE)**.
-- Extended and maintained by [Hamid Morsali (hamid-morsali-786)](https://github.com/hamid-morsali-786) based on [nimaone/persian_tts](https://github.com/nimaone/persian_tts).
+- Extended and maintained by [Hamid Morsali (hamid-morsali-786)](https://github.com/hamid-morsali-786) based on [nimaone/raavi-tts](https://github.com/nimaone/raavi-tts).
 - **Core Persian TTS Model:** [`mehdi-hf/pocket-tts-farsi-v2`](https://huggingface.co/mehdi-hf/pocket-tts-farsi-v2) by Mehdi Mallahyari ([`mallahyari/pocket-tts`](https://github.com/mallahyari/pocket-tts)), licensed under **CC-BY-NC-4.0**.
 - **Persian G2P Model:** [`Homo-GE2PE-Persian`](https://huggingface.co/MahtaFetrat/Homo-GE2PE-Persian) developed by Elnaz Rahmati et al.
 - **Base Architecture:** [`pocket-tts`](https://pypi.org/project/pocket-tts/) by [Kyutai](https://kyutai.org).
@@ -273,7 +273,7 @@ Contributions are warmly welcomed! Please review [CONTRIBUTING.md](CONTRIBUTING.
 ## ⭐ Star History
 
 <p align="center">
-  <a href="https://star-history.com/#hamid-morsali-786/persian_tts&Date">
-    <img src="https://api.star-history.com/svg?repos=hamid-morsali-786/persian_tts&type=Date" alt="Star History Chart" width="750">
+  <a href="https://star-history.com/#hamid-morsali-786/raavi-tts&Date">
+    <img src="https://api.star-history.com/svg?repos=hamid-morsali-786/raavi-tts&type=Date" alt="Star History Chart" width="750">
   </a>
 </p>

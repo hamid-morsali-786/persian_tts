@@ -1,6 +1,6 @@
 ---
 name: 💡 Feature Request
-about: Suggest an idea or architectural improvement for ParSiGo
+about: Suggest an idea or architectural improvement for Raavi
 title: '[FEAT] '
 labels: enhancement
 assignees: ''

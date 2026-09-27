@@ -1,21 +1,21 @@
 <div align="center">
 
-<img src="web/logo.png" width="130" alt="لوگوی پارسی‌گو">
+<img src="web/logo.png" width="130" alt="لوگوی راوی">
 
-# پارسی‌گو (ParSiGo)
+# راوی (Raavi)
 ### استودیوی پیشرفته تبدیل متن و کتاب صوتی فارسی با کلونینگ صدا
 
-[![GitHub Stars](https://img.shields.io/github/stars/hamid-morsali-786/persian_tts?style=for-the-badge&color=e8590c)](https://github.com/hamid-morsali-786/persian_tts/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/hamid-morsali-786/persian_tts?style=for-the-badge&color=f59e0b)](https://github.com/hamid-morsali-786/persian_tts/network/members)
+[![GitHub Stars](https://img.shields.io/github/stars/hamid-morsali-786/raavi-tts?style=for-the-badge&color=e8590c)](https://github.com/hamid-morsali-786/raavi-tts/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/hamid-morsali-786/raavi-tts?style=for-the-badge&color=f59e0b)](https://github.com/hamid-morsali-786/raavi-tts/network/members)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 [![Python Version](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12-brightgreen?style=for-the-badge&logo=python)](https://python.org)
-[![CI Build](https://img.shields.io/badge/CI-Passing-success?style=for-the-badge&logo=githubactions)](https://github.com/hamid-morsali-786/persian_tts/actions)
+[![CI Build](https://img.shields.io/badge/CI-Passing-success?style=for-the-badge&logo=githubactions)](https://github.com/hamid-morsali-786/raavi-tts/actions)
 [![Docker Ready](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker)](Dockerfile)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=for-the-badge)](CONTRIBUTING.md)
 
 <p align="center">
   <b>توسعه و بهینه‌سازی توسط:</b> <a href="https://github.com/hamid-morsali-786">hamid-morsali-786</a> · 
-  <b>انشعاب‌یافته از:</b> <a href="https://github.com/nimaone/persian_tts">nimaone/persian_tts</a>
+  <b>انشعاب‌یافته از:</b> <a href="https://github.com/nimaone/raavi-tts">nimaone/raavi-tts</a>
 </p>
 
 **فارسی** | [English](README.en.md)
@@ -23,7 +23,7 @@
 <br/>
 
 <p align="center">
-  <img src="docs/demo-poster.jpg" width="850" alt="دموی رابط کاربری جدید پارسی‌گو — تم روشن مدرن">
+  <img src="docs/demo-poster.jpg" width="850" alt="دموی رابط کاربری جدید راوی — تم روشن مدرن">
 </p>
 
 </div>
@@ -52,9 +52,9 @@
 
 ## 🎯 معرفی و نمای کلی (Overview)
 
-**پارسی‌گو (ParSiGo)** پیشرفته‌ترین اکوسیستم متن‌باز سنتز گفتار فارسی (Text-to-Speech) با قابلیت **کلونینگ صدا (Voice Cloning)**، تبدیل متون حجیم و تولید کتاب صوتی است. این پروژه به صورت ۱۰۰٪ آفلاین روی **CPU** (بدون نیاز به کارت گرافیک GPU و بدون مصرف اینترنت) اجرا شده و خروجی صوتی با کیفیت بالا در فرمت‌های **MP3** و **WAV** با نرخ نمونه ۲۴ کیلوهرتز تولید می‌کند.
+**راوی (Raavi)** پیشرفته‌ترین اکوسیستم متن‌باز سنتز گفتار فارسی (Text-to-Speech) با قابلیت **کلونینگ صدا (Voice Cloning)**، تبدیل متون حجیم و تولید کتاب صوتی است. این پروژه به صورت ۱۰۰٪ آفلاین روی **CPU** (بدون نیاز به کارت گرافیک GPU و بدون مصرف اینترنت) اجرا شده و خروجی صوتی با کیفیت بالا در فرمت‌های **MP3** و **WAV** با نرخ نمونه ۲۴ کیلوهرتز تولید می‌کند.
 
-علاوه بر موتور آفلاین ONNX، پارسی‌گو به یک موتور ابری هوشمند **Google Gemini Cloud TTS** با مکانیزم Fallback خودکار و صفر-قطعی مجهز است تا تعادلی بی‌نظیر میان سرعت آفلاین و کیفیت فوق‌طبیعی ارائه دهد.
+علاوه بر موتور آفلاین ONNX، راوی به یک موتور ابری هوشمند **Google Gemini Cloud TTS** با مکانیزم Fallback خودکار و صفر-قطعی مجهز است تا تعادلی بی‌نظیر میان سرعت آفلاین و کیفیت فوق‌طبیعی ارائه دهد.
 
 ---
 
@@ -136,8 +136,8 @@ flowchart TD
 ### ۱. اجرای سریع در ویندوز (پیشنهادی)
 
 ```powershell
-git clone https://github.com/hamid-morsali-786/persian_tts.git
-cd persian_tts
+git clone https://github.com/hamid-morsali-786/raavi-tts.git
+cd raavi-tts
 ```
 
 کافی است روی فایل **`run_web_ui.bat`** دابل‌کلیک کنید تا سرور به طور خودکار اجرا شده و مرورگر در آدرس `http://127.0.0.1:8000` باز شود.
@@ -186,7 +186,7 @@ python scripts/server.py
 
 ## 📚 استودیوی کتاب صوتی و صف پردازش (Audiobook Studio)
 
-استودیوی کتاب صوتی پارسی‌گو برای تولید آسان کتاب‌های صوتی کامل طراحی شده است:
+استودیوی کتاب صوتی راوی برای تولید آسان کتاب‌های صوتی کامل طراحی شده است:
 
 <p align="center">
   <img src="web/readme-audiobook.png" width="95%" alt="نمای استودیوی کتاب صوتی با تم روشن">
@@ -260,7 +260,7 @@ python scripts/tts_onnx.py "سلام دنیا، روز شما بخیر" voices/m
 
 ## 📊 بنچمارک و مقایسه عملکرد
 
-| ویژگی | موتور ONNX خالص (پارسی‌گو) | موتور مرجع PyTorch | سرویس‌های خارجی صرف |
+| ویژگی | موتور ONNX خالص (راوی) | موتور مرجع PyTorch | سرویس‌های خارجی صرف |
 |---|---|---|---|
 | **نیازمندی سخت‌افزاری** | **فقط CPU** (بدون نیاز به کارت گرافیک) | CPU یا GPU | سرور ابری |
 | **حجم وابستگی‌ها** | **~۲۰۰ مگابایت** | ~۱٫۲ گیگابایت | وابسته به پکیج |
@@ -281,7 +281,7 @@ python scripts/tts_onnx.py "سلام دنیا، روز شما بخیر" voices/m
 ## 📜 اعتبارها، استناد و مجوزها (Credits & License)
 
 - کد این مخزن تحت مجوز **[MIT License](LICENSE)** به صورت آزاد و متن‌باز منتشر شده است.
-- این پروژه توسط [حمید مرسلی (hamid-morsali-786)](https://github.com/hamid-morsali-786) بر پایه‌ی مخزن ارزشمند [nimaone/persian_tts](https://github.com/nimaone/persian_tts) بازطراحی و با استودیوی کتاب صوتی، صف وظایف، موتور هیبریدی و تم نوین گسترش یافته است.
+- این پروژه توسط [حمید مرسلی (hamid-morsali-786)](https://github.com/hamid-morsali-786) بر پایه‌ی مخزن ارزشمند [nimaone/raavi-tts](https://github.com/nimaone/raavi-tts) بازطراحی و با استودیوی کتاب صوتی، صف وظایف، موتور هیبریدی و تم نوین گسترش یافته است.
 - **مدل سنتز گفتار پایه:** برگرفته از [`mehdi-hf/pocket-tts-farsi-v2`](https://huggingface.co/mehdi-hf/pocket-tts-farsi-v2) کاری از مهدی ملاحیاری ([`mallahyari/pocket-tts`](https://github.com/mallahyari/pocket-tts)) با مجوز **CC-BY-NC-4.0**.
 - **مدل تبدیل متن به فونم (G2P):** مدل [`Homo-GE2PE-Persian`](https://huggingface.co/MahtaFetrat/Homo-GE2PE-Persian) توسعه‌یافته توسط سرکار خانم الناز رحمتی و همکاران.
 - **معماری پایه:** کتابخانه [`pocket-tts`](https://pypi.org/project/pocket-tts/) کاری از [Kyutai](https://kyutai.org).
@@ -295,7 +295,7 @@ python scripts/tts_onnx.py "سلام دنیا، روز شما بخیر" voices/m
 اگر این پروژه برای شما مفید واقع شده است، لطفاً با ثبت یک ستاره (Star) در گیت‌هاب از توسعه آن حمایت کنید:
 
 <p align="center">
-  <a href="https://star-history.com/#hamid-morsali-786/persian_tts&Date">
-    <img src="https://api.star-history.com/svg?repos=hamid-morsali-786/persian_tts&type=Date" alt="Star History Chart" width="750">
+  <a href="https://star-history.com/#hamid-morsali-786/raavi-tts&Date">
+    <img src="https://api.star-history.com/svg?repos=hamid-morsali-786/raavi-tts&type=Date" alt="Star History Chart" width="750">
   </a>
 </p>

@@ -1,6 +1,6 @@
-# Contributing to ParSiGo (Persian TTS)
+# Contributing to Raavi (Persian TTS)
 
-Thank you for your interest in contributing to **ParSiGo**! We welcome bug fixes, documentation improvements, feature additions, and architectural optimizations.
+Thank you for your interest in contributing to **Raavi**! We welcome bug fixes, documentation improvements, feature additions, and architectural optimizations.
 
 ---
 
@@ -8,8 +8,8 @@ Thank you for your interest in contributing to **ParSiGo**! We welcome bug fixes
 
 1. **Fork and Clone the Repository:**
    ```bash
-   git clone https://github.com/hamid-morsali-786/persian_tts.git
-   cd persian_tts
+   git clone https://github.com/hamid-morsali-786/raavi-tts.git
+   cd raavi-tts
    ```
 
 2. **Create and Activate Virtual Environment:**

@@ -22,7 +22,7 @@ def test_index_page(client):
     assert response.status_code == 200
     assert "html" in response.headers.get("content-type", "").lower()
     assert "<!doctype html>" in response.text.lower()
-    assert "پارسی‌گو" in response.text or "persian" in response.text.lower()
+    assert "راوی" in response.text or "raavi" in response.text.lower()
 
 
 def test_api_voices(client):

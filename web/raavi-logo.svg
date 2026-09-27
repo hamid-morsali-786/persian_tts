@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none" role="img" aria-label="لوگوی راوی">
+  <defs>
+    <!-- Modern Vibrant Soundwave Gradient -->
+    <linearGradient id="raavi-grad" x1="4" y1="42" x2="44" y2="6" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF5722"/>
+      <stop offset="45%" stop-color="#E11D48"/>
+      <stop offset="100%" stop-color="#6366F1"/>
+    </linearGradient>
+    <linearGradient id="raavi-surface" x1="0" y1="0" x2="0" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1E1B4B"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Modern Icon Container with Ambient Border -->
+  <rect width="48" height="48" rx="12" fill="url(#raavi-surface)"/>
+  <rect width="48" height="48" rx="12" stroke="white" stroke-opacity="0.12" stroke-width="1"/>
+
+  <!-- Open Audiobook Pages (Basis) -->
+  <path d="M24 37V23M24 37C20.5 34.5 14 34.5 9 36V22C14 20.5 20.5 20.5 24 23M24 37C27.5 34.5 34 34.5 39 36V22C34 20.5 27.5 20.5 24 23" 
+        stroke="url(#raavi-grad)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Voice & Acoustic Frequencies (TTS Spectrum) -->
+  <line x1="16" y1="18" x2="16" y2="13" stroke="url(#raavi-grad)" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="20" y1="19" x2="20" y2="9" stroke="url(#raavi-grad)" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="24" y1="19" x2="24" y2="6" stroke="url(#raavi-grad)" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="28" y1="19" x2="28" y2="9" stroke="url(#raavi-grad)" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="32" y1="18" x2="32" y2="13" stroke="url(#raavi-grad)" stroke-width="2.4" stroke-linecap="round"/>
+</svg>

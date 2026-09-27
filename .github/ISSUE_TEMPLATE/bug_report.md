@@ -1,6 +1,6 @@
 ---
 name: 🐛 Bug Report
-about: Create a report to help us improve ParSiGo
+about: Create a report to help us improve Raavi
 title: '[BUG] '
 labels: bug
 assignees: ''
