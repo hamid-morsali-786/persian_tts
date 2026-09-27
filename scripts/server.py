@@ -150,6 +150,22 @@ def index():
     return FileResponse(WEB)
 
 
+@app.get("/{filename}.png")
+def get_png(filename: str):
+    p = BASE / "web" / f"{filename}.png"
+    if p.is_file():
+        return FileResponse(p, media_type="image/png")
+    raise HTTPException(404, "Image not found")
+
+
+@app.get("/favicon.ico")
+def get_favicon():
+    p = BASE / "web" / "favicon.ico"
+    if p.is_file():
+        return FileResponse(p, media_type="image/x-icon")
+    raise HTTPException(404, "Favicon not found")
+
+
 @app.get("/api/engines")
 def engines():
     return {"engines": get_engine_manager().list_engines()}

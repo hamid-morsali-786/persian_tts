@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>راوی — تبدیل متن فارسی به گفتار</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" href="raavi-icon.png">
 <style>
 /* Vazirmatn v33.003 (SIL OFL 1.1, see fonts/OFL.txt) — bundled so the demo
    stays fully offline; variable weight covers the 400-800 weights used here */
@@ -52,10 +54,11 @@ body{
 
 /* ---------- header ---------- */
 header{display:flex;align-items:center;gap:14px;margin-bottom:28px}
-.logo{width:44px;height:44px;border-radius:12px;background:var(--primary-btn-bg);
-  color:var(--primary-btn-text);display:grid;place-items:center;flex-shrink:0;
-  box-shadow:0 3px 12px rgba(0,0,0,.12)}
-.logo svg{width:22px;height:22px;stroke:currentColor}
+.logo{width:46px;height:46px;border-radius:13px;background:var(--surface-2);border:1px solid var(--border);
+  display:grid;place-items:center;flex-shrink:0;box-shadow:var(--shadow-sm);overflow:hidden;padding:4px}
+.logo img{width:100%;height:100%;object-fit:contain}
+html[data-theme="dark"] .logo-light{display:none}
+html[data-theme="dark"] .logo-dark{display:block !important}
 h1{font-size:22px;font-weight:800;letter-spacing:normal}
 .sub{font-size:12.5px;color:var(--muted);margin-top:2px}
 .badge{font-size:11.5px;color:var(--muted);
@@ -453,9 +456,8 @@ textarea.dragover{border-color:var(--text);background:var(--surface-2)}
 
   <header>
     <div class="logo">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round">
-        <path d="M3 13.5h2l2-6 3 12 3-16 3 16 2-6h3"/>
-      </svg>
+      <img src="raavi-icon.png" class="logo-light" alt="لوگوی راوی" width="38" height="38">
+      <img src="raavi-icon-dark.png" class="logo-dark" alt="لوگوی راوی" width="38" height="38" style="display:none">
     </div>
     <div>
       <h1>راوی</h1>

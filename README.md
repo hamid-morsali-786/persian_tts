@@ -1,6 +1,9 @@
 <div align="center">
 
-<img src="web/logo.png" width="130" alt="لوگوی راوی">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="web/raavi-banner-dark.png">
+  <img src="web/raavi-banner.png" width="440" alt="لوگوی راوی | Raavi">
+</picture>
 
 # راوی (Raavi)
 ### استودیوی پیشرفته تبدیل متن و کتاب صوتی فارسی با کلونینگ صدا
@@ -15,7 +18,7 @@
 
 <p align="center">
   <b>توسعه و بهینه‌سازی توسط:</b> <a href="https://github.com/hamid-morsali-786">hamid-morsali-786</a> · 
-  <b>انشعاب‌یافته از:</b> <a href="https://github.com/nimaone/raavi-tts">nimaone/raavi-tts</a>
+  <b>انشعاب‌یافته از:</b> <a href="https://github.com/nimaone/persian_tts">nimaone/persian_tts</a>
 </p>
 
 **فارسی** | [English](README.en.md)

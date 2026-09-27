@@ -1,6 +1,9 @@
 <div align="center">
 
-<img src="web/logo.png" width="130" alt="Raavi Logo">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="web/raavi-banner-dark.png">
+  <img src="web/raavi-banner.png" width="440" alt="Raavi Logo">
+</picture>
 
 # Raavi (Persian Text-to-Speech)
 ### Advanced Persian Speech & Audiobook Studio with Voice Cloning
@@ -15,7 +18,7 @@
 
 <p align="center">
   <b>Developed by:</b> <a href="https://github.com/hamid-morsali-786">hamid-morsali-786</a> · 
-  <b>Forked from:</b> <a href="https://github.com/nimaone/raavi-tts">nimaone/raavi-tts</a>
+  <b>Forked from:</b> <a href="https://github.com/nimaone/persian_tts">nimaone/persian_tts</a>
 </p>
 
 [فارسی](README.md) | **English**
