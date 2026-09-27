@@ -70,10 +70,42 @@ h1{font-size:22px;font-weight:800;letter-spacing:normal}
   color:var(--muted);transition:all .18s cubic-bezier(0.2,0,0,1);flex-shrink:0}
 .theme-btn:hover{color:var(--text);border-color:var(--text);transform:scale(1.04)}
 .theme-btn:active{transform:scale(0.95)}
-.theme-btn .sun{display:none}
-.theme-btn .moon{display:block}
-html[data-theme="dark"] .theme-btn .sun{display:block}
-html[data-theme="dark"] .theme-btn .moon{display:none}
+
+.theme-toggle-btn {
+  width: 62px; height: 32px; border-radius: 9999px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.03);
+  position: relative; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 7px; cursor: pointer; flex-shrink: 0; outline: none;
+  transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+}
+.theme-toggle-btn:hover { border-color: var(--text); }
+.theme-toggle-btn:active .tactile-thumb { transform: scale(0.92); }
+.theme-toggle-btn .track-icon { display: flex; align-items: center; justify-content: center; pointer-events: none; transition: color 0.2s; }
+.theme-toggle-btn .sun-icon { color: #f59e0b; }
+.theme-toggle-btn .moon-icon { color: var(--faint); }
+html[data-theme="dark"] .theme-toggle-btn .sun-icon { color: var(--faint); }
+html[data-theme="dark"] .theme-toggle-btn .moon-icon { color: #60a5fa; }
+.theme-toggle-btn .tactile-thumb {
+  position: absolute; top: 3px; right: 4px;
+  width: 24px; height: 24px; border-radius: 9999px;
+  background: var(--surface); border: 1px solid var(--border);
+  box-shadow: 0 2px 6px rgba(0,0,0,.14), inset 0 1px 0 rgba(255,255,255,.9);
+  transition: transform 0.35s cubic-bezier(0.2, 0, 0, 1);
+  display: flex; align-items: center; justify-content: center; z-index: 2;
+}
+.theme-toggle-btn .thumb-grip {
+  width: 8px; height: 10px;
+  background-image: radial-gradient(circle, var(--faint) 1px, transparent 1px);
+  background-size: 3px 3px;
+  opacity: 0.7;
+}
+html[data-theme="dark"] .theme-toggle-btn .tactile-thumb {
+  transform: translateX(-30px);
+  background: var(--surface);
+  border-color: rgba(255,255,255,.15);
+  box-shadow: 0 2px 6px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.12);
+}
 
 /* ---------- layout ---------- */
 .grid{display:grid;grid-template-columns:1fr 316px;gap:18px;align-items:start}
@@ -142,7 +174,70 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
   cursor:pointer;border:2.5px solid var(--surface)}
 .pval{font-size:12.5px;color:var(--accent);font-weight:700;font-variant-numeric:tabular-nums;min-width:44px;text-align:center}
 
+
 /* ---------- generate (Studio High-Contrast Pill) ---------- */
+.go { position: relative; overflow: hidden; }
+.go::after {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: var(--progress, 0%);
+  background: rgba(255,255,255,0.15); transition: width 0.3s ease;
+}
+.go.success { background: #10b981; color: #fff; pointer-events: none; }
+.go.success .tx svg, .go.success .tx { display: none; }
+.go.success::before {
+  content: '✓ انجام شد';
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; animation: rise 0.3s ease;
+}
+
+/* ---------- Main Tab Switcher (Elevated Segmented Card) ---------- */
+.main-tabs { position: relative; }
+.main-tabs::before {
+  content: ''; position: absolute; top: 4px; bottom: 4px;
+  width: calc(50% - 5px); background: var(--surface);
+  border-radius: 9999px; z-index: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1);
+  transform: translateX(var(--indicator-x, 0));
+}
+.main-tabs[data-active="0"]::before { transform: translateX(0); }
+.main-tabs[data-active="1"]::before { transform: translateX(calc(-100% - 6px)); }
+.main-tab { z-index: 1; border: none; box-shadow: none !important; background: transparent !important; }
+
+.engine-switcher { position: relative; }
+.engine-switcher::before {
+  content: ''; position: absolute; top: 4px; bottom: 4px;
+  width: calc(50% - 5px); background: var(--surface);
+  border-radius: 9999px; z-index: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1);
+  transform: translateX(var(--indicator-x, 0));
+}
+.engine-switcher[data-active="0"]::before { transform: translateX(0); }
+.engine-switcher[data-active="1"]::before { transform: translateX(calc(-100% - 6px)); }
+.engine-btn { z-index: 1; border: none; box-shadow: none !important; background: transparent !important; }
+
+.chapter-title-display { flex: 1; font-weight: 700; cursor: text; padding: 7px 12px; border-radius: 8px; transition: background 0.2s; }
+.chapter-title-display:hover { background: var(--surface-hover); }
+.chapter-title-input { display: none; }
+.editing .chapter-title-display { display: none; }
+.editing .chapter-title-input { display: block; }
+
+@keyframes laserSweep {
+  0% { transform: translateY(-100%); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+.scan-container { position: relative; overflow: hidden; border-radius: var(--radius-s); }
+.scan-laser {
+  position: absolute; top: 0; left: 0; right: 0; height: 10px;
+  background: linear-gradient(to bottom, rgba(59, 130, 246, 0), rgba(59, 130, 246, 0.8), rgba(59, 130, 246, 0));
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+  pointer-events: none; display: none; z-index: 10;
+}
+.scan-container.scanning .scan-laser { display: block; animation: laserSweep 0.6s linear forwards; }
+
 .go{width:100%;margin-top:16px;border:none;border-radius:var(--radius-pill);cursor:pointer;
   background:var(--primary-btn-bg);color:var(--primary-btn-text);font:inherit;font-size:15px;font-weight:800;
   padding:15px 24px;display:flex;align-items:center;justify-content:center;gap:10px;
@@ -468,9 +563,16 @@ textarea.dragover{border-color:var(--text);background:var(--surface-2)}
       <a class="theme-btn" href="https://github.com/hamid-morsali-786/raavi-tts" target="_blank" rel="noopener noreferrer" title="مشاهده مخزن در گیت‌هاب">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
       </a>
-      <button class="theme-btn" id="themeToggle" type="button" title="تغییر حالت روز / شب">
-        <svg class="sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        <svg class="moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <button class="theme-toggle-btn" id="themeToggle" type="button" role="switch" aria-label="تغییر حالت روز و شب" aria-checked="false" title="تغییر حالت روز / شب">
+        <span class="track-icon sun-icon">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </span>
+        <span class="track-icon moon-icon">
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </span>
+        <span class="tactile-thumb">
+          <span class="thumb-grip"></span>
+        </span>
       </button>
     </div>
   </header>
@@ -839,6 +941,7 @@ if (themeBtn) {
     const next = cur === "light" ? "dark" : "light";
     document.documentElement.setAttribute("data-theme", next);
     localStorage.setItem("ptts_theme", next);
+    themeBtn.setAttribute("aria-checked", next === "dark");
     updateThemeColors();
   };
 }
@@ -849,6 +952,7 @@ let peaks = null, curId = null, curDur = 0, history = [];
 
 /* ---------- engine switching ---------- */
 function setEngine(eng) {
+  document.querySelector(".engine-switcher").setAttribute("data-active", eng === "local" ? "0" : "1");
   currentEngine = eng;
   $("btnEngineLocal").classList.toggle("sel", eng === "local");
   $("btnEngineGemini").classList.toggle("sel", eng === "gemini");
@@ -1302,6 +1406,8 @@ $("go").onclick = async () => {
 
         const event = JSON.parse(jsonStr);
         if (event.type === "progress") {
+          const p = Math.min(100, Math.max(0, event.percent));
+          $("go").style.setProperty("--progress", p + "%");
           finishedChunks = event.current || finishedChunks;
           totalChunks = event.total || totalChunks;
 
@@ -1319,6 +1425,8 @@ $("go").onclick = async () => {
             snippet: event.sentence ? `«${event.sentence}»` : "",
           });
         } else if (event.type === "complete") {
+          $("go").classList.add("success");
+          setTimeout(() => { $("go").classList.remove("success"); $("go").style.setProperty("--progress", "0%"); }, 2000);
           setPcardProgress({
             percent: 100,
             stageText: "تکمیل شد!",
@@ -1497,6 +1605,7 @@ loadVoices();
 
 /* ---------- Audiobook Studio Logic ---------- */
 function switchMainTab(tab) {
+  document.querySelector(".main-tabs").setAttribute("data-active", tab === "single" ? "0" : "1");
   const isSingle = tab === "single";
   $("tabBtnSingle").classList.toggle("sel", isSingle);
   $("tabBtnSingle").setAttribute("aria-selected", isSingle);
@@ -1654,6 +1763,13 @@ let currentChapters = [];
 $("btnParseText").onclick = async () => {
   const text = batchBookText.value.trim();
   if (!text) return toast("لطفاً متن کتاب را وارد کنید");
+  const container = batchBookText.closest('.scan-container');
+  if (container) {
+    container.classList.remove('scanning');
+    void container.offsetWidth;
+    container.classList.add('scanning');
+    await new Promise(r => setTimeout(r, 600));
+  }
   const b = $("btnParseText"), old = b.innerHTML;
   b.disabled = true; b.innerHTML = "<span>در حال شناسایی فصول…</span>";
   try {
@@ -1719,18 +1835,42 @@ function renderChapterGrid() {
     <div class="chapter-card" data-idx="${i}">
       <div class="card-header-row">
         <span class="chapter-idx-badge">فصل ${fa(i + 1)}</span>
+        <span class="chapter-title-display" data-idx="${i}">${escapeHtml(c.title || `فصل ${i+1}`)}</span>
         <input type="text" class="chapter-title-input" value="${escapeHtml(c.title || `فصل ${i+1}`)}" data-idx="${i}">
         <span class="chapter-meta-tag" id="meta_${i}">${fa(c.words || 0)} کلمه · ~${fa(Math.round(c.estimated_duration || 0))} ثانیه</span>
         <button type="button" class="chapter-del-btn" title="حذف این فصل" data-idx="${i}">✕</button>
       </div>
-      <textarea class="chapter-text-input" data-idx="${i}" rows="2" placeholder="متن فصل…">${escapeHtml(c.text)}</textarea>
+      <textarea class="chapter-text-input" data-idx="${i}" rows="2" placeholder="متن فصل…">${escapeHtml(c.text)}</textarea></div>
     </div>
   `).join("");
 
+  list.querySelectorAll(".chapter-title-display").forEach(disp => {
+    disp.onclick = (e) => {
+      const parent = disp.parentElement;
+      parent.classList.add("editing");
+      const inp = parent.querySelector(".chapter-title-input");
+      inp.focus();
+      inp.select();
+    };
+  });
   list.querySelectorAll(".chapter-title-input").forEach(inp => {
-    inp.oninput = (e) => {
+    const commit = (e) => {
       const idx = +e.target.dataset.idx;
-      if (currentChapters[idx]) currentChapters[idx].title = e.target.value;
+      if (currentChapters[idx]) {
+        currentChapters[idx].title = e.target.value;
+        const disp = e.target.parentElement.querySelector(".chapter-title-display");
+        disp.textContent = e.target.value;
+      }
+      e.target.parentElement.classList.remove("editing");
+    };
+    inp.onblur = commit;
+    inp.onkeydown = (e) => {
+      if (e.key === "Enter") commit(e);
+      if (e.key === "Escape") {
+        const idx = +e.target.dataset.idx;
+        e.target.value = currentChapters[idx].title;
+        e.target.parentElement.classList.remove("editing");
+      }
     };
   });
 
@@ -1862,6 +2002,7 @@ function handleBatchEvent(ev, jobId) {
     const j = ev.job;
     const pct = Math.min(100, Math.max(0, j.total_progress || 0));
     $("batchProgressFill").style.width = pct + "%";
+    $("btnStartBatch").style.setProperty("--progress", pct + "%");
     $("batchProgressPercent").textContent = fa(Math.round(pct)) + "٪";
 
     if (j.eta_seconds !== null && j.eta_seconds !== undefined) {
@@ -1940,6 +2081,10 @@ function finishBatchJob(jobId, j) {
   $("batchProgressFill").style.width = "100%";
   $("batchProgressPercent").textContent = "۱۰۰٪";
   
+  if (status === "partial" || status === "completed") {
+    $("btnStartBatch").classList.add("success");
+    setTimeout(() => { $("btnStartBatch").classList.remove("success"); $("btnStartBatch").style.setProperty("--progress", "0%"); }, 2000);
+  }
   if (status === "partial") {
     $("batchMonitorStatusText").textContent = "بسته‌بندی با موفقیت انجام شد، اما برخی فصول خطا داشتند.";
     $("batchPulseDot").style.background = "#f59e0b"; // Warning orange
