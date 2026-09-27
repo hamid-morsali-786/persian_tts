@@ -256,6 +256,34 @@ class BatchJobManager:
         self._lock = threading.RLock()
         self._worker_thread = threading.Thread(target=self._worker_loop, daemon=True)
         self._worker_thread.start()
+        self._gc_thread = threading.Thread(target=self._gc_loop, daemon=True)
+        self._gc_thread.start()
+
+    def _gc_loop(self) -> None:
+        import shutil
+        while True:
+            time.sleep(3600)
+            now = time.time()
+            to_delete = []
+            dirs_to_delete = []
+            with self._lock:
+                for jid, job in self._jobs.items():
+                    if job.status in ("completed", "failed", "cancelled"):
+                        if job.completed_at and now - job.completed_at > 86400:
+                            to_delete.append(jid)
+                        elif not job.completed_at and now - job.created_at > 86400:
+                            to_delete.append(jid)
+                for jid in to_delete:
+                    job = self._jobs.pop(jid, None)
+                    if jid in self._subscribers:
+                        del self._subscribers[jid]
+                    if job and job.output_dir and job.output_dir.exists():
+                        dirs_to_delete.append(job.output_dir)
+            for d in dirs_to_delete:
+                try:
+                    shutil.rmtree(d)
+                except Exception as e:
+                    print(f"GC warning for {d}: {e}")
 
     def create_job(
         self,
@@ -367,36 +395,22 @@ class BatchJobManager:
                 self._queue.task_done()
 
     def _handle_cancellation(self, job: BatchAudiobookJob, from_idx: int = 0) -> None:
-        job.status = "cancelled"
-        for c in job.chapters[from_idx:]:
-            if c.status in ("pending", "processing"):
-                c.status = "cancelled"
-        self.broadcast(job.job_id, {"type": "job_cancelled", "job": job.to_dict()})
-
-    def _handle_failure(self, job: BatchAudiobookJob, chapter: ChapterItem, error_msg: str, from_idx: int) -> None:
-        chapter.status = "failed"
-        chapter.error = error_msg
-        for rest in job.chapters[from_idx + 1:]:
-            if rest.status == "pending":
-                rest.status = "failed"
-                rest.error = "Previous chapter failed"
-        job.status = "failed"
-        job.error = error_msg
-        self.broadcast(job.job_id, {
-            "type": "chapter_failed",
-            "job_id": job.job_id,
-            "chapter_index": chapter.index,
-            "error": error_msg,
-        })
-        self.broadcast(job.job_id, {"type": "job_failed", "error": error_msg, "job": job.to_dict()})
+        with self._lock:
+            job.status = "cancelled"
+            for c in job.chapters[from_idx:]:
+                if c.status in ("pending", "processing"):
+                    c.status = "cancelled"
+            job_data = job.to_dict()
+        self.broadcast(job.job_id, {"type": "job_cancelled", "job": job_data})
 
     def _process_job(self, job: BatchAudiobookJob) -> None:
         if job.cancel_requested:
             self._handle_cancellation(job)
             return
 
-        job.status = "processing"
-        job.started_at = time.time()
+        with self._lock:
+            job.status = "processing"
+            job.started_at = time.time()
         self.broadcast(job.job_id, {"type": "job_started", "job": job.to_dict()})
 
         engine_manager = tts_engine.get_engine_manager()
@@ -408,8 +422,9 @@ class BatchJobManager:
                 self._handle_cancellation(job, idx)
                 return
 
-            chapter.status = "processing"
-            chapter.progress = 5.0
+            with self._lock:
+                chapter.status = "processing"
+                chapter.progress = 5.0
             self._update_progress_and_eta(job, idx, 5.0)
 
             try:
@@ -417,7 +432,8 @@ class BatchJobManager:
                     if job.cancel_requested:
                         raise InterruptedError("Batch job was cancelled")
                     pct = float(data.get("percent", 5.0))
-                    chapter.progress = pct
+                    with self._lock:
+                        chapter.progress = pct
                     self._update_progress_and_eta(job, idx, pct)
                     self.broadcast(job.job_id, {
                         "type": "chapter_progress",
@@ -449,7 +465,6 @@ class BatchJobManager:
                     return
 
                 duration = len(audio) / sr
-                chapter.duration = duration
                 total_dur += duration
 
                 ext = job.format.lower()
@@ -458,9 +473,11 @@ class BatchJobManager:
                 chapter_file = job.output_dir / f"{chapter.index:02d}_{safe_title}.{ext}"
                 sf.write(str(chapter_file), audio, sr, format=fmt)
 
-                chapter.audio_file = str(chapter_file)
-                chapter.progress = 100.0
-                chapter.status = "completed"
+                with self._lock:
+                    chapter.duration = duration
+                    chapter.audio_file = str(chapter_file)
+                    chapter.progress = 100.0
+                    chapter.status = "completed"
 
                 self._update_progress_and_eta(job, idx + 1, 0.0)
                 self.broadcast(job.job_id, {
@@ -477,15 +494,38 @@ class BatchJobManager:
                 self._handle_cancellation(job, idx)
                 return
             except Exception as e:
-                self._handle_failure(job, chapter, str(e), idx)
-                return
+                with self._lock:
+                    chapter.status = "failed"
+                    chapter.error = str(e)
+                self._update_progress_and_eta(job, idx + 1, 0.0)
+                self.broadcast(job.job_id, {
+                    "type": "chapter_failed",
+                    "job_id": job.job_id,
+                    "chapter_index": chapter.index,
+                    "error": str(e),
+                })
+                continue
 
         if job.cancel_requested:
             self._handle_cancellation(job)
             return
 
-        job.total_duration = total_dur
-        job.total_progress = 98.0
+        with self._lock:
+            completed_count = sum(1 for c in job.chapters if c.status == "completed")
+            failed_count = sum(1 for c in job.chapters if c.status == "failed")
+            job.total_duration = total_dur
+            job.total_progress = 98.0
+
+        if completed_count == 0:
+            with self._lock:
+                job.status = "failed"
+                job.error = "All chapters failed"
+                job.completed_at = time.time()
+                job.total_progress = 100.0
+                job.eta_seconds = 0.0
+            self.broadcast(job.job_id, {"type": "job_failed", "error": "All chapters failed", "job": job.to_dict()})
+            return
+
         self.broadcast(job.job_id, {
             "type": "packaging_started",
             "message": "در حال بسته‌بندی فایل فشرده ZIP و ادغام فصول…",
@@ -496,16 +536,18 @@ class BatchJobManager:
             job.create_merged_audio()
         except Exception as e:
             print(f"Warning: Packaging failed for job {job.job_id}: {e}")
-            job.error = f"Packaging warning: {e}"
+            with self._lock:
+                job.error = f"Packaging warning: {e}"
 
         if job.cancel_requested:
             self._handle_cancellation(job)
             return
 
-        job.status = "completed"
-        job.completed_at = time.time()
-        job.total_progress = 100.0
-        job.eta_seconds = 0.0
+        with self._lock:
+            job.status = "partial" if failed_count > 0 else "completed"
+            job.completed_at = time.time()
+            job.total_progress = 100.0
+            job.eta_seconds = 0.0
 
         self.broadcast(job.job_id, {
             "type": "job_completed",
@@ -519,23 +561,24 @@ class BatchJobManager:
         current_chapter_pct: float,
     ) -> None:
         total_chapters = len(job.chapters)
-        if total_chapters == 0:
-            job.total_progress = 100.0
-            job.eta_seconds = 0.0
-            return
+        with self._lock:
+            if total_chapters == 0:
+                job.total_progress = 100.0
+                job.eta_seconds = 0.0
+                return
 
-        unit = 100.0 / total_chapters
-        base = completed_chapters * unit
-        partial = (current_chapter_pct / 100.0) * unit
-        job.total_progress = min(99.0, max(0.0, base + partial))
+            unit = 100.0 / total_chapters
+            base = completed_chapters * unit
+            partial = (current_chapter_pct / 100.0) * unit
+            job.total_progress = min(99.0, max(0.0, base + partial))
 
-        if job.started_at:
-            elapsed = time.time() - job.started_at
-            completed_fraction = (completed_chapters + current_chapter_pct / 100.0) / total_chapters
-            if completed_fraction > 0.02:
-                rate = completed_fraction / max(0.1, elapsed)
-                rem_fraction = 1.0 - completed_fraction
-                job.eta_seconds = max(0.0, rem_fraction / rate)
+            if job.started_at:
+                elapsed = time.time() - job.started_at
+                completed_fraction = (completed_chapters + current_chapter_pct / 100.0) / total_chapters
+                if completed_fraction > 0.02:
+                    rate = completed_fraction / max(0.1, elapsed)
+                    rem_fraction = 1.0 - completed_fraction
+                    job.eta_seconds = max(0.0, rem_fraction / rate)
 
 
 _default_batch_manager: Optional[BatchJobManager] = None

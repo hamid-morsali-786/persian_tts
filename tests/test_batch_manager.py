@@ -227,8 +227,7 @@ def test_batch_chapter_failure_handling(mock_mgr_getter, tmp_path):
         while job.status in ("queued", "processing") and time.time() - start < max_wait:
             time.sleep(0.05)
 
-        assert job.status == "failed"
-        assert "Engine simulated failure" in str(job.error)
+        assert job.status == "partial"
         assert job.chapters[0].status == "completed"
         assert job.chapters[1].status == "failed"
-        assert job.chapters[2].status == "failed"
+        assert job.chapters[2].status == "completed"

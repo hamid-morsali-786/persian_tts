@@ -135,6 +135,20 @@ def test_fallback_word_count_chunking():
         assert chap["estimated_duration"] > 0
 
 
+def test_secondary_chunking_on_long_chapter():
+    # Long text with a heading, should be split into multiple sub-chapters
+    long_sentences = [f"این جمله برای طولانی شدن متن شماره {i} است." for i in range(1, 150)]
+    text = "# فصل طولانی\n\n" + " ".join(long_sentences)
+    
+    # Each sentence is ~8 words. 150 sentences = 1200 words.
+    chapters = parse_text_into_chapters(text, default_chunk_words=300)
+    
+    # Because it exceeds 300 words, the chapter should be split into sub-parts
+    assert len(chapters) > 1
+    assert "فصل طولانی — بخش ۱" in chapters[0]["title"]
+    assert "فصل طولانی — بخش ۲" in chapters[1]["title"]
+
+
 def test_parse_files_into_chapters():
     files = [
         ("01_intro.txt", "متن مقدمه کتاب"),

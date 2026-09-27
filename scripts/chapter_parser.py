@@ -230,17 +230,33 @@ def parse_text_into_chapters(text: str, default_chunk_words: int = 1200) -> List
             resolved_title = title
 
         words = len(body.split())
-        chapters.append(
-            ChapterData(
-                index=idx,
-                title=resolved_title,
-                text=body,
-                words=words,
-                chars=len(body),
-                estimated_duration=estimate_speech_duration(words),
+        if words > default_chunk_words:
+            sub_chunks = chunk_by_word_count(body, max_words=default_chunk_words)
+            for sub_idx, sub in enumerate(sub_chunks, 1):
+                part_title = f"{resolved_title} — بخش {to_persian_digits(sub_idx)}" if len(sub_chunks) > 1 else resolved_title
+                chapters.append(
+                    ChapterData(
+                        index=idx,
+                        title=part_title,
+                        text=sub.text,
+                        words=sub.words,
+                        chars=sub.chars,
+                        estimated_duration=sub.estimated_duration,
+                    )
+                )
+                idx += 1
+        else:
+            chapters.append(
+                ChapterData(
+                    index=idx,
+                    title=resolved_title,
+                    text=body,
+                    words=words,
+                    chars=len(body),
+                    estimated_duration=estimate_speech_duration(words),
+                )
             )
-        )
-        idx += 1
+            idx += 1
 
     return [c.to_dict() for c in chapters]
 

@@ -1850,6 +1850,8 @@ function startBatchMonitoring(jobId, bookTitle) {
 
   batchEventSource.onerror = () => {
     console.warn("SSE connection error");
+    $("batchMonitorStatusText").textContent = "ارتباط با سرور قطع شد، در حال تلاش مجدد…";
+    $("batchPulseDot").style.background = "#f59e0b";
   };
 }
 
@@ -1866,8 +1868,8 @@ function handleBatchEvent(ev, jobId) {
 
     renderLiveChaptersList(j.chapters, jobId);
 
-    if (j.status === "completed") {
-      finishBatchJob(jobId, true);
+    if (j.status === "completed" || j.status === "partial") {
+      finishBatchJob(jobId, j);
     } else if (j.status === "failed") {
       $("batchMonitorStatusText").textContent = `خطا در پردازش: ${j.error || "نامشخص"}`;
       $("batchPulseDot").style.background = "#ef4444";
@@ -1892,7 +1894,7 @@ function handleBatchEvent(ev, jobId) {
       $("batchTimeEta").textContent = `باقی‌مانده: ~${fa(Math.round(ev.eta_seconds))} ثانیه`;
     }
   } else if (ev.type === "job_completed") {
-    finishBatchJob(jobId, true);
+    finishBatchJob(jobId, ev.job ? ev.job : "completed");
   } else if (ev.type === "job_cancelled") {
     $("batchMonitorStatusText").textContent = "پردازش لغو شد";
     $("batchPulseDot").style.background = "#94a3b8";
@@ -1923,7 +1925,11 @@ function renderLiveChaptersList(chapters, jobId) {
   `).join("");
 }
 
-function finishBatchJob(jobId, success) {
+function finishBatchJob(jobId, j) {
+  const status = typeof j === "string" ? j : j.status;
+  const hasZip = typeof j === "object" ? j.has_zip : true;
+  const hasMerged = typeof j === "object" ? j.has_merged : true;
+
   clearInterval(batchTimer);
   if (batchEventSource) {
     batchEventSource.close();
@@ -1931,13 +1937,36 @@ function finishBatchJob(jobId, success) {
   }
   $("batchProgressFill").style.width = "100%";
   $("batchProgressPercent").textContent = "۱۰۰٪";
-  $("batchMonitorStatusText").textContent = "کتاب صوتی با موفقیت تولید و بسته‌بندی شد!";
-  $("batchPulseDot").style.background = "#10b981";
+  
+  if (status === "partial") {
+    $("batchMonitorStatusText").textContent = "بسته‌بندی با موفقیت انجام شد، اما برخی فصول خطا داشتند.";
+    $("batchPulseDot").style.background = "#f59e0b"; // Warning orange
+    toast("کتاب صوتی آماده است، اما برخی فصول ناقص هستند!");
+  } else {
+    $("batchMonitorStatusText").textContent = "کتاب صوتی با موفقیت تولید و بسته‌بندی شد!";
+    $("batchPulseDot").style.background = "#10b981";
+    toast("کتاب صوتی آماده دریافت است!");
+  }
 
-  $("btnDownloadZip").href = `/api/batch/download/${jobId}?type=zip`;
-  $("btnDownloadMerged").href = `/api/batch/download/${jobId}?type=merged`;
-  $("batchDownloadsArea").classList.add("show");
-  toast("کتاب صوتی آماده دریافت است!");
+  if (hasZip) {
+    $("btnDownloadZip").style.display = "flex";
+    $("btnDownloadZip").href = `/api/batch/download/${jobId}?type=zip`;
+  } else {
+    $("btnDownloadZip").style.display = "none";
+  }
+
+  if (hasMerged) {
+    $("btnDownloadMerged").style.display = "flex";
+    $("btnDownloadMerged").href = `/api/batch/download/${jobId}?type=merged`;
+  } else {
+    $("btnDownloadMerged").style.display = "none";
+  }
+
+  if (hasZip || hasMerged) {
+    $("batchDownloadsArea").classList.add("show");
+  } else {
+    $("batchDownloadsArea").classList.remove("show");
+  }
 }
 
 window.playChapterAudio = function(jobId, chapterIndex) {

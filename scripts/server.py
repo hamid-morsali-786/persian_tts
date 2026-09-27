@@ -54,8 +54,6 @@ BUILTIN_VOICE_META = {
 
 app = FastAPI(title="پارسی‌گو — Persian TTS demo")
 
-_engine = None
-_engine_lock = threading.Lock()
 _audio_store: dict[str, dict] = {}
 _store_lock = threading.Lock()
 
@@ -77,6 +75,10 @@ def save_audio_item(audio_id: str, audio: np.ndarray, sr: int, meta: dict) -> No
         **meta,
     }
     with _store_lock:
+        if len(_audio_store) >= 50:
+            # Remove oldest item
+            oldest = next(iter(_audio_store))
+            del _audio_store[oldest]
         _audio_store[audio_id] = item
 
 # punctuation-aware phrase splitting and the pause lengths live with the
@@ -91,19 +93,6 @@ from tts_onnx import PKG, SENTENCE_GAP as PAUSE_S, plan_phrases, pack_phrases  #
 # the static manifest, NOT from get_engine(), so a voice upload never
 # triggers a full engine load.
 SR: int = json.loads((PKG / "manifest.json").read_text(encoding="utf-8"))["constants"]["sample_rate"]
-
-
-def get_engine():
-    global _engine
-    if _engine is None:
-        from tts_onnx import OnnxTts
-
-        _engine = OnnxTts()
-        if not hasattr(_engine, "_g2p"):
-            from g2p_onnx import OnnxG2P
-
-            _engine._g2p = OnnxG2P(_engine.dir)
-    return _engine
 
 
 def split_sentences(text: str) -> list[str]:
@@ -220,9 +209,10 @@ def phonemize(req: PhonemizeRequest):
     if req.mode not in ("split", "pack"):
         raise HTTPException(400, "حالت گفتار باید split یا pack باشد")
 
-    engine = get_engine()
+    local_engine = get_engine_manager().get_engine("local")
+    engine = local_engine._ensure_loaded()
     phonemes_all = []
-    with _engine_lock:
+    with local_engine._lock:
         for sent in split_sentences(text):
             try:
                 plan = plan_phrases(sent, engine._g2p, engine.sp)
@@ -249,9 +239,10 @@ def tts_phonemes(req: PhonemeTTSRequest):
     if any("\u0600" <= ch <= "\u06FF" for ch in phonemes):
         raise HTTPException(400, "در کادر فونم فقط فونم لاتین وارد کنید؛ متن فارسی را در کادر متن بنویسید")
 
-    engine = get_engine()
+    local_engine = get_engine_manager().get_engine("local")
+    engine = local_engine._ensure_loaded()
     pace = float(min(max(req.pace, 0.6), 1.5))
-    with _engine_lock:
+    with local_engine._lock:
         audio = engine.synthesize(phonemes, voice_path(req.voice), pace=pace)
 
     if len(audio) == 0:
@@ -291,103 +282,53 @@ def tts(req: TTSRequest):
         raise HTTPException(400, f"متن طولانی است (حداکثر {MAX_TEXT} نویسه)")
 
     pace = float(min(max(req.pace, 0.6), 1.5))
+    engine_id = (req.engine or "local").lower()
+    manager = get_engine_manager()
+    
+    try:
+        engine = manager.get_engine(engine_id)
+    except ValueError as e:
+        raise HTTPException(400, str(e))
 
-    # Cloud Google Gemini Engine path
-    if req.engine == "gemini":
-        gemini_engine = get_engine_manager().get_engine("gemini")
-        try:
-            audio, sr_out, meta = gemini_engine.synthesize(
-                text=text,
-                voice=req.voice,
-                pace=pace,
-                api_key=req.api_key,
-            )
-        except Exception as e:
-            raise HTTPException(400, f"خطای موتور ابری گوگل: {str(e)}")
+    kwargs = {"pace": pace}
+    if engine_id == "gemini":
+        kwargs["api_key"] = req.api_key
+    else:
+        kwargs["mode"] = req.mode
 
-        duration = len(audio) / sr_out
-        audio_id = uuid.uuid4().hex[:12]
-        save_audio_item(
-            audio_id,
-            audio,
-            sr_out,
-            {
-                "text": text,
-                "voice": req.voice,
-                "phonemes": "— (تولید مستقیم با مدل ابری Gemini)",
-                "engine": "gemini",
-                "format": req.format,
-            },
-        )
-        return {
-            "id": audio_id,
-            "phonemes": "— (تولید مستقیم با مدل ابری Gemini)",
-            "duration": round(duration, 2),
-            "pace": pace,
-            "format": req.format.lower(),
-            "mode": "gemini-cloud",
-            "sentences": meta.get("chunks_count", 1),
-            "engine": "gemini",
-            "elapsed": None,
-        }
+    try:
+        audio, sr_out, meta = engine.synthesize(text=text, voice=req.voice, **kwargs)
+    except Exception as e:
+        raise HTTPException(400, str(e))
 
-    # Local ONNX Engine path
-    engine = get_engine()
-    if req.mode not in ("split", "pack"):
-        raise HTTPException(400, "حالت گفتار باید split یا pack باشد")
-    phonemes_all, chunks = [], []
-
-    with _engine_lock:
-        for sent in split_sentences(text):
-            # punctuation-aware plan: each phrase (comma/dash/colon-delimited)
-            # is a pause unit with its own gap, and short lead-ins ending in
-            # strong punctuation ("سؤال اصلی:") stay standalone
-            try:
-                plan = plan_phrases(sent, engine._g2p, engine.sp)
-            except ValueError:
-                continue
-            if req.mode == "pack":
-                plan = pack_phrases(plan)
-            if not plan:
-                continue
-            # model card: retry a runaway once (stochastic; 2nd attempt usually ends)
-            tokens = sum(len(engine.sp.encode(p.replace("1", ""), out_type=int))
-                         for p, _ in plan)
-            cap = tokens / engine.tps_est + engine.gen_pad + 1
-            for attempt in range(2):
-                audio = engine.synthesize(plan, voice_path(req.voice), pace=pace)
-                if len(audio) / SR <= cap + 2.0:  # multi-chunk texts run longer
-                    break
-            phonemes_all.append(" ".join(p.replace("1", "") for p, _ in plan))
-            chunks.append(audio)
-            chunks.append(np.zeros(int(PAUSE_S / pace * SR), dtype=audio.dtype))
-
-    if not chunks:
-        raise HTTPException(400, "متنی برای ساخت صدا پیدا نشد")
-    audio = np.concatenate(chunks[:-1])  # drop trailing pause
-    duration = len(audio) / SR
+    if len(audio) == 0:
+        raise HTTPException(400, "صوتی تولید نشد")
+        
+    duration = len(audio) / sr_out
     audio_id = uuid.uuid4().hex[:12]
+    
     save_audio_item(
         audio_id,
         audio,
-        SR,
+        sr_out,
         {
             "text": text,
             "voice": req.voice,
-            "phonemes": " ".join(phonemes_all),
-            "engine": "local",
+            "phonemes": meta.get("phonemes", "—"),
+            "engine": engine_id,
             "format": req.format,
         },
     )
+    
     return {
         "id": audio_id,
-        "phonemes": " ".join(phonemes_all),
+        "phonemes": meta.get("phonemes", "—"),
         "duration": round(duration, 2),
         "pace": pace,
         "format": req.format.lower(),
-        "mode": req.mode,
-        "sentences": len(phonemes_all),
-        "engine": "local",
+        "mode": req.mode if engine_id == "local" else "gemini-cloud",
+        "sentences": meta.get("sentences", meta.get("chunks_count", 1)),
+        "engine": engine_id,
         "elapsed": None,
     }
 
@@ -752,6 +693,6 @@ if __name__ == "__main__":
     host = os.environ.get("PARSIGO_HOST", "127.0.0.1")
     port = int(os.environ.get("PARSIGO_PORT", "8000"))
     print("loading engine (first request may take a moment)...")
-    get_engine()
+    get_engine_manager().get_engine("local")._ensure_loaded()
     print(f"demo:  http://{host}:{port}")
     uvicorn.run(app, host=host, port=port, log_level="warning")

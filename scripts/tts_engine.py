@@ -330,20 +330,28 @@ class GeminiCloudEngine(BaseTTSEngine):
         last_error = None
 
         for model_name in models_to_try:
-            try:
-                response = client.models.generate_content(
-                    model=model_name,
-                    contents=text_chunk,
-                    config=config,
-                )
+            for attempt in range(3):
+                try:
+                    response = client.models.generate_content(
+                        model=model_name,
+                        contents=text_chunk,
+                        config=config,
+                    )
+                    break
+                except Exception as e:
+                    err_msg = str(e)
+                    last_error = e
+                    if "429" in err_msg or "RESOURCE_EXHAUSTED" in err_msg or "quota" in err_msg.lower():
+                        if attempt < 2:
+                            import time
+                            time.sleep(5 * (3 ** attempt))  # 5s, 15s
+                            continue
+                        raise RuntimeError(format_gemini_error(e)) from e
+                    if "not found" in err_msg.lower() or "not_found" in err_msg.lower() or "404" in err_msg:
+                        break  # Break attempt loop, try next model
+                    raise RuntimeError(format_gemini_error(e)) from e
+            if response is not None:
                 break
-            except Exception as e:
-                err_msg = str(e)
-                last_error = e
-                # Fallback to next model only if model not found
-                if "not found" in err_msg.lower() or "not_found" in err_msg.lower() or "404" in err_msg:
-                    continue
-                raise RuntimeError(format_gemini_error(e)) from e
 
         if response is None:
             raise RuntimeError(format_gemini_error(last_error) if last_error else "پاسخی از مدل گوگل دریافت نشد.")
