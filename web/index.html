@@ -23,7 +23,7 @@
   --accent:#1d4ed8; --accent-2:#2563eb; --accent-soft:rgba(29,78,216,.14);
   --on-accent:#ffffff;
   --primary-btn-bg:#141413; --primary-btn-text:#ffffff; --primary-btn-hover:#262624;
-  --radius:24px; --radius-s:12px; --radius-pill:9999px;
+  --radius:32px; --radius-s:12px; --radius-pill:9999px;
   --shadow:0 8px 24px -4px rgba(18,18,17,.05),0 2px 8px -2px rgba(18,18,17,.03);
   --shadow-sm:0 1px 4px rgba(18,18,17,.05),0 1px 2px rgba(18,18,17,.03);
 }
@@ -31,8 +31,8 @@
 /* ---------- Modern Dark Studio Theme (Obsidian & Titanium) ---------- */
 html[data-theme="dark"]{
   --bg:#111113; --surface:#19191d; --surface-2:#232329; --surface-hover:#2c2c34;
-  --border:rgba(255,255,255,.09); --border-focus:#3b82f6;
-  --text:#f4f4f6; --muted:#a3a3ac; --faint:#a3a3b2;
+  --border:rgba(255,255,255,.14); --border-focus:#3b82f6;
+  --text:#f4f4f6; --muted:#a3a3ac; --faint:#b4b4c0;
   --accent:#3b82f6; --accent-2:#60a5fa; --accent-soft:rgba(59,130,246,.25);
   --on-accent:#111113;
   --primary-btn-bg:#f4f4f6; --primary-btn-text:#111113; --primary-btn-hover:#ffffff;
@@ -77,7 +77,7 @@ h1{font-size:22px;font-weight:800;letter-spacing:normal}
   box-shadow: inset 0 2px 4px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.03);
   position: relative; display: flex; align-items: center; justify-content: space-between;
   padding: 0 7px; cursor: pointer; flex-shrink: 0; outline: none;
-  transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+  transition: border-color 0.25s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.25s cubic-bezier(0.2, 0, 0, 1);
 }
 .theme-toggle-btn:hover { border-color: var(--text); }
 .theme-toggle-btn:active .tactile-thumb { transform: scale(0.96); }
@@ -108,7 +108,9 @@ html[data-theme="dark"] .theme-toggle-btn .tactile-thumb {
 }
 
 
-.chip,.vcard,.btn,.main-tab,.badge,.label{line-height:1.4}
+.chip,.vcard,.btn,.main-tab,.badge,.label,.pchip,.engine-btn,.fmt-pill,.source-btn,
+.batch-chapter-row,.chapter-idx-badge,.toast-title,.pcard-bottom,.pcard-top,
+.chapter-play-btn,.batch-row-status,.summary-badge,.field-label{line-height:1.4}
 /* ---------- layout ---------- */
 .grid{display:grid;grid-template-columns:1fr 316px;gap:18px;align-items:start}
 @media(max-width:860px){.grid{grid-template-columns:1fr}}
@@ -147,14 +149,14 @@ textarea::placeholder{color:var(--faint)}
 .vcard:active{transform:scale(0.96)}
 .vcard.sel{border-color:var(--text);background:var(--surface);box-shadow:0 2px 8px rgba(0,0,0,.06)}
 .vcard .ic{width:38px;height:38px;border-radius:50%;flex-shrink:0;
-  display:grid;place-items:center;background:var(--surface-2);border:1px solid var(--border);color:var(--muted);transition:all .18s}
+  display:grid;place-items:center;background:var(--surface-2);border:1px solid var(--border);color:var(--muted);transition:background-color .18s,border-color .18s,color .18s}
 .vcard.sel .ic{background:var(--primary-btn-bg);border-color:transparent;color:var(--primary-btn-text)}
 .vcard .ic svg{width:17px;height:17px}
 .vcard .nm{font-size:13.5px;font-weight:700}
 .vcard .ds{font-size:11.5px;color:var(--muted);margin-top:-3px}
 
 .drop{margin-top:6px;border:1.5px dashed var(--border);border-radius:14px;
-  padding:15px;text-align:center;font-size:12.5px;color:var(--muted);cursor:pointer;transition:all .2s}
+  padding:15px;text-align:center;font-size:12.5px;color:var(--muted);cursor:pointer;transition:border-color .2s,color .2s,background-color .2s}
 .drop:hover,.drop.over{border-color:var(--text);color:var(--text);background:var(--surface-2)}
 .drop b{color:var(--accent);font-weight:600}
 
@@ -163,7 +165,7 @@ textarea::placeholder{color:var(--faint)}
 .plabel{font-size:13px;font-weight:700;color:var(--muted)}
 .pchips{display:flex;gap:6px}
 .pchip{font-size:11.5px;color:var(--muted);background:transparent;border:1px solid var(--border);
-  border-radius:9999px;padding:5px 12px;cursor:pointer;transition:all .18s;font-family:inherit}
+  border-radius:9999px;padding:5px 12px;cursor:pointer;transition:color .18s,border-color .18s,background-color .18s,transform .18s;font-family:inherit}
 .pchip:hover{color:var(--text);border-color:var(--muted)}
 .pchip:active{transform:scale(0.96)}
 .pchip.sel{color:var(--primary-btn-text);background:var(--primary-btn-bg);border-color:var(--primary-btn-bg);font-weight:700}
@@ -244,7 +246,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
   background:var(--primary-btn-bg);color:var(--primary-btn-text);font:inherit;font-size:15px;font-weight:800;
   padding:15px 24px;display:flex;align-items:center;justify-content:center;gap:10px;
   box-shadow:0 3px 12px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.1);
-  transition:all .18s cubic-bezier(0.2,0,0,1)}
+  transition:background-color .18s cubic-bezier(0.2,0,0,1),transform .18s cubic-bezier(0.2,0,0,1),box-shadow .18s cubic-bezier(0.2,0,0,1)}
 .go:hover:not(:disabled){background:var(--primary-btn-hover);transform:translateY(-1px);
   box-shadow:0 6px 18px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.15)}
 .go:active:not(:disabled){transform:scale(0.96)}
@@ -254,7 +256,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 .ph-tools{margin-top:10px}
 .ph-prep{width:100%;border:1px solid var(--border);border-radius:var(--radius-pill);
   background:var(--surface-2);color:var(--muted);font:inherit;font-size:13px;font-weight:700;
-  padding:11px 16px;cursor:pointer;transition:all .18s cubic-bezier(0.2,0,0,1)}
+  padding:11px 16px;cursor:pointer;transition:color .18s cubic-bezier(0.2,0,0,1),border-color .18s cubic-bezier(0.2,0,0,1),transform .18s cubic-bezier(0.2,0,0,1)}
 .ph-prep:hover:not(:disabled){color:var(--text);border-color:var(--muted)}
 .ph-prep:active:not(:disabled){transform:scale(0.96)}
 .ph-prep:disabled{opacity:.65;cursor:wait}
@@ -285,15 +287,15 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 .player{display:flex;align-items:center;gap:14px}
 .play{width:52px;height:52px;border-radius:50%;border:none;cursor:pointer;flex-shrink:0;
   background:var(--primary-btn-bg);display:grid;place-items:center;
-  box-shadow:0 3px 12px rgba(0,0,0,.12);transition:all .18s cubic-bezier(0.2,0,0,1)}
+  box-shadow:0 3px 12px rgba(0,0,0,.12);transition:background-color .18s cubic-bezier(0.2,0,0,1),transform .18s cubic-bezier(0.2,0,0,1),box-shadow .18s cubic-bezier(0.2,0,0,1)}
 .play:hover{transform:scale(1.05);background:var(--primary-btn-hover)}
 .play:active{transform:scale(0.96)}
 .play svg{width:20px;height:20px;fill:var(--primary-btn-text)}
-.wave{flex:1;height:74px;position:relative;cursor:pointer}
+.wave{flex:1;height:74px;position:relative;cursor:pointer;direction:ltr}
 canvas{width:100%;height:100%;border-radius:10px}
-.tm{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;min-width:86px;text-align:center}
+.tm{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;min-width:86px;text-align:center;direction:ltr}
 .dl{background:var(--surface-2);border:1px solid var(--border);border-radius:9999px;
-  width:44px;height:44px;display:grid;place-items:center;cursor:pointer;color:var(--muted);transition:all .18s}
+  width:44px;height:44px;display:grid;place-items:center;cursor:pointer;color:var(--muted);transition:color .18s,border-color .18s,transform .18s}
 .dl:hover{color:var(--text);border-color:var(--text)}
 .dl:active{transform:scale(0.96)}
 .dl svg{width:18px;height:18px}
@@ -336,13 +338,13 @@ html[data-theme="dark"] .toast-title{color:#f87171}
 .toast-msg{font-size:12.5px;color:var(--text);line-height:1.65;word-break:break-word}
 .toast-actions{margin-top:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .toast-btn{background:var(--surface-2);border:1px solid var(--border);border-radius:6px;
-  color:var(--text);font:inherit;font-size:11.5px;font-weight:700;padding:5px 12px;cursor:pointer;transition:all .18s}
+  color:var(--text);font:inherit;font-size:11.5px;font-weight:700;padding:5px 12px;cursor:pointer;transition:background-color .18s,border-color .18s,color .18s}
 .toast-btn:hover{background:var(--surface-hover);border-color:var(--muted)}
 .toast-btn.primary{background:var(--primary-btn-bg);color:var(--primary-btn-text);border-color:transparent}
 
 .toast-close{flex-shrink:0;background:transparent;border:none;color:var(--muted);
   font-size:16px;line-height:1;padding:4px 6px;cursor:pointer;border-radius:6px;
-  margin-inline-start:4px;transition:all .15s}
+  margin-inline-start:4px;transition:background-color .15s,color .15s}
 .toast-close:hover{background:var(--surface-2);color:var(--text)}
 
 /* ---------- engine switcher (Elevated Segmented Card) ---------- */
@@ -369,7 +371,7 @@ html[data-theme="dark"] .toast-title{color:#f87171}
 .txt-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;flex-wrap:wrap}
 .upload-txt-btn{display:inline-flex;align-items:center;gap:6px;background:var(--surface-2);
   border:1px solid var(--border);border-radius:9999px;color:var(--muted);font:inherit;
-  font-size:12px;font-weight:600;padding:6px 14px;cursor:pointer;transition:all .18s}
+  font-size:12px;font-weight:600;padding:6px 14px;cursor:pointer;transition:color .18s,border-color .18s,transform .18s}
 .upload-txt-btn:hover{color:var(--text);border-color:var(--muted)}
 .upload-txt-btn:active{transform:scale(0.96)}
 .upload-txt-btn svg{width:14px;height:14px}
@@ -388,7 +390,7 @@ textarea.dragover{border-color:var(--text);background:var(--surface-2)}
 /* ---------- multi-stage progress card ---------- */
 .progress-card{display:none;background:var(--surface);border:1px solid var(--border);
   border-radius:14px;padding:16px 18px;margin-top:14px;
-  box-shadow:var(--shadow-sm);transition:all .2s ease}
+  box-shadow:var(--shadow-sm);transition:box-shadow .2s ease,border-color .2s ease}
 .progress-card.show{display:block;animation:rise .25s ease}
 .pcard-top{display:flex;align-items:center;justify-content:space-between;gap:10px;
   font-size:12.5px;font-weight:700;margin-bottom:10px;flex-wrap:wrap}
@@ -443,13 +445,14 @@ textarea.dragover{border-color:var(--text);background:var(--surface-2)}
   border-radius:9999px;padding:4px;gap:6px;margin-bottom:16px}
 .source-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
   background:transparent;border:none;border-radius:9999px;padding:9px 14px;
-  color:var(--muted);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all .18s}
+  color:var(--muted);font:inherit;font-size:13px;font-weight:600;cursor:pointer;
+  transition:color .18s,background-color .18s,box-shadow .18s,border-color .18s,transform .18s}
 .source-btn:hover{color:var(--text)}
 .source-btn:active{transform:scale(0.96)}
 .source-btn.sel{background:var(--surface);color:var(--text);font-weight:700;box-shadow:var(--shadow-sm);border:1px solid var(--border)}
 
 .multi-drop{border:2px dashed var(--border);border-radius:14px;
-  padding:32px 20px;text-align:center;color:var(--muted);cursor:pointer;transition:all .2s;background:var(--surface-2)}
+  padding:32px 20px;text-align:center;color:var(--muted);cursor:pointer;transition:border-color .2s,background-color .2s,color .2s;background:var(--surface-2)}
 .multi-drop:hover,.multi-drop.dragover{border-color:var(--text);background:var(--surface-hover);color:var(--text)}
 .multi-drop svg{width:40px;height:40px;stroke:var(--accent);margin-bottom:8px}
 
@@ -471,7 +474,7 @@ textarea.dragover{border-color:var(--text);background:var(--surface-2)}
 .fmt-pills{display:flex;gap:6px}
 .fmt-pill{flex:1;background:transparent;border:1px solid var(--border);border-radius:9999px;
   color:var(--muted);font:inherit;font-size:12.5px;font-weight:600;padding:9px 12px;cursor:pointer;
-  text-align:center;transition:all .18s cubic-bezier(0.2,0,0,1)}
+  text-align:center;transition:color .18s cubic-bezier(0.2,0,0,1),border-color .18s cubic-bezier(0.2,0,0,1),background-color .18s cubic-bezier(0.2,0,0,1),transform .18s cubic-bezier(0.2,0,0,1)}
 .fmt-pill:hover{color:var(--text);border-color:var(--muted)}
 .fmt-pill:active{transform:scale(0.96)}
 .fmt-pill.sel{background:var(--primary-btn-bg);color:var(--primary-btn-text);border-color:var(--primary-btn-bg);font-weight:700}
@@ -486,7 +489,7 @@ textarea.dragover{border-color:var(--text);background:var(--surface-2)}
 
 .chapter-cards-list{display:flex;flex-direction:column;gap:10px;max-height:480px;overflow-y:auto;padding-inline-end:4px}
 .chapter-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;
-  padding:14px 18px;transition:all .2s ease;content-visibility:auto;contain-intrinsic-size:0 120px}
+  padding:14px 18px;transition:border-color .2s ease,box-shadow .2s ease;content-visibility:auto;contain-intrinsic-size:0 120px}
 .chapter-card:hover{border-color:var(--text);box-shadow:var(--shadow-sm)}
 .card-header-row{display:flex;align-items:center;gap:10px}
 .chapter-idx-badge{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;
@@ -538,7 +541,7 @@ textarea.dragover{border-color:var(--text);background:var(--surface-2)}
 @media(max-width:680px){.batch-downloads{grid-template-columns:1fr}}
 .download-hero-btn{display:flex;align-items:center;justify-content:center;gap:12px;border-radius:var(--radius-pill);
   padding:15px 22px;font:inherit;font-size:13.5px;font-weight:800;cursor:pointer;
-  transition:all .18s cubic-bezier(0.2,0,0,1);text-decoration:none}
+  transition:background-color .18s cubic-bezier(0.2,0,0,1),border-color .18s cubic-bezier(0.2,0,0,1),color .18s cubic-bezier(0.2,0,0,1),transform .18s cubic-bezier(0.2,0,0,1),box-shadow .18s cubic-bezier(0.2,0,0,1);text-decoration:none}
 .download-hero-btn.zip{background:var(--primary-btn-bg);color:var(--primary-btn-text);border:none;box-shadow:0 3px 12px rgba(0,0,0,.12)}
 .download-hero-btn.zip:hover{background:var(--primary-btn-hover);transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.16)}
 .download-hero-btn.zip:active{transform:scale(0.96)}
@@ -546,10 +549,41 @@ textarea.dragover{border-color:var(--text);background:var(--surface-2)}
 .download-hero-btn.merged:hover{border-color:var(--text);transform:translateY(-2px);box-shadow:var(--shadow-sm)}
 .download-hero-btn.merged:active{transform:scale(0.96)}
 .download-hero-btn svg{width:18px;height:18px;stroke:currentColor;flex-shrink:0}
+
+/* ---------- Mobile Responsive (< 560px) ---------- */
+@media (max-width: 560px) {
+  .wrap { padding: 16px 12px 40px; }
+  header { flex-wrap: wrap; gap: 8px; justify-content: space-between; }
+  header .badge { display: none; }
+  .main-tabs, .engine-switcher {
+    border-radius: var(--radius-s);
+    flex-direction: column;
+    padding: 6px; gap: 4px;
+  }
+  .main-tabs::before, .engine-switcher::before { display: none; }
+  .main-tab, .engine-btn {
+    white-space: normal; text-align: center;
+    padding: 8px 12px; font-size: 12px;
+    border-radius: var(--radius-s);
+  }
+  .main-tab.sel, .engine-btn.sel {
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: var(--shadow-sm) !important;
+  }
+  .main-tab svg, .engine-btn svg { display: none; }
+  .grid { grid-template-columns: 1fr; }
+  aside.panel { order: -1; }
+  .player { flex-wrap: wrap; gap: 8px; }
+  .wave { width: 100%; order: 3; height: 50px; }
+  .meta-grid { grid-template-columns: 1fr; }
+  .source-switch { flex-direction: column; }
+  .source-btn { font-size: 12px; }
+}
 </style>
 </head>
 <body>
-<div class="orb a"></div><div class="orb b"></div>
+
 <div class="wrap">
 
   <header>
@@ -593,10 +627,8 @@ textarea.dragover{border-color:var(--text);background:var(--surface-2)}
     </button>
   </nav>
 
-  <!-- Single TTS Container -->
-  <div id="singleView">
-    <!-- Engine Switcher -->
-    <div class="engine-switcher">
+  <!-- Engine Switcher (Global for Single TTS & Audiobook Studio) -->
+  <div class="engine-switcher">
     <button class="engine-btn sel" id="btnEngineLocal" data-engine="local">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
       <span>موتور محلی (Pure-ONNX · آفلاین / کلونینگ صدا)</span>
@@ -607,6 +639,8 @@ textarea.dragover{border-color:var(--text);background:var(--surface-2)}
     </button>
   </div>
 
+  <!-- Single TTS Container -->
+  <div id="singleView">
   <div class="grid">
     <section class="panel">
       <!-- File Info Badge when loaded -->
@@ -726,7 +760,7 @@ textarea.dragover{border-color:var(--text);background:var(--surface-2)}
         </div>
         <div class="hint">کلید Google AI Studio شما برای اتصال مستقیم به Gemini (به‌صورت امن فقط در مرورگر شما ذخیره می‌شود).</div>
         <div class="quota-warning" id="quotaWarning" style="display:none;margin-top:12px;padding:12px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.3);border-radius:var(--radius-s);font-size:12px;line-height:1.6;color:var(--text)">
-          <div style="font-weight:700;color:#ef4444;margin-bottom:4px">⚠️ سهمیه روزانه حساب رایگان گوگل تکمیل شد</div>
+          <div style="font-weight:700;color:#ef4444;margin-bottom:4px"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> سهمیه روزانه حساب رایگان گوگل تکمیل شد</div>
           <div style="color:var(--muted)">مدل تبدیل صوت گوگل در پلن رایگان دارای محدودیت روزانه ۱۰ درخواست است. برای ساخت نامحدود گفتار بدون نیاز به اینترنت یا کلید:</div>
           <button type="button" id="btnSwitchToLocalNow" style="margin-top:8px;background:var(--primary-btn-bg);border:none;border-radius:6px;color:var(--primary-btn-text);padding:6px 14px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
@@ -799,7 +833,7 @@ textarea.dragover{border-color:var(--text);background:var(--surface-2)}
           </button>
           <input type="file" id="bookFileInput" accept=".txt" hidden>
           <button type="button" class="go" id="btnParseText" style="margin-top:0; width:auto; padding:10px 22px; font-size:13.5px;">
-            <span>🔍 شناسایی و قطعه‌بندی هوشمند فصول</span>
+            <span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="vertical-align:-2px"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> شناسایی و قطعه‌بندی هوشمند فصول</span>
           </button>
         </div>
       </div>
@@ -815,7 +849,7 @@ textarea.dragover{border-color:var(--text);background:var(--surface-2)}
         <div class="dropped-file-list" id="multiFileList"></div>
         <div style="text-align: left; margin-top: 14px;">
           <button type="button" class="go" id="btnParseMultiFiles" style="display:none; margin-top:0; width:auto; padding:10px 22px; font-size:13.5px;">
-            <span>⚡ ساخت فصول از فایل‌های انتخابی</span>
+            <span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> ساخت فصول از فایل‌های انتخابی</span>
           </button>
         </div>
       </div>
@@ -834,13 +868,41 @@ textarea.dragover{border-color:var(--text);background:var(--surface-2)}
           </div>
         </div>
         <div class="field-group">
-          <label class="field-label" for="batchVoiceSelect">صدای گوینده</label>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <label class="field-label" for="batchVoiceSelect" style="margin-bottom:0;">صدای گوینده</label>
+            <span class="badge" id="batchEngineBadge" style="font-size:10.5px; padding:2px 8px; font-weight:700;">Pure-ONNX محلی</span>
+          </div>
           <select class="input-text" id="batchVoiceSelect" style="cursor: pointer;"></select>
         </div>
       </div>
 
+      <!-- Batch Gemini API Key Box (only shown when Gemini is active) -->
+      <div class="api-key-box" id="batchApiKeyBox" style="margin-top:12px; margin-bottom:12px;">
+        <div class="label" style="margin-bottom:6px">
+          <span>کلید Google Gemini API برای کتاب صوتی</span>
+          <span class="cnt" style="color:var(--faint)">اختیاری</span>
+        </div>
+        <div class="api-key-row">
+          <input type="password" id="batchApiKeyInput" placeholder="یا تنظیم متغیر GEMINI_API_KEY در سرور…" autocomplete="off" spellcheck="false">
+          <button type="button" class="api-key-vis" id="toggleBatchApiKeyVis" title="نمایش / پنهان کردن کلید">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <div class="hint">کلید در مرورگر شما ذخیره شده و با بخش تبدیل تکی همگام است. سهمیه رایگان Google AI Studio شامل ۱۵ درخواست در دقیقه است.</div>
+      </div>
+
+      <!-- Batch Gemini Smart Notice -->
+      <div id="batchGeminiNotice" style="display:none; margin-bottom:14px; padding:10px 14px; border-radius:12px; background:var(--accent-soft); border:1px solid rgba(29,78,216,0.2); font-size:12px; color:var(--text); line-height:1.6;">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-2px;flex-shrink:0"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg> <strong>پیشنهاد تولید:</strong> برای کتاب‌های با حجم بیش از ۱۵ فصل یا ۲۰ هزار واژه، استفاده از <strong>موتور محلی (Pure-ONNX)</strong> به علت عدم اعمال محدودیت سهمیه Google AI Studio توصیه می‌شود.
+      </div>
+
       <div class="pace-row" style="margin-top: 6px; margin-bottom: 12px;">
         <span class="plabel">سرعت گفتار کتاب</span>
+        <div class="pchips" id="batchPchips">
+          <button type="button" class="pchip" data-bp="0.85">آرام</button>
+          <button type="button" class="pchip sel" data-bp="1">معمولی</button>
+          <button type="button" class="pchip" data-bp="1.2">سریع</button>
+        </div>
         <input type="range" id="batchPace" min="0.7" max="1.35" step="0.05" value="1" dir="ltr">
         <span class="pval" id="batchPaceVal">۱٫۰۰×</span>
       </div>
@@ -941,7 +1003,7 @@ const themeBtn = $("themeToggle");
 if (themeBtn) {
   themeBtn.onclick = () => {
     const style = document.createElement("style");
-    style.textContent = "* { transition: none !important; }";
+    style.textContent = "*:not(.tactile-thumb):not(.theme-toggle-btn):not(.track-icon) { transition: none !important; }";
     document.head.appendChild(style);
     
     const cur = document.documentElement.getAttribute("data-theme") || "light";
@@ -971,12 +1033,19 @@ function setEngine(eng) {
   $("btnEngineGemini").classList.toggle("sel", eng === "gemini");
 
   const isGemini = eng === "gemini";
-  $("drop").style.display = isGemini ? "none" : "block";
-  $("apiKeyBox").classList.toggle("show", isGemini);
-  $("modeRow").style.display = isGemini ? "none" : "flex";
-  $("phToolsWrap").style.display = isGemini ? "none" : "block";
-  $("voiceHeader").textContent = isGemini ? "صدای ابری گوگل" : "صدای مرجع";
-  $("voiceSub").textContent = isGemini ? "پیش‌ساخته" : "≤ ۵ ثانیه";
+  if ($("drop")) $("drop").style.display = isGemini ? "none" : "block";
+  if ($("apiKeyBox")) $("apiKeyBox").classList.toggle("show", isGemini);
+  if ($("batchApiKeyBox")) $("batchApiKeyBox").classList.toggle("show", isGemini);
+  if ($("batchGeminiNotice")) $("batchGeminiNotice").style.display = isGemini ? "block" : "none";
+  if ($("batchEngineBadge")) {
+    $("batchEngineBadge").textContent = isGemini ? "ابری Google Gemini" : "Pure-ONNX محلی";
+    $("batchEngineBadge").style.background = isGemini ? "var(--accent-soft)" : "var(--surface-2)";
+    $("batchEngineBadge").style.color = isGemini ? "var(--accent)" : "var(--muted)";
+  }
+  if ($("modeRow")) $("modeRow").style.display = isGemini ? "none" : "flex";
+  if ($("phToolsWrap")) $("phToolsWrap").style.display = isGemini ? "none" : "block";
+  if ($("voiceHeader")) $("voiceHeader").textContent = isGemini ? "صدای ابری گوگل" : "صدای مرجع";
+  if ($("voiceSub")) $("voiceSub").textContent = isGemini ? "پیش‌ساخته" : "≤ ۵ ثانیه";
 
   const badge = document.querySelector("header .badge");
   if (badge) {
@@ -1003,17 +1072,30 @@ if ($("btnSwitchToLocalNow")) {
   };
 }
 
-/* ---------- api key persistence ---------- */
+/* ---------- api key persistence & two-way sync ---------- */
 const savedKey = localStorage.getItem("gemini_api_key") || "";
+function syncApiKey(val) {
+  localStorage.setItem("gemini_api_key", val);
+  if ($("apiKeyInput") && $("apiKeyInput").value !== val) $("apiKeyInput").value = val;
+  if ($("batchApiKeyInput") && $("batchApiKeyInput").value !== val) $("batchApiKeyInput").value = val;
+}
 if ($("apiKeyInput")) {
   $("apiKeyInput").value = savedKey;
-  $("apiKeyInput").addEventListener("input", e => {
-    localStorage.setItem("gemini_api_key", e.target.value.trim());
-  });
+  $("apiKeyInput").addEventListener("input", e => syncApiKey(e.target.value.trim()));
+}
+if ($("batchApiKeyInput")) {
+  $("batchApiKeyInput").value = savedKey;
+  $("batchApiKeyInput").addEventListener("input", e => syncApiKey(e.target.value.trim()));
 }
 if ($("toggleApiKeyVis")) {
   $("toggleApiKeyVis").onclick = () => {
     const inp = $("apiKeyInput");
+    inp.type = inp.type === "password" ? "text" : "password";
+  };
+}
+if ($("toggleBatchApiKeyVis")) {
+  $("toggleBatchApiKeyVis").onclick = () => {
+    const inp = $("batchApiKeyInput");
     inp.type = inp.type === "password" ? "text" : "password";
   };
 }
@@ -1033,7 +1115,7 @@ async function loadVoices() {
 }
 function renderVoices() {
   $("voices").innerHTML = VOICES.map(v => `
-    <button type="button" role="radio" aria-checked="${v.id===selVoice ? "true" : "false"}" class="vcard ${v.id===selVoice?"sel":""}" data-id="${v.id}">
+    <button type="button" role="radio" aria-checked="${v.id===selVoice ? "true" : "false"}" tabindex="${v.id===selVoice ? "0" : "-1"}" class="vcard ${v.id===selVoice?"sel":""}" data-id="${v.id}">
       <span class="ic">
         ${v.id===selVoice
           ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M3 12h2l2-6 3 12 3-16 3 16 2-6h3"/></svg>'
@@ -1041,8 +1123,33 @@ function renderVoices() {
       </span>
       <span><div class="nm">${v.name}</div><div class="ds">${v.desc}</div></span>
     </button>`).join("");
-  document.querySelectorAll(".vcard").forEach(b =>
-    b.onclick = () => { selVoice = b.dataset.id; renderVoices(); });
+
+  const cards = [...document.querySelectorAll(".vcard")];
+  cards.forEach(b => b.onclick = () => { selVoice = b.dataset.id; renderVoices(); });
+
+  // Roving Tabindex: Arrow keys navigate between voice cards (W3C ARIA APG)
+  const voicesContainer = $("voices");
+  if (voicesContainer) {
+    voicesContainer.addEventListener("keydown", e => {
+      if (!["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) return;
+      e.preventDefault();
+      const focused = document.activeElement;
+      const idx = cards.indexOf(focused);
+      if (idx < 0) return;
+      const next = (e.key === "ArrowDown" || e.key === "ArrowRight")
+        ? (idx + 1) % cards.length
+        : (idx - 1 + cards.length) % cards.length;
+      cards[idx].setAttribute("tabindex", "-1");
+      cards[next].setAttribute("tabindex", "0");
+      cards[next].focus();
+      selVoice = cards[next].dataset.id;
+      renderVoices();
+      // Re-focus after re-render
+      const newCards = [...document.querySelectorAll(".vcard")];
+      const target = newCards.find(c => c.dataset.id === selVoice);
+      if (target) target.focus();
+    });
+  }
 }
 
 /* ---------- chips ---------- */
@@ -1233,6 +1340,23 @@ function toast(msg, options = {}) {
 
   t.className = "toast show" + (isErr ? " is-error" : "");
   t.innerHTML = buildToastHtml(msg, isErr, isQuota);
+
+  // Support custom action button (e.g. Undo)
+  if (options.actionText && typeof options.onAction === "function") {
+    const body = t.querySelector(".toast-body");
+    if (body) {
+      const actionsDiv = document.createElement("div");
+      actionsDiv.className = "toast-actions";
+      const actionBtn = document.createElement("button");
+      actionBtn.type = "button";
+      actionBtn.className = "toast-btn primary";
+      actionBtn.textContent = options.actionText;
+      actionBtn.onclick = () => { options.onAction(); closeToast(); };
+      actionsDiv.appendChild(actionBtn);
+      body.appendChild(actionsDiv);
+    }
+  }
+
   bindToastButtons();
 
   // If ERROR: never auto-close! Closing is explicitly left to the user.
@@ -1491,7 +1615,7 @@ function drawCanvas(prog) {
     const bh = Math.max(3 * dpr, peaks[i] * h * 0.92);
     const played = i / n <= prog;
     ctx.fillStyle = played ? g : "rgba(140,148,170,.28)";
-    const x = w - (i + 1) * bw + bw * 0.18;   // RTL: time flows right→left
+    const x = i * bw + bw * 0.18;   // Universal: audio time flows left→right
     ctx.beginPath();
     ctx.roundRect(x, mid - bh / 2, bw * 0.64, bh, bw * 0.32);
     ctx.fill();
@@ -1554,15 +1678,15 @@ $("play").onclick = () => {
   if (!au.src) return;
   if (au.paused) { au.play(); setPlayIcon(true); } else { au.pause(); setPlayIcon(false); }
 };
-// click-to-seek on the waveform (RTL mapping)
+// click-to-seek on the waveform (universal left-to-right audio time)
 $("wave").addEventListener("pointerdown", e => {
   if (!au.src || !peaks) return;
   seeking = true;
   const rect = cv.getBoundingClientRect();
-  const frac = Math.min(1, Math.max(0, (rect.right - e.clientX) / rect.width));
+  const frac = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
   au.currentTime = frac * curDur; draw(frac);
   const move = ev => {
-    const f = Math.min(1, Math.max(0, (rect.right - ev.clientX) / rect.width));
+    const f = Math.min(1, Math.max(0, (ev.clientX - rect.left) / rect.width));
     au.currentTime = f * curDur; draw(f);
   };
   const up = () => { seeking = false; removeEventListener("pointermove", move); removeEventListener("pointerup", up); };
@@ -1572,7 +1696,7 @@ $("wave").addEventListener("keydown", e => {
   if (!au.src || !curDur) return;
   if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
     e.preventDefault();
-    const delta = (e.key === "ArrowLeft") ? 5 : -5;
+    const delta = (e.key === "ArrowRight") ? 5 : -5;
     au.currentTime = Math.min(curDur, Math.max(0, au.currentTime + delta));
     const frac = au.currentTime / curDur;
     draw(frac);
@@ -1640,10 +1764,18 @@ function populateBatchVoices() {
   const select = $("batchVoiceSelect");
   if (!select) return;
   const prevVal = select.value;
+  const isGemini = currentEngine === "gemini";
+  const engLabel = isGemini ? "Google Gemini" : "Pure-ONNX";
   select.innerHTML = VOICES.map(v =>
-    `<option value="${v.id}" ${v.id===selVoice ? "selected" : ""}>${v.name} (${v.desc})</option>`
+    `<option value="${v.id}" ${v.id===selVoice ? "selected" : ""}>${v.name} (${v.desc}) — ${engLabel}</option>`
   ).join("");
   if (prevVal && VOICES.some(v => v.id === prevVal)) select.value = prevVal;
+
+  if ($("batchEngineBadge")) {
+    $("batchEngineBadge").textContent = isGemini ? "ابری Google Gemini" : "Pure-ONNX محلی";
+    $("batchEngineBadge").style.background = isGemini ? "var(--accent-soft)" : "var(--surface-2)";
+    $("batchEngineBadge").style.color = isGemini ? "var(--accent)" : "var(--muted)";
+  }
 }
 
 let batchSource = "text";
@@ -1675,11 +1807,18 @@ $("fmtWav").onclick = () => {
 };
 
 const batchPaceEl = $("batchPace");
-if (batchPaceEl) {
-  batchPaceEl.addEventListener("input", () => {
-    $("batchPaceVal").textContent = faNum((+batchPaceEl.value).toFixed(2)) + "×";
-  });
+function setBatchPace(v) {
+  if (!batchPaceEl) return;
+  batchPaceEl.value = v;
+  $("batchPaceVal").textContent = faNum((+v).toFixed(2)) + "×";
+  document.querySelectorAll("#batchPchips .pchip[data-bp]").forEach(c =>
+    c.classList.toggle("sel", Math.abs(+c.dataset.bp - v) < 0.01));
 }
+if (batchPaceEl) {
+  batchPaceEl.addEventListener("input", () => setBatchPace(batchPaceEl.value));
+}
+document.querySelectorAll("#batchPchips .pchip[data-bp]").forEach(c =>
+  c.onclick = () => setBatchPace(c.dataset.bp));
 
 const batchBookText = $("batchBookText");
 if (batchBookText) {
@@ -1753,7 +1892,7 @@ function renderDroppedFiles() {
   const list = $("multiFileList");
   list.innerHTML = droppedFiles.map((f, i) => `
     <span class="dropped-file-chip">
-      📄 ${escapeHtml(f.name)} (${fa(Math.round(f.size/1024))} KB)
+      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> ${escapeHtml(f.name)} (${fa(Math.round(f.size/1024))} KB)
       <button type="button" class="remove-chip" data-idx="${i}" aria-label="حذف فایل ${escapeHtml(f.name)}">✕</button>
     </span>
   `).join("");
@@ -1853,7 +1992,7 @@ function renderChapterGrid() {
         <span class="chapter-meta-tag" id="meta_${i}">${fa(c.words || 0)} کلمه · ~${fa(Math.round(c.estimated_duration || 0))} ثانیه</span>
         <button type="button" class="chapter-del-btn" title="حذف این فصل" data-idx="${i}">✕</button>
       </div>
-      <textarea class="chapter-text-input" data-idx="${i}" rows="2" placeholder="متن فصل…">${escapeHtml(c.text)}</textarea></div>
+      <textarea class="chapter-text-input" data-idx="${i}" rows="2" placeholder="متن فصل…">${escapeHtml(c.text)}</textarea>
     </div>
   `).join("");
 
@@ -1904,11 +2043,28 @@ function renderChapterGrid() {
     };
   });
 
+  let _deletedChapter = null;
+  let _deletedIdx = -1;
+
   list.querySelectorAll(".chapter-del-btn").forEach(btn => {
     btn.onclick = (e) => {
+      e.stopPropagation();
       const idx = +btn.dataset.idx;
+      _deletedChapter = { ...currentChapters[idx] };
+      _deletedIdx = idx;
       currentChapters.splice(idx, 1);
       renderChapterGrid();
+      toast(`فصل «${escapeHtml(_deletedChapter.title)}» حذف شد`, {
+        duration: 6000,
+        actionText: "بازگردانی",
+        onAction: () => {
+          if (_deletedChapter) {
+            currentChapters.splice(_deletedIdx, 0, _deletedChapter);
+            renderChapterGrid();
+            _deletedChapter = null;
+          }
+        }
+      });
     };
   });
 }
@@ -1946,8 +2102,10 @@ $("btnStartBatch").onclick = async () => {
     pace,
   };
   if (currentEngine === "gemini") {
-    const k = ($("apiKeyInput").value || "").trim();
-    if (k) payload.api_key = k;
+    const k = ($("batchApiKeyInput") ? $("batchApiKeyInput").value : "") ||
+              ($("apiKeyInput") ? $("apiKeyInput").value : "") ||
+              localStorage.getItem("gemini_api_key") || "";
+    if (k.trim()) payload.api_key = k.trim();
   }
 
   const b = $("btnStartBatch"), old = b.innerHTML;
@@ -2069,7 +2227,7 @@ function renderLiveChaptersList(chapters, jobId) {
         <span class="batch-row-title">${escapeHtml(c.title)}</span>
       </div>
       <div style="display:flex; align-items:center; gap:8px;">
-        ${c.status === "completed" && c.audio_file ? `<button type="button" class="chapter-play-btn" onclick="playChapterAudio('${jobId}', ${c.index})">▶ پخش</button>` : ""}
+        ${c.status === "completed" && c.audio_file ? `<button type="button" class="chapter-play-btn" onclick="playChapterAudio('${jobId}', ${c.index})"><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> پخش</button>` : ""}
         <span class="batch-row-status ${c.status}">${
           c.status === "completed" ? `✓ تکمیل (${fa((c.duration || 0).toFixed(1))}s)` :
           c.status === "processing" ? `در حال تولید (${fa(Math.round(c.progress || 0))}٪)` :
@@ -2145,13 +2303,17 @@ $("btnCancelBatch").onclick = async () => {
   }
 };
 
-  // Global Spacebar Play/Pause Shortcut
+  // Global Spacebar Play/Pause Shortcut (isolated to Single TTS view)
   document.addEventListener('keydown', (e) => {
     if (e.key === ' ' || e.key.toLowerCase() === 'k') {
       const active = document.activeElement;
       if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.isContentEditable)) {
         return;
       }
+      // Only allow spacebar play/pause when Single TTS view is visible
+      const singleView = document.getElementById('singleView');
+      if (!singleView || singleView.style.display === 'none') return;
+
       e.preventDefault();
       const playBtn = document.getElementById('play');
       if (playBtn) playBtn.click();
