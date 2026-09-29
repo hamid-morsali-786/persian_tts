@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.2.0] - 2026-09-29
+
+### Added
+- **Project Rebranding:** Officially rebranded project from ParSiGo to **راوی (Raavi)** / `raavi-tts`.
+- **Global Hybrid Engine Switcher:** Unified engine toggle accessible from both Single TTS and Audiobook Studio views with two-way API key synchronization and localStorage persistence.
+- **Enterprise UI/UX Audit Improvements (P0/P1):**
+  - Standardized audio waveform time axis from left to right (universal audio physical convention) with synced mouse/pointer scrub and keyboard arrow step navigation (`ArrowRight` = forward, `ArrowLeft` = backward).
+  - Added a 6-second non-destructive Undo Toast mechanism for accidental chapter deletion in Audiobook Studio.
+  - Implemented W3C ARIA APG Roving Tabindex for voice cards with Arrow key navigation.
+  - Preserved physical tactile spring animation on the hardware theme toggle.
+  - Added responsive mobile viewport breakpoint (`@media (max-width: 560px)`) for stacked studio layout.
+  - Replaced all emoji glyphs with accessible, engineered inline SVG vector icons.
+  - Aligned concentric corner radii ($R_{outer} = 32\text{px} = 12\text{px} + 20\text{px}$) across panels and form controls.
+  - Enhanced dark obsidian theme text contrast (`--faint: #b4b4c0`, WCAG AAA compliant).
+  - Scoped line-height inheritance (`1.4`) to prevent bloated UI control boxes.
+
+### Fixed
+- Fixed extra closing `</div>` in `renderChapterGrid()` template that corrupted chapter DOM cards.
+- Eliminated all 17 generic `transition: all` declarations across CSS to resolve GPU repaint and layout thrashing bottlenecks.
+- Isolated global Spacebar and 'K' keyboard play/pause shortcuts strictly to the Single TTS view.
+- Purged legacy ambient `.orb` gradient DOM nodes.
+
+---
+
 ## [2.1.0] - 2026-09-26
 
 ### Added

@@ -3,7 +3,7 @@ chcp 65001 > nul
 title Push to GitHub
 cd /d "%~dp0"
 echo ====================================================
-echo  Persian TTS - Push to GitHub
+echo  Raavi TTS - Push to GitHub
 echo ====================================================
 echo Sending commits to https://github.com/hamid-morsali-786/raavi-tts ...
 echo.
